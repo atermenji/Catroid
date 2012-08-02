@@ -20,17 +20,26 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package at.tugraz.ist.catroid.ui;
+package at.tugraz.ist.catroid.test;
 
-import android.os.Bundle;
-import android.preference.PreferenceActivity;
-import at.tugraz.ist.catroid.R;
+import android.test.AndroidTestCase;
+import at.tugraz.ist.catroid.ProjectManager;
+import at.tugraz.ist.catroid.test.utils.TestUtils;
 
-public class SettingsActivity extends PreferenceActivity {
+public class ProjectManagerTest extends AndroidTestCase {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		addPreferencesFromResource(R.xml.preferences);
+	public void testShouldReturnFalseIfVersionNumberTooHigh() {
+		TestUtils.createTestProjectOnLocalStorageWithVersionCode(Integer.MAX_VALUE);
+
+		boolean result = ProjectManager.INSTANCE.loadProject(TestUtils.DEFAULT_TEST_PROJECT_NAME, getContext(), false);
+		assertFalse("Load project didn't return false", result);
+
+		TestUtils.clearAllUtilTestProjects();
+		TestUtils.createTestProjectOnLocalStorageWithVersionCode(0);
+
+		result = ProjectManager.INSTANCE.loadProject(TestUtils.DEFAULT_TEST_PROJECT_NAME, getContext(), false);
+		assertTrue("Load project didn't return true", result);
+
+		TestUtils.clearAllUtilTestProjects();
 	}
 }
