@@ -20,50 +20,48 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package at.tugraz.ist.catroid.formulaeditor;
+package at.tugraz.ist.catroid.utils;
 
-import java.util.EnumSet;
+import android.graphics.drawable.Drawable;
 
-public enum Operators {
-	PLUS("+", 0), MINUS("-", 0), MULT("*", 1), DIVIDE("/", 1), MOD("%", 1), POW("^", 2);
+/**
+ * @author Jakob
+ * 
+ */
+public class InstalledApplicationInfo {
+	private int intentCode;
+	private String packageName;
+	private String nameOfApplication;
+	private String displayText;
+	private Drawable applicationIcon;
 
-	private final String operatorRepresentation;
-	private final Integer priority;
-
-	Operators(String value, Integer priority) {
-		this.operatorRepresentation = value;
-		this.priority = priority;
+	InstalledApplicationInfo(int intentCode, String packageName, String nameOfApplication, String displayText,
+			Drawable drawable) {
+		this.intentCode = intentCode;
+		this.packageName = packageName;
+		this.nameOfApplication = nameOfApplication;
+		this.applicationIcon = drawable;
+		this.displayText = displayText;
 	}
 
-	public int compareOperatorTo(Operators op) {
-		int returnVa = 0;
-		if (priority > op.priority) {
-			returnVa = 1;
-		} else if (priority == op.priority) {
-			returnVa = 0;
-		} else if (priority < op.priority) {
-			returnVa = -1;
-		}
-
-		return returnVa;
+	public int getIntentCode() {
+		return this.intentCode;
 	}
 
-	public static Operators getOperatorByValue(String value) {
-		for (Operators op : EnumSet.allOf(Operators.class)) {
-			if (op.operatorRepresentation.equals(value)) {
-				return op;
-			}
-		}
-		return null;
+	public String getPackageName() {
+		return this.packageName;
 	}
 
-	public static boolean isOperator(String value) {
-		for (Operators op : EnumSet.allOf(Operators.class)) {
-			if (op.operatorRepresentation.equals(value)) {
-				return true;
-			}
-		}
-		return false;
+	public String getNameOfApplication() {
+		return this.nameOfApplication;
+	}
+
+	public String getDisplayText() {
+		return this.displayText;
+	}
+
+	public Drawable getApplicationIcon() {
+		return this.applicationIcon;
 	}
 
 }
