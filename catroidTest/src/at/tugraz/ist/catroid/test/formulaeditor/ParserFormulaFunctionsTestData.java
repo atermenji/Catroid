@@ -22,19 +22,16 @@
  */
 package at.tugraz.ist.catroid.test.formulaeditor;
 
-public enum ParserFormulaTestData {
-	UNARY_MINUS_1("-1", -1.0), UNARY_MINUS_2("-1--1", 0.0), UNARY_MINUS_MULT("-1*-1", 1.0), UNARY_MINUS_DIVIDE("-1/-1",
-			1.0), UNARY_MINUS_BRACKETS("-(2)-(-2)", 0.0), OPERATOR_PRIORITY_1("1-2*2", -3.0), OPERATOR_PRIORITY_2(
-			"1+2*2", 5.0), OPERATOR_PRIORITY_3("1-2/2", 0.0), OPERATOR_PRIORITY_4("1+2/2", 2.0), OPERATOR_PRIORITY_LEFT_BINDING_1(
-			"5-4-1", 0.0), OPERATOR_PRIORITY_LEFT_BINDING_2("100/10/10", 1.0), OPERATOR_PRIORITY_LONG_1(
-			"2*2*2*2 + 3*3*3*3", 97.0), OPERATOR_PRIORITY_LONG_2("16/2/2/2 + 81/3/3/3", 5.0), OPERATOR_CHAIN_1(
-			"1 + 2 * 3 ^ 2 + 1", 20.0), OPERATOR_CHAIN_2("10+ 12 - 2 * 3 - 4 ", 12.0), BRACKET_TEST_1("(2+2)*3", 12.0), BRACKET_TEST_2(
-			"(1+2)*(1+2)", 9.0);
+public enum ParserFormulaFunctionsTestData {
+	SIN("sin(90)", 1.0), COS("cos(180)", -1.0), TAN("tan(45)", 1.0), LN("ln(e ^ 2)", 2.0), LOG("log(10^2)", 2.0), SQRT(
+			"sqrt(4^2)", 4.0), ABS("abs(-4)", 4.0), ROUND("round(3.2)", 3.0), PI("pi", Math.PI), RANDOM_1(
+			"rand(0.0001, 0.0002)", 0.00015), RANDOM_2("rand(0.0008, 0.0009)", 0.00085), RANDOM_3(
+			"rand(0.0005, 0.0006)", 0.00055), RANDOM_4("rand(0.0007, 0.0008)", 0.00075);
 
 	private String input;
 	private Double output;
 
-	ParserFormulaTestData(String input, Double output) {
+	ParserFormulaFunctionsTestData(String input, Double output) {
 		this.input = input;
 		this.output = output;
 	}
