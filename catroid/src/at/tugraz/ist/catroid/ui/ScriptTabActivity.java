@@ -44,6 +44,7 @@ import at.tugraz.ist.catroid.ui.adapter.TabsPagerAdapter;
 import at.tugraz.ist.catroid.ui.dragndrop.DragAndDropListView;
 import at.tugraz.ist.catroid.ui.fragment.CostumeFragment;
 import at.tugraz.ist.catroid.ui.fragment.FormulaEditorFragment;
+import at.tugraz.ist.catroid.ui.fragment.LookFragment;
 import at.tugraz.ist.catroid.ui.fragment.ScriptFragment;
 import at.tugraz.ist.catroid.ui.fragment.SoundFragment;
 import at.tugraz.ist.catroid.utils.ErrorListenerInterface;
@@ -185,6 +186,15 @@ public class ScriptTabActivity extends SherlockFragmentActivity implements Error
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+		Log.i("info", "onKeyDown() ScriptTabActivity.... keyCode: " + keyCode);
+
+		LookFragment lookFragment = (LookFragment) getSupportFragmentManager().findFragmentByTag(
+				LookFragment.LOOK_FRAGMENT_TAG);
+
+		if (lookFragment != null) {
+			return lookFragment.onKey(null, keyCode, event);
+		}
 
 		FormulaEditorFragment formulaEditor = (FormulaEditorFragment) getSupportFragmentManager().findFragmentByTag(
 				FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);

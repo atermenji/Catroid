@@ -43,12 +43,14 @@ import java.util.Locale;
 import android.content.Context;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
+import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
 import at.tugraz.ist.catroid.R;
 import at.tugraz.ist.catroid.ui.dialogs.ChooseLookVariableFragment;
 import at.tugraz.ist.catroid.ui.dialogs.FormulaEditorChooseOperatorDialog;
+import at.tugraz.ist.catroid.ui.fragment.LookFragment;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -63,6 +65,7 @@ public class CatKeyboardView extends KeyboardView implements KeyboardView.OnKeyb
 	private Keyboard symbolsNumbers;
 	private Keyboard symbolsFunctions;
 	private Keyboard symbolsSensors;
+	private LookFragment lookFragment;
 	private Context context;
 	private ChooseLookVariableFragment chooseLookVariablesFragment;
 	private FormulaEditorChooseOperatorDialog chooseOperatorDialogFragment;
@@ -88,26 +91,26 @@ public class CatKeyboardView extends KeyboardView implements KeyboardView.OnKeyb
 
 		this.setKeyboard(symbolsNumbers);
 
-		if (((SherlockFragmentActivity) context).getSupportFragmentManager().findFragmentByTag(
-				"chooseLookVariablesDialogFragment") == null) {
-			this.chooseLookVariablesFragment = ChooseLookVariableFragment
-					.newInstance(android.R.string.dialog_alert_title);
-
-		} else {
-			this.chooseLookVariablesFragment = (ChooseLookVariableFragment) ((SherlockFragmentActivity) context)
-					.getSupportFragmentManager().findFragmentByTag("chooseLookVariablesDialogFragment");
-		}
-		this.chooseLookVariablesFragment.setCatKeyboardView(this);
-
-		//		Fragment fragment = ((SherlockFragmentActivity) context).getSupportFragmentManager().findFragmentByTag(
-		//				LookFragment.LOOK_FRAGMENT_TAG);
-		//		if (fragment == null) {
-		//			this.lookFragment = LookFragment.newInstance();
+		//		if (((SherlockFragmentActivity) context).getSupportFragmentManager().findFragmentByTag(
+		//				"chooseLookVariablesDialogFragment") == null) {
+		//			this.chooseLookVariablesFragment = ChooseLookVariableFragment
+		//					.newInstance(android.R.string.dialog_alert_title);
 		//
 		//		} else {
-		//			this.lookFragment = (LookFragment) fragment;
+		//			this.chooseLookVariablesFragment = (ChooseLookVariableFragment) ((SherlockFragmentActivity) context)
+		//					.getSupportFragmentManager().findFragmentByTag("chooseLookVariablesDialogFragment");
 		//		}
-		//		this.lookFragment.setCatKeyboardView(this);
+		//		this.chooseLookVariablesFragment.setCatKeyboardView(this);
+
+		Fragment fragment = ((SherlockFragmentActivity) context).getSupportFragmentManager().findFragmentByTag(
+				LookFragment.LOOK_FRAGMENT_TAG);
+		if (fragment == null) {
+			this.lookFragment = LookFragment.newInstance();
+
+		} else {
+			this.lookFragment = (LookFragment) fragment;
+		}
+		this.lookFragment.setCatKeyboardView(this);
 
 		if (((SherlockFragmentActivity) context).getSupportFragmentManager().findFragmentByTag(
 				"chooseOperatorDialogFragment") == null) {
@@ -152,13 +155,13 @@ public class CatKeyboardView extends KeyboardView implements KeyboardView.OnKeyb
 			case KeyEvent.KEYCODE_SHIFT_LEFT:
 				this.goLeft();
 				break;
-			case CatKeyEvent.KEYCODE_LOOK_BUTTON:
-				this.chooseLookVariablesFragment.show(((SherlockFragmentActivity) context).getSupportFragmentManager(),
-						"chooseLookVariablesDialogFragment");
-				break;
 			//			case CatKeyEvent.KEYCODE_LOOK_BUTTON:
-			//				this.lookFragment.showFragment(context);
+			//				this.chooseLookVariablesFragment.show(((SherlockFragmentActivity) context).getSupportFragmentManager(),
+			//						"chooseLookVariablesDialogFragment");
 			//				break;
+			case CatKeyEvent.KEYCODE_LOOK_BUTTON:
+				this.lookFragment.showFragment(context);
+				break;
 			case KeyEvent.KEYCODE_MENU:
 				this.chooseOperatorDialogFragment.show(
 						((SherlockFragmentActivity) context).getSupportFragmentManager(),

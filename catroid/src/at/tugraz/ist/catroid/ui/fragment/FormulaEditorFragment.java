@@ -80,7 +80,9 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		}
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		setRetainInstance(true);
+		//		setRetainInstance(true);
+
+		getSherlockActivity().getSupportActionBar().setTitle(getString(R.string.formula_editor_title));
 	}
 
 	@Override
@@ -114,11 +116,12 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 	}
 
 	public void startFormulaEditor(SherlockFragmentActivity activity) {
-		activity.findViewById(R.id.fragment_formula_editor).setVisibility(View.VISIBLE);
+		//		activity.findViewById(R.id.fragment_formula_editor).setVisibility(View.VISIBLE);
 		FragmentManager fragmentManager = activity.getSupportFragmentManager();
 		FragmentTransaction fragTransaction = fragmentManager.beginTransaction();
 		//FormulaEditorFragment formulaEditorDialog = new FormulaEditorFragment();
-		fragTransaction.add(R.id.fragment_formula_editor, this, FORMULA_EDITOR_FRAGMENT_TAG);
+		fragTransaction.add(android.R.id.tabhost, this, FORMULA_EDITOR_FRAGMENT_TAG);
+		//		fragTransaction.addToBackStack(null);
 		fragTransaction.commit();
 
 	}
@@ -130,7 +133,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		currentBrick = null;
 
 		SherlockFragmentActivity activity = getSherlockActivity();
-		activity.findViewById(R.id.fragment_formula_editor).setVisibility(View.GONE);
+		//		activity.findViewById(R.id.fragment_formula_editor).setVisibility(View.GONE);
 		FragmentManager fragmentManager = activity.getSupportFragmentManager();
 		FragmentTransaction fragTransaction = fragmentManager.beginTransaction();
 		fragTransaction.remove(fragmentManager.findFragmentByTag(FORMULA_EDITOR_FRAGMENT_TAG));
@@ -166,7 +169,6 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 
 		setInputFormula(currentFormula, SET_FORMULA_ON_CREATE_VIEW);
 
-		getSherlockActivity().getSupportActionBar().setTitle(getString(R.string.formula_editor_title));
 		return dialogView;
 	}
 
@@ -176,6 +178,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 
 		menu.clear();
 		getSherlockActivity().getSupportMenuInflater().inflate(R.menu.menu_formula_editor, menu);
+		getSherlockActivity().getSupportActionBar().setTitle(getString(R.string.formula_editor_title));
 
 	}
 
@@ -193,7 +196,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 					refreshFormulaPreviewString(formulaEditorEditText.getText().toString());
 
 					currentFormula.highlightTextField(brickView, orientation);
-					getActivity().findViewById(R.id.fragment_formula_editor).setVisibility(View.VISIBLE);
+					//					getActivity().findViewById(R.id.fragment_formula_editor).setVisibility(View.VISIBLE);
 					//((ScriptTabActivity) getActivity()).formulaEditor = this;
 				} else { //on create
 					currentFormula.removeTextFieldHighlighting(brickView, orientation);
@@ -304,7 +307,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 
 	@Override
 	public boolean onKey(View view, int keyCode, KeyEvent event) {
-
+		Log.i("info", "onKey() in FE-Fragment! keyCode: " + keyCode);
 		switch (keyCode) {
 			case KeyEvent.KEYCODE_BACK:
 				confirmBackTimeStamp[0] = confirmBackTimeStamp[1];
