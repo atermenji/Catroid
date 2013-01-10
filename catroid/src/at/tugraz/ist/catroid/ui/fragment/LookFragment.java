@@ -1,10 +1,9 @@
 package at.tugraz.ist.catroid.ui.fragment;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,15 +13,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import at.tugraz.ist.catroid.R;
 import at.tugraz.ist.catroid.formulaeditor.CatKeyEvent;
 import at.tugraz.ist.catroid.formulaeditor.CatKeyboardView;
 
-import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.app.SherlockFragment;
 
-public class LookFragment extends SherlockListFragment implements Dialog.OnKeyListener {
+public class LookFragment extends SherlockFragment implements OnClickListener, DialogInterface.OnKeyListener {
 
+	private LinearLayout listLinearLayout;
+	private ListView listView;
 	public final static String LOOK_FRAGMENT_TAG = "lookFragment";
 
 	private CatKeyboardView catKeyboardView;
@@ -32,32 +34,20 @@ public class LookFragment extends SherlockListFragment implements Dialog.OnKeyLi
 			R.string.formula_editor_look_layer };
 	private static final int CANCEL_INDEX = -2;
 
-	//	public void onClick(DialogInterface dialog, int index) {
-	//		if (index == CANCEL_INDEX) {
-	//
-	//			return;
-	//		}
-	//		Log.v("touched: ", "" + index);
-	//		Log.v("touched: ", getString(lookResourceIds[index]));
-	//
-	//		int[] keyCode = new int[1];
-	//		keyCode[0] = 0;
-	//
-	//		catKeyboardView.onKey(CatKeyEvent.KEYCODE_LOOK_X + index, keyCode);
-	//
-	//	}
-
 	@Override
-	public void onListItemClick(ListView listView, View view, int position, long id) {
-		Log.v("info", "touch of listitem " + getString(lookResourceIds[position]) + " with position: " + position);
+	public void onClick(DialogInterface dialog, int index) {
+		if (index == CANCEL_INDEX) {
+
+			return;
+		}
+		Log.v("touched: ", "" + index);
+		Log.v("touched: ", lookResourceIds[index].toString());
 
 		int[] keyCode = new int[1];
 		keyCode[0] = 0;
-		catKeyboardView.onKey(CatKeyEvent.KEYCODE_LOOK_X + position, keyCode);
-		KeyEvent keyEvent = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK);
-		onKey(null, keyEvent.getKeyCode(), keyEvent);
 
-		//		super.onListItemClick(l, v, position, id);
+		catKeyboardView.onKey(CatKeyEvent.KEYCODE_LOOK_X + index, keyCode);
+
 	}
 
 	public static LookFragment newInstance() { // TODO change this!!! o.o
@@ -74,19 +64,7 @@ public class LookFragment extends SherlockListFragment implements Dialog.OnKeyLi
 		//		}
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		//		setRetainInstance(true);
-
-		String[] lookNames = new String[lookResourceIds.length];
-		int index = 0;
-		for (Integer lookResourceID : lookResourceIds) {
-			lookNames[index] = getString(lookResourceID);
-			index++;
-
-		}
-		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
-				android.R.layout.simple_list_item_1, lookNames);
-		setListAdapter(arrayAdapter);
-		getSherlockActivity().getSupportActionBar().setTitle(getString(R.string.formula_editor_choose_look_variable));
+		setRetainInstance(true);
 	}
 
 	@Override
@@ -99,6 +77,28 @@ public class LookFragment extends SherlockListFragment implements Dialog.OnKeyLi
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View fragmentView = inflater.inflate(R.layout.fragment_look, container, false);
+		listLinearLayout = (LinearLayout) fragmentView.findViewById(R.id.formula_editor_look);
+		if (listLinearLayout != null) {
+
+			String[] lookNames = new String[lookResourceIds.length];
+			int index = 0;
+			for (Integer lookResourceID : lookResourceIds) {
+				lookNames[index] = getString(lookResourceID);
+				index++;
+			}
+
+			ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
+					android.R.layout.simple_list_item_1, lookNames);
+
+			listView = new ListView(getActivity());
+			listView.setAdapter(arrayAdapter);
+			listLinearLayout.addView(listView);
+		}
+
+		getSherlockActivity().getSupportActionBar().setTitle(getString(R.string.formula_editor_choose_look_variable));
+		//		((SherlockFragmentActivity) context).getSupportActionBar().setTitle(
+		//				((SherlockFragmentActivity) context).getResources().getString(
+		//						R.string.formula_editor_choose_look_variable));
 
 		return fragmentView;
 	}
@@ -106,23 +106,12 @@ public class LookFragment extends SherlockListFragment implements Dialog.OnKeyLi
 	public void showFragment(Context context) {
 		FragmentActivity activity = (FragmentActivity) context;
 		FragmentManager fragmentManager = activity.getSupportFragmentManager();
-		FragmentTransaction fragTransaction = fragmentManager.beginTransaction();
 
-		Fragment formulaEditorFragment = fragmentManager
-				.findFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
-		fragTransaction.hide(formulaEditorFragment);
-
-		//		fragTransaction.replace(R.id.fragment_formula_editor, this);
-
-		//		fragTransaction.remove(formulaEditorFragment);
-		fragTransaction.add(android.R.id.tabhost, this, LookFragment.LOOK_FRAGMENT_TAG);
-		//		fragTransaction.hide(formulaEditorFragment);
-		//		fragTransaction.show(this);
-		//		fragTransaction.addToBackStack(null);
-
-		fragTransaction.commit();
 		//		activity.findViewById(R.id.fragment_formula_editor).setVisibility(View.GONE);
-		//		activity.findViewById(R.id.fragment_look).setVisibility(View.VISIBLE);
+
+		FragmentTransaction fragTransaction = fragmentManager.beginTransaction();
+		fragTransaction.add(R.id.fragment_formula_editor, this);
+		fragTransaction.commit();
 	}
 
 	public void setCatKeyboardView(CatKeyboardView catKeyboardView) {
@@ -130,27 +119,30 @@ public class LookFragment extends SherlockListFragment implements Dialog.OnKeyLi
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.view.View.OnKeyListener#onKey(android.view.View, int, android.view.KeyEvent)
+	 */
 	@Override
-	public boolean onKey(DialogInterface d, int keyCode, KeyEvent event) {
-		Log.i("info", "onKey() in LookFragment! keyCode: " + keyCode);
-		switch (keyCode) {
-			case KeyEvent.KEYCODE_BACK:
-				Log.i("info", "KEYCODE_BACK pressed in LookFragment!");
-				FragmentTransaction fragTransaction = getSherlockActivity().getSupportFragmentManager()
-						.beginTransaction();
-				FormulaEditorFragment formulaEditorFragment = (FormulaEditorFragment) getSherlockActivity()
-						.getSupportFragmentManager().findFragmentByTag(
-								FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
+	public boolean onKey(DialogInterface di, int keyCode, KeyEvent event) {
+		if (event.getAction() == KeyEvent.ACTION_DOWN) {
+			switch (keyCode) {
+				case KeyEvent.KEYCODE_BACK:
+					FragmentTransaction fragTransaction = getSherlockActivity().getSupportFragmentManager()
+							.beginTransaction();
+					FormulaEditorFragment formulaEditorFragment = (FormulaEditorFragment) getSherlockActivity()
+							.getSupportFragmentManager().findFragmentByTag(
+									FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
+					fragTransaction.add(R.id.fragment_formula_editor, formulaEditorFragment);
+					fragTransaction.commit();
 
-				fragTransaction.remove(this);
-				fragTransaction.show(formulaEditorFragment);
-				fragTransaction.commit();
-				return true;
-
-			default:
-				break;
+					break;
+				default:
+					break;
+			}
 		}
-		return false;
+		return true;
 	}
 
 }
