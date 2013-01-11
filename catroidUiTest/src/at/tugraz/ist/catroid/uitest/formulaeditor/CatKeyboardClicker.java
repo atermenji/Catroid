@@ -346,4 +346,5 @@ public class CatKeyboardClicker {
 		}
 		return false;
 	}
+
 }

@@ -77,8 +77,8 @@ public class LookSensorValuesInterpretationTest extends AndroidTestCase {
 				DELTA);
 
 		Formula costumeRotateFormula = new Formula(Sensors.LOOK_ROTATION_.sensorName);
-		assertEquals("Formula interpretation is not as expected", LOOK_ROTATION,
-				costumeRotateFormula.interpretFloat(), DELTA);
+		assertEquals("Formula interpretation is not as expected", LOOK_ROTATION, costumeRotateFormula.interpretFloat(),
+				DELTA);
 
 		Formula costumeZPositionFormula = new Formula(Sensors.LOOK_LAYER_.sensorName);
 		assertEquals("Formula interpretation is not as expected", LOOK_ZPOSITION,

@@ -28,6 +28,7 @@ import java.util.List;
 
 import android.test.suitebuilder.annotation.Smoke;
 import android.text.style.BackgroundColorSpan;
+import android.util.Log;
 import at.tugraz.ist.catroid.ProjectManager;
 import at.tugraz.ist.catroid.R;
 import at.tugraz.ist.catroid.content.Project;
@@ -58,15 +59,19 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 
 	private CatKeyboardClicker catKeyboardClicker;
 
-	float oneCharacterWidth = 16; // this isnt exact!
-	float threeCharactersWidth = oneCharacterWidth * 3;
-	float brickOffset = 99;
-	float actionbarOffset = 120;
-	int lineHeight = 41;
-	int visibleLines = 7;
-	int totalLinesForTheInput = 14;
-	float firstLineYCoordinate = brickOffset + actionbarOffset;
-	float beforeFirstCharacterOffset = 8f;
+	private float optionBarOffset;
+	private float oneCharacterWidth;
+	private float threeCharactersWidth;
+	private float brickOffset;
+	private float actionbarOffset;
+	private int lineHeight;
+	private int visibleLines;
+	private int totalLinesForTheInput;
+	private float firstLineYCoordinate;
+	private float beforeFirstCharacterOffset;
+
+	//	private int seperatorWidth;
+	//	private int spaceWidth;
 
 	public FormulaEditorEditTextTest() {
 		super(ScriptTabActivity.class);
@@ -80,6 +85,30 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		this.solo = new Solo(getInstrumentation(), getActivity());
 		catKeyboardClicker = new CatKeyboardClicker(solo);
 
+		// TODO: set variables according to device.
+		// Old hardcoded variables for smaller device
+		//		oneCharacterWidth = 16; // this isnt exact!
+		//		threeCharactersWidth = oneCharacterWidth * 3;
+		//		brickOffset = 99;
+		//		actionbarOffset = 120;
+		//		lineHeight = 41;
+		//		visibleLines = 7;
+		//		totalLinesForTheInput = 14;
+		//		firstLineYCoordinate = brickOffset + actionbarOffset;
+		//		beforeFirstCharacterOffset = 8f;
+
+		optionBarOffset = 50f;
+		oneCharacterWidth = 23.75f;
+		threeCharactersWidth = oneCharacterWidth * 3;
+		brickOffset = 141f;
+		actionbarOffset = 132f; //getActivity().getSupportActionBar().getHeight();
+		lineHeight = 58;
+		visibleLines = 10;
+		totalLinesForTheInput = 14;
+		firstLineYCoordinate = brickOffset + actionbarOffset + optionBarOffset;
+		beforeFirstCharacterOffset = 11f;
+		//		seperatorWidth = 13;
+		//		spaceWidth = 12;
 	}
 
 	@Override
@@ -426,12 +455,12 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		catKeyboardClicker.clickOnKey("rand");
 		String editTextString = "8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( ";
 		editTextString += getActivity().getString(R.string.formula_editor_function_rand) + "( 0 , 1 ) ,";
-		solo.clickOnScreen(oneCharacterWidth * editTextString.length(), firstLineYCoordinate);
+		solo.clickOnScreen(oneCharacterWidth * (editTextString.length()), firstLineYCoordinate);
 		catKeyboardClicker.clickOnKey("+");
 		catKeyboardClicker.clickOnKey("3");
 		editTextString = "8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( ";
 		editTextString += getActivity().getString(R.string.formula_editor_function_rand) + "( 0 ";
-		solo.clickOnScreen(oneCharacterWidth * editTextString.length(), firstLineYCoordinate);
+		solo.clickOnScreen(oneCharacterWidth * (editTextString.length()), firstLineYCoordinate);
 		catKeyboardClicker.clickOnKey("del");
 		catKeyboardClicker.clickOnKey("+");
 		catKeyboardClicker.clickOnKey("2");
@@ -510,12 +539,26 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		catKeyboardClicker.clickOnKey("rand");
 		editTextString = "8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( ";
 		editTextString += getActivity().getString(R.string.formula_editor_function_rand) + "( 0 , 1 ) ,";
-		solo.clickOnScreen(oneCharacterWidth * editTextString.length(), firstLineYCoordinate);
+
+		float x = oneCharacterWidth * editTextString.length(); // % 700 + oneCharacterWidth
+		//		float x = StringUtilShort.countMatches(string, subString);
+		float y = firstLineYCoordinate;
+
+		Log.i("info", "x:" + x + " y:" + y);
+
+		solo.clickOnScreen(x, y);
+		solo.sleep(100);
 		catKeyboardClicker.clickOnKey("+");
 		catKeyboardClicker.clickOnKey("3");
 		editTextString = "8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( ";
 		editTextString += getActivity().getString(R.string.formula_editor_function_rand) + "( 0 ";
-		solo.clickOnScreen(oneCharacterWidth * editTextString.length(), firstLineYCoordinate);
+
+		x = oneCharacterWidth * editTextString.length(); // % 700 + oneCharacterWidth
+		y = firstLineYCoordinate;
+
+		Log.i("info", "x:" + x + " y:" + y);
+
+		solo.clickOnScreen(x, y);
 		catKeyboardClicker.clickOnKey("del");
 		catKeyboardClicker.clickOnKey("+");
 		catKeyboardClicker.clickOnKey("2");
