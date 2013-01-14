@@ -48,6 +48,10 @@ public class CatKeyboardTest extends android.test.ActivityInstrumentationTestCas
 	private Brick changeBrick;
 	private CatKeyboardClicker catKeyboardClicker;
 
+	private static final int X_POS_EDIT_TEXT_ID = 0;
+	private static final int Y_POS_EDIT_TEXT_ID = 1;
+	private static final int FORMULA_EDITOR_EDIT_TEXT_ID = 2;
+
 	public CatKeyboardTest() {
 		super(ScriptTabActivity.class);
 	}
@@ -80,8 +84,8 @@ public class CatKeyboardTest extends android.test.ActivityInstrumentationTestCas
 	public void testKeysFromNumbersKeyboard() {
 
 		//		solo.clickOnEditText(0);
-		solo.clickOnEditText(0);
-		solo.clickOnEditText(1);// View.performclick()
+		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
+		solo.clickOnEditText(Y_POS_EDIT_TEXT_ID);// View.performclick()
 
 		catKeyboardClicker.clickOnKey("del");
 		catKeyboardClicker.clickOnKey("del");
@@ -163,9 +167,8 @@ public class CatKeyboardTest extends android.test.ActivityInstrumentationTestCas
 
 		String functionString = "";
 
-		solo.clickOnEditText(0);
-		//		solo.clickOnEditText(0);
-		solo.clickOnEditText(1);
+		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
+		solo.clickOnEditText(Y_POS_EDIT_TEXT_ID);
 
 		catKeyboardClicker.clickOnKey("del");
 		catKeyboardClicker.clickOnKey("del");
@@ -269,8 +272,8 @@ public class CatKeyboardTest extends android.test.ActivityInstrumentationTestCas
 		String sensorString = "";
 
 		//		solo.clickOnEditText(0);
-		solo.clickOnEditText(0);
-		solo.clickOnEditText(1);
+		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
+		solo.clickOnEditText(Y_POS_EDIT_TEXT_ID);
 
 		catKeyboardClicker.clickOnKey("del");
 		catKeyboardClicker.clickOnKey("del");
@@ -345,13 +348,12 @@ public class CatKeyboardTest extends android.test.ActivityInstrumentationTestCas
 	//		assertEquals(solo.searchText(","), true);
 	//	}
 
-	public void testChooseLookVariableDialog() {
+	public void testChooseLookVariableFragment() {
 
 		String lookString = "";
 
-		//		solo.clickOnEditText(0);
-		solo.clickOnEditText(0);
-		solo.clickOnEditText(1);
+		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
+		solo.clickOnEditText(Y_POS_EDIT_TEXT_ID);
 
 		catKeyboardClicker.clickOnKey("del");
 		catKeyboardClicker.clickOnKey("del");
@@ -414,11 +416,6 @@ public class CatKeyboardTest extends android.test.ActivityInstrumentationTestCas
 		solo.sleep(100);
 		assertEquals("Wrong button clicked", lookString, text.getText().toString().substring(0, lookString.length()));
 		catKeyboardClicker.clickOnKey("del");
-
-		catKeyboardClicker.clickOnKey("look");
-		solo.clickOnText("Cancel");
-		solo.sleep(100);
-		assertEquals("Wrong button clicked", "", "");
 
 		solo.goBack();
 		solo.goBack();

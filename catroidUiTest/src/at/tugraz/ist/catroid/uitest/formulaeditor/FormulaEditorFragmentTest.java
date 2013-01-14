@@ -47,8 +47,8 @@ public class FormulaEditorFragmentTest extends ActivityInstrumentationTestCase2<
 	private static final int INITIAL_Y = 7;
 
 	private static final int X_POS_EDIT_TEXT_ID = 0;
-	private static final int Y_POS_EDIT_TEXT_ID = 1;
-	private static final int FORMULA_EDITOR_EDIT_TEXT_ID = 2;
+	private static final int Y_POS_EDIT_TEXT_ID = 3;
+	private static final int FORMULA_EDITOR_EDIT_TEXT_ID = 4;
 
 	public FormulaEditorFragmentTest() {
 		super(ScriptTabActivity.class);
@@ -84,6 +84,37 @@ public class FormulaEditorFragmentTest extends ActivityInstrumentationTestCase2<
 		ProjectManager.getInstance().setCurrentScript(script);
 	}
 
+	public void testEditTextFields() {
+		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
+		catKeyboardClicker.clickOnKey("0");
+		solo.sleep(100);
+		solo.clickOnEditText(Y_POS_EDIT_TEXT_ID);
+		catKeyboardClicker.clickOnKey("1");
+		solo.sleep(100);
+		solo.clickOnEditText(FORMULA_EDITOR_EDIT_TEXT_ID);
+		catKeyboardClicker.clickOnKey("2");
+		solo.sleep(100);
+		solo.clickOnEditText(3);
+		catKeyboardClicker.clickOnKey("3");
+		solo.sleep(100);
+		solo.clickOnEditText(4);
+		catKeyboardClicker.clickOnKey("4");
+		solo.sleep(10000);
+		//		solo.clickOnEditText(5);
+		//		catKeyboardClicker.clickOnKey("5");
+		//		solo.clickOnEditText(6);
+		//		catKeyboardClicker.clickOnKey("6");
+		//		solo.clickOnEditText(7);
+		//		catKeyboardClicker.clickOnKey("7");
+		//		solo.clickOnEditText(8);
+		//		catKeyboardClicker.clickOnKey("8");
+		//		solo.clickOnEditText(9);
+		//		catKeyboardClicker.clickOnKey("9");
+		//		solo.clickOnEditText(10);
+		//		catKeyboardClicker.clickOnKey("10");
+
+	}
+
 	public void testChangeFormula() {
 
 		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
@@ -97,15 +128,15 @@ public class FormulaEditorFragmentTest extends ActivityInstrumentationTestCase2<
 		solo.sleep(100);
 		assertEquals("Value not saved!", "1 ", solo.getEditText(X_POS_EDIT_TEXT_ID).getText().toString());
 
-		solo.clickOnEditText(Y_POS_EDIT_TEXT_ID);
+		solo.clickOnEditText(Y_POS_EDIT_TEXT_ID - 2);
 		catKeyboardClicker.clickOnKey("1");
 		catKeyboardClicker.clickOnKey("+");
 
-		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
+		solo.clickOnEditText(X_POS_EDIT_TEXT_ID + 2);
 		assertTrue("Fix error message not found!", solo.searchText(solo.getString(R.string.formula_editor_parse_fail)));
 		solo.sleep(500);
-		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
-		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
+		solo.clickOnEditText(X_POS_EDIT_TEXT_ID + 2);
+		solo.clickOnEditText(X_POS_EDIT_TEXT_ID + 2);
 		assertTrue("Changes saved message not found!",
 				solo.searchText(solo.getString(R.string.formula_editor_changes_discarded)));
 
@@ -121,13 +152,14 @@ public class FormulaEditorFragmentTest extends ActivityInstrumentationTestCase2<
 
 		assertEquals("Wrong text in FormulaEditor", "1 ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText()
 				.toString());
-		assertEquals("Wrong text in X EditText", "1 ", solo.getEditText(X_POS_EDIT_TEXT_ID).getText().toString());
+		solo.sleep(100);
+		assertEquals("Wrong text in X EditText", "1 ", solo.getEditText(X_POS_EDIT_TEXT_ID + 2).getText().toString());
 
 		catKeyboardClicker.clickOnKey("2");
 
 		assertEquals("Wrong text in FormulaEditor", "12 ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText()
 				.toString());
-		assertEquals("Wrong text in X EditText", "12 ", solo.getEditText(X_POS_EDIT_TEXT_ID).getText().toString());
+		assertEquals("Wrong text in X EditText", "12 ", solo.getEditText(X_POS_EDIT_TEXT_ID + 2).getText().toString());
 
 		solo.goBack();
 		solo.sleep(50);
@@ -192,6 +224,8 @@ public class FormulaEditorFragmentTest extends ActivityInstrumentationTestCase2<
 		catKeyboardClicker.clickOnKey("7");
 		catKeyboardClicker.clickOnKey("+");
 		catKeyboardClicker.clickOnKey("9");
+
+		solo.sleep(200);
 
 		assertEquals("Wrong text in field", "9 - 8 * 7 + 9 ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText()
 				.toString());
@@ -283,7 +317,7 @@ public class FormulaEditorFragmentTest extends ActivityInstrumentationTestCase2<
 		assertTrue("Save failed toast not found",
 				solo.searchText(solo.getString(R.string.formula_editor_changes_saved)));
 
-		solo.clickOnEditText(Y_POS_EDIT_TEXT_ID);
+		solo.clickOnEditText(Y_POS_EDIT_TEXT_ID - 2);
 
 		catKeyboardClicker.clickOnKey("rand");
 		catKeyboardClicker.switchToFunctionKeyboard();
@@ -296,7 +330,7 @@ public class FormulaEditorFragmentTest extends ActivityInstrumentationTestCase2<
 		catKeyboardClicker.clickOnKey("3");
 		catKeyboardClicker.clickOnKey("0");
 
-		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
+		solo.clickOnEditText(X_POS_EDIT_TEXT_ID + 2);
 		assertTrue("Changes saved toast not found",
 				solo.searchText(solo.getString(R.string.formula_editor_changes_saved)));
 
@@ -346,7 +380,7 @@ public class FormulaEditorFragmentTest extends ActivityInstrumentationTestCase2<
 
 		String newYFormula = "random(7.0,1)";
 
-		solo.clickOnEditText(Y_POS_EDIT_TEXT_ID);
+		solo.clickOnEditText(Y_POS_EDIT_TEXT_ID - 2);
 
 		catKeyboardClicker.clickOnKey("rand");
 		catKeyboardClicker.clickOnKey("7");
@@ -393,7 +427,7 @@ public class FormulaEditorFragmentTest extends ActivityInstrumentationTestCase2<
 
 		String newYFormula = "rand(4,1)";
 
-		solo.clickOnEditText(Y_POS_EDIT_TEXT_ID);
+		solo.clickOnEditText(Y_POS_EDIT_TEXT_ID - 2);
 
 		catKeyboardClicker.clickOnKey("rand");
 		catKeyboardClicker.clickOnKey("4");

@@ -22,18 +22,19 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-    android:windowFullscreen="true"
-	android:theme="@android:style/Theme.Light"
-	android:background="@color/white">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
 
-	<LinearLayout
-	    android:id="@+id/formula_editor_look"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content" />
-     
-    
-</RelativeLayout>
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/divider"
+        android:dividerHeight="2dp"
+        android:fadingEdge="none" />
+
+</LinearLayout>
 
