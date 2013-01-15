@@ -121,15 +121,9 @@ public class ScriptTabActivity extends SherlockFragmentActivity implements Error
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		FormulaEditorFragment formulaEditor = (FormulaEditorFragment) getSupportFragmentManager().findFragmentByTag(
-				FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
 
 		switch (item.getItemId()) {
 			case android.R.id.home: {
-				if (formulaEditor != null) {
-					formulaEditor.endFormulaEditor();
-					return true;
-				}
 				Intent intent = new Intent(this, MainMenuActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
@@ -140,16 +134,6 @@ public class ScriptTabActivity extends SherlockFragmentActivity implements Error
 				startActivityForResult(intent, PreStageActivity.REQUEST_RESOURCES_INIT);
 				return true;
 			}
-			case R.id.menu_undo:
-				if (formulaEditor != null) {
-					formulaEditor.handleUndoButton();
-				}
-				return true;
-			case R.id.menu_redo:
-				if (formulaEditor != null) {
-					formulaEditor.handleRedoButton();
-				}
-				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}

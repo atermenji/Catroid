@@ -46,6 +46,7 @@ import at.tugraz.ist.catroid.utils.Utils;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 
 public class FormulaEditorFragment extends SherlockFragment implements OnKeyListener {
 
@@ -57,10 +58,12 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 	private static final int SET_FORMULA_ON_SWITCH_EDIT_TEXT = 1;
 	private static final int TIME_WINDOW = 2000;
 
+	public static final String FORMULA_EDITOR_FRAGMENT_TAG = "formula_editor_fragment";
+
 	private Context context;
 
-	private static Brick currentBrick;
-	private static Formula currentFormula;
+	private Brick currentBrick;
+	private Formula currentFormula;
 	private FormulaEditorEditText formulaEditorEditText;
 	private CatKeyboardView catKeyboardView;
 	private LinearLayout brickSpace;
@@ -71,7 +74,11 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 	private int confirmSwitchEditTextCounter = 0;
 
 	public boolean restoreInstance = false;
-	public static final String FORMULA_EDITOR_FRAGMENT_TAG = "formula_editor_fragment";
+
+	public FormulaEditorFragment(Brick brick, Formula formula) {
+		currentBrick = brick;
+		currentFormula = formula;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -99,43 +106,26 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 				.findFragmentByTag(FORMULA_EDITOR_FRAGMENT_TAG);
 
 		if (formulaEditorDialog == null) {
-			FormulaEditorFragment.currentBrick = brick;
-			FormulaEditorFragment.currentFormula = formula;
-			formulaEditorDialog = new FormulaEditorFragment();
-
+			formulaEditorDialog = new FormulaEditorFragment(brick, formula);
 			FragmentManager fragmentManager = activity.getSupportFragmentManager();
 			FragmentTransaction fragTransaction = fragmentManager.beginTransaction();
-			fragTransaction.add(android.R.id.tabhost, formulaEditorDialog, FORMULA_EDITOR_FRAGMENT_TAG);
+			//			fragTransaction.remove(fragmentManager.findFragmentById(android.R.id.tabs));
+			fragTransaction.replace(android.R.id.tabhost, formulaEditorDialog, FORMULA_EDITOR_FRAGMENT_TAG);
 			fragTransaction.commit();
 
-			//			String title = activity.getResources().getString(R.string.formula_editor_title) + " "
-			//					+ ProjectManager.getInstance().getCurrentProject().getName();
-			//			activity.getSupportActionBar().setTitle(title);
 		} else {
 			formulaEditorDialog.setInputFormula(formula, SET_FORMULA_ON_SWITCH_EDIT_TEXT);
 		}
 
 	}
 
-	//	public void startFormulaEditor(SherlockFragmentActivity activity) {
-	//		//		activity.findViewById(R.id.fragment_formula_editor).setVisibility(View.VISIBLE);
-	//		FragmentManager fragmentManager = activity.getSupportFragmentManager();
-	//		FragmentTransaction fragTransaction = fragmentManager.beginTransaction();
-	//		//FormulaEditorFragment formulaEditorDialog = new FormulaEditorFragment();
-	//		fragTransaction.add(android.R.id.tabhost, this, FORMULA_EDITOR_FRAGMENT_TAG);
-	//		//		fragTransaction.addToBackStack(null);
-	//		fragTransaction.commit();
-	//
-	//	}
-
 	private void onUserDismiss() { //dont override onDismiss, this must not be called on orientation change
 		formulaEditorEditText.endEdit();
 		currentFormula.prepareToRemove();
-		currentFormula = null;
-		currentBrick = null;
+		//		currentFormula = null;
+		//		currentBrick = null;
 
 		SherlockFragmentActivity activity = getSherlockActivity();
-		//		activity.findViewById(R.id.fragment_formula_editor).setVisibility(View.GONE);
 		FragmentManager fragmentManager = activity.getSupportFragmentManager();
 		FragmentTransaction fragTransaction = fragmentManager.beginTransaction();
 		fragTransaction.remove(fragmentManager.findFragmentByTag(FORMULA_EDITOR_FRAGMENT_TAG));
@@ -149,6 +139,9 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View dialogView = inflater.inflate(R.layout.fragment_formula_editor, container, false);
+		dialogView.setFocusableInTouchMode(true);
+		dialogView.requestFocus();
+
 		context = getActivity();
 		brickSpace = (LinearLayout) dialogView.findViewById(R.id.formula_editor_brick_space);
 		if (brickSpace != null) {
@@ -182,6 +175,23 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		getSherlockActivity().getSupportMenuInflater().inflate(R.menu.menu_formula_editor, menu);
 		getSherlockActivity().getSupportActionBar().setTitle(getString(R.string.formula_editor_title));
 
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				endFormulaEditor();
+				return true;
+			case R.id.menu_undo:
+				formulaEditorEditText.undo();
+				return true;
+			case R.id.menu_redo:
+				formulaEditorEditText.redo();
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	public void setInputFormula(Formula newFormula, int mode) {
@@ -222,14 +232,6 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 			default:
 				break;
 		}
-	}
-
-	public void handleUndoButton() {
-		formulaEditorEditText.undo();
-	}
-
-	public void handleRedoButton() {
-		formulaEditorEditText.redo();
 	}
 
 	public boolean saveFormulaIfPossible() {
