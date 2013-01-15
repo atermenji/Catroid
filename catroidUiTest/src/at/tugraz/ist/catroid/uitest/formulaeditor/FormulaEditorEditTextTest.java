@@ -116,6 +116,26 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 
 	}
 
+	public void testSingleTapOnFunction() {
+
+		BackgroundColorSpan COLOR_HIGHLIGHT = (BackgroundColorSpan) UiTestUtils.getPrivateField("COLOR_HIGHLIGHT",
+				new FormulaEditorEditText(getActivity()));
+
+		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
+		catKeyboardClicker.clickOnKey("rand");
+		solo.clickOnScreen(oneCharacterWidthApproximation * 10, firstLineYCoordinate);
+
+		assertEquals("Selection cursor not found in text, but should be", 0,
+				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().getSpanStart(COLOR_HIGHLIGHT));
+		assertEquals("Selection cursor not found in text, but should be",
+				solo.getString(R.string.formula_editor_function_rand).length() + "( 0 , 1 )".length(), solo
+						.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().getSpanEnd(COLOR_HIGHLIGHT));
+
+		assertEquals("Cursor not found in text, but should be", 9, solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID)
+				.getSelectionEnd());
+
+	}
+
 	@Smoke
 	public void testDoubleTapSelection() {
 		//		float xCoordinate = 60;
@@ -125,6 +145,11 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		BackgroundColorSpan COLOR_HIGHLIGHT = (BackgroundColorSpan) UiTestUtils.getPrivateField("COLOR_HIGHLIGHT",
 				new FormulaEditorEditText(getActivity()));
 		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
+
+		assertEquals("Selection cursor not found in text, but should be", 0,
+				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().getSpanStart(COLOR_HIGHLIGHT));
+		assertEquals("Selection cursor not found in text, but should be", 6,
+				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().getSpanEnd(COLOR_HIGHLIGHT));
 
 		catKeyboardClicker.clickOnKey("del");
 
