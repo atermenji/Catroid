@@ -28,33 +28,34 @@ public class FormulaEditorEditTextHelper {
 
 		this.formulaEditorEditText = formulaEditorEditText;
 
-		// TODO: adapt variables according to device.
-		// Old hardcoded variables for smaller device (800 x 480)
-		//		optionBarHeight = 50;// should be shorter on the nexus S
-		//		brickHeight = 99;
-		//		actionbarHeight = 120;
-		//		oneCharacterWidthApproximation = 16;
-		//		threeCharactersWidthApproximation = oneCharacterWidthApproximation * 3;
-		//		lineHeight = 41;
-		//		visibleLinesInEditTextfield = 7;
-		//		totalLinesForTheInput = 14;
-		//		firstLineYCoordinate = brickHeight + actionbarHeight + optionBarHeight;
-		//		firstCharacterInEditTextFieldOffset = 8;
-
-		optionBarHeight = 50;
-		brickHeight = 141;
-		actionbarHeight = 132;
-		//		actionbarHeight = solo.getActivityMonitor().getLastActivity().getActionBar().getHeight();
-
-		oneCharacterWidthApproximation = 23.9f;
+		//		 TODO: adapt variables according to device.
+		//		 Old hardcoded variables for smaller device (800 x 480)
+		optionBarHeight = 0;// should be shorter on the nexus S
+		brickHeight = 99;
+		actionbarHeight = 120;
+		oneCharacterWidthApproximation = 16;
 		threeCharactersWidthApproximation = oneCharacterWidthApproximation * 3;
-
-		lineHeight = 58;
-		//		lineHeight = formulaEditorEditText.getLineHeight();
-		visibleLinesInEditTextfield = 10;
+		lineHeight = 41;
+		visibleLinesInEditTextfield = 7;
 		totalLinesForTheInput = 14;
 		firstLineYCoordinate = brickHeight + actionbarHeight + optionBarHeight;
-		firstCharacterInEditTextFieldOffset = 11f;
+		firstCharacterInEditTextFieldOffset = 8;
+
+		//		Galaxy Nexus
+		//		optionBarHeight = 50;
+		//		brickHeight = 141;
+		//		actionbarHeight = 132;
+		//		//		actionbarHeight = solo.getActivityMonitor().getLastActivity().getActionBar().getHeight();
+		//
+		//		oneCharacterWidthApproximation = 23.9f;
+		//		threeCharactersWidthApproximation = oneCharacterWidthApproximation * 3;
+		//
+		//		lineHeight = 58;
+		//		//		lineHeight = formulaEditorEditText.getLineHeight();
+		//		visibleLinesInEditTextfield = 10;
+		//		totalLinesForTheInput = 14;
+		//		firstLineYCoordinate = brickHeight + actionbarHeight + optionBarHeight;
+		//		firstCharacterInEditTextFieldOffset = 11f;
 
 		heightOfViewInPixels = formulaEditorEditText.getHeight();
 		widthOfViewInPixels = formulaEditorEditText.getWidth();

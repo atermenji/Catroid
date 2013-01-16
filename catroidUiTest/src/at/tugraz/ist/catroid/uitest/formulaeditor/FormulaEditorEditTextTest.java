@@ -28,7 +28,6 @@ import java.util.List;
 
 import android.test.suitebuilder.annotation.Smoke;
 import android.text.style.BackgroundColorSpan;
-import android.util.Log;
 import at.tugraz.ist.catroid.ProjectManager;
 import at.tugraz.ist.catroid.R;
 import at.tugraz.ist.catroid.content.Project;
@@ -123,7 +122,7 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 
 		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
 		catKeyboardClicker.clickOnKey("rand");
-		solo.clickOnScreen(oneCharacterWidthApproximation * 10, firstLineYCoordinate);
+		solo.clickOnScreen(oneCharacterWidthApproximation * 12, firstLineYCoordinate);
 
 		assertEquals("Selection cursor not found in text, but should be", 0,
 				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().getSpanStart(COLOR_HIGHLIGHT));
@@ -145,11 +144,6 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		BackgroundColorSpan COLOR_HIGHLIGHT = (BackgroundColorSpan) UiTestUtils.getPrivateField("COLOR_HIGHLIGHT",
 				new FormulaEditorEditText(getActivity()));
 		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
-
-		assertEquals("Selection cursor not found in text, but should be", 0,
-				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().getSpanStart(COLOR_HIGHLIGHT));
-		assertEquals("Selection cursor not found in text, but should be", 6,
-				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().getSpanEnd(COLOR_HIGHLIGHT));
 
 		catKeyboardClicker.clickOnKey("del");
 
@@ -207,13 +201,13 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 				solo.searchText(solo.getString(R.string.formula_editor_sensor_y_acceleration) + " "
 						+ solo.getString(R.string.formula_editor_sensor_x_acceleration)));
 		//There is no doubleclick in robotium q.q, this is a workaround!
-		solo.clickOnScreen(threeCharactersWidthApproximation, firstLineYCoordinate);
-		solo.drag(threeCharactersWidthApproximation, threeCharactersWidthApproximation + 1, firstLineYCoordinate,
-				firstLineYCoordinate, 50);
-
-		catKeyboardClicker.clickOnKey("del");
-
-		assertTrue("Text not found", solo.searchText(solo.getString(R.string.formula_editor_sensor_x_acceleration)));
+		//		solo.clickOnScreen(threeCharactersWidthApproximation, firstLineYCoordinate);
+		//		solo.drag(threeCharactersWidthApproximation, threeCharactersWidthApproximation + 1, firstLineYCoordinate,
+		//				firstLineYCoordinate, 50);
+		//
+		//		catKeyboardClicker.clickOnKey("del");
+		//
+		//		assertTrue("Text not found", solo.searchText(solo.getString(R.string.formula_editor_sensor_x_acceleration)));
 
 		solo.goBack();
 		solo.goBack();
@@ -235,7 +229,8 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		catKeyboardClicker.clickOnKey("4");
 
 		assertEquals("Function parameter modification failed", solo.getString(R.string.formula_editor_function_sin)
-				+ "( 12.34 ) ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
+				+ "( 12" + getActivity().getString(R.string.formula_editor_decimal_mark) + "34 ) ",
+				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
 
 		solo.clickOnScreen(2.5f * oneCharacterWidthApproximation, firstLineYCoordinate);
 		catKeyboardClicker.clickOnKey("del");
@@ -253,7 +248,8 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		catKeyboardClicker.clickOnKey("4");
 
 		assertEquals("Function parameter modification failed", solo.getString(R.string.formula_editor_function_rand)
-				+ "( 12.34 , 1 ) ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
+				+ "( 12" + getActivity().getString(R.string.formula_editor_decimal_mark) + "34 , 1 ) ", solo
+				.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
 
 		solo.clickOnScreen(2.5f * oneCharacterWidthApproximation, firstLineYCoordinate);
 		catKeyboardClicker.clickOnKey("del");
@@ -281,13 +277,15 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		catKeyboardClicker.clickOnKey("4");
 
 		assertEquals("Function parameter modification failed", solo.getString(R.string.formula_editor_function_sin)
-				+ "( 12.34 ) ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
+				+ "( 12" + getActivity().getString(R.string.formula_editor_decimal_mark) + "34 ) ",
+				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
 
 		solo.clickOnScreen(2.5f * oneCharacterWidthApproximation, firstLineYCoordinate);
 		catKeyboardClicker.clickOnKey("rand");
 
-		assertEquals("Keep function parameters failed", solo.getString(R.string.formula_editor_function_rand)
-				+ "( 12.34 , 1 ) ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
+		assertEquals("Keep function parameters failed", solo.getString(R.string.formula_editor_function_rand) + "( 12"
+				+ getActivity().getString(R.string.formula_editor_decimal_mark) + "34 , 1 ) ",
+				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
 
 		solo.goBack();
 		solo.goBack();
@@ -304,8 +302,9 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		catKeyboardClicker.clickOnKey("1");
 		catKeyboardClicker.clickOnKey(".");
 		catKeyboardClicker.clickOnKey("3");
-		assertEquals("Bracket value modification failed", "( 1.3 ) ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID)
-				.getText().toString());
+		assertEquals("Bracket value modification failed",
+				"( 1" + getActivity().getString(R.string.formula_editor_decimal_mark) + "3 ) ",
+				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
 		solo.clickOnScreen(12f * oneCharacterWidthApproximation, firstLineYCoordinate);
 		catKeyboardClicker.clickOnKey("del");
 		assertEquals("Text deletion was wrong!", " ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText()
@@ -365,11 +364,11 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 
 		catKeyboardClicker.clickOnKey(".");
 		catKeyboardClicker.clickOnKey("1");
-		assertEquals("Number insertion failed!", "0.1 ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText()
-				.toString());
+		assertEquals("Number insertion failed!", "0" + getActivity().getString(R.string.formula_editor_decimal_mark)
+				+ "1 ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
 		catKeyboardClicker.clickOnKey(".");
-		assertEquals("Delimiter insertion failed!", "0.1 ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText()
-				.toString());
+		assertEquals("Delimiter insertion failed!", "0" + getActivity().getString(R.string.formula_editor_decimal_mark)
+				+ "1 ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
 		catKeyboardClicker.clickOnKey("del");
 		catKeyboardClicker.clickOnKey("del");
 		catKeyboardClicker.clickOnKey("del");
@@ -380,8 +379,8 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		catKeyboardClicker.clickOnKey("2");
 		solo.clickOnScreen(firstCharacterInEditTextFieldOffset, firstLineYCoordinate);
 		catKeyboardClicker.clickOnKey(".");
-		assertEquals("Delimiter insertion failed!", "0.12 ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText()
-				.toString());
+		assertEquals("Delimiter insertion failed!", "0" + getActivity().getString(R.string.formula_editor_decimal_mark)
+				+ "12 ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
 		catKeyboardClicker.clearEditTextPortraitModeOnlyQuickly(FORMULA_EDITOR_EDIT_TEXT_ID);
 		catKeyboardClicker.clickOnKey("del");
 		catKeyboardClicker.clickOnKey("del");
@@ -395,8 +394,9 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		catKeyboardClicker.clickOnKey("1");
 		solo.clickOnScreen(oneCharacterWidthApproximation * 3, firstLineYCoordinate);
 		catKeyboardClicker.clickOnKey(".");
-		assertEquals("Delimiter insertion failed!", "12.34 ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText()
-				.toString());
+		assertEquals("Delimiter insertion failed!", "12"
+				+ getActivity().getString(R.string.formula_editor_decimal_mark) + "34 ",
+				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
 		catKeyboardClicker.clickOnKey("del");
 		catKeyboardClicker.clickOnKey("del");
 		catKeyboardClicker.clickOnKey("del");
@@ -420,7 +420,8 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		solo.goBack();
 
 		assertTrue("Toast not found", solo.searchText(solo.getString(R.string.formula_editor_changes_discarded)));
-		assertEquals("Wrong text in FormulaEditor", "0.0 ", solo.getEditText(X_POS_EDIT_TEXT_ID).getText().toString());
+		assertEquals("Wrong text in FormulaEditor", "0" + getActivity().getString(R.string.formula_editor_decimal_mark)
+				+ "0 ", solo.getEditText(X_POS_EDIT_TEXT_ID).getText().toString());
 
 	}
 
@@ -499,7 +500,7 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		catKeyboardClicker.clickOnKey("rand");
 		String editTextString = "8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( ";
 		editTextString += getActivity().getString(R.string.formula_editor_function_rand) + "( 0 , 1 ) ,";
-		solo.clickOnScreen(oneCharacterWidthApproximation * editTextString.length(), firstLineYCoordinate);
+		solo.clickOnScreen(oneCharacterWidthApproximation * editTextString.length(), firstLineYCoordinate + lineHeight);
 		catKeyboardClicker.clickOnKey("+");
 		catKeyboardClicker.clickOnKey("3");
 		editTextString = "8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( ";
@@ -537,6 +538,8 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		assertEquals("Text not deleted correctly", "8 ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText()
 				.toString());
 		catKeyboardClicker.clearEditTextPortraitModeOnlyQuickly(0);
+		catKeyboardClicker.clickOnKey("del");
+		catKeyboardClicker.clickOnKey("del");
 
 		catKeyboardClicker.clickOnKey("8");
 		catKeyboardClicker.clickOnKey("+");
@@ -552,28 +555,32 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		catKeyboardClicker.clickOnKey("del");
 		catKeyboardClicker.clickOnKey("del");
 
-		// TODO: adapt this code to all devices
-		//		catKeyboardClicker.clickOnKey("8");
-		//		catKeyboardClicker.clickOnKey("+");
-		//		catKeyboardClicker.clickOnKey("rand");
-		//		editTextString = "8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( 0 , 1) ";
-		//		solo.clickOnScreen(oneCharacterWidth * editTextString.length(), firstLineYCoordinate);
-		//		catKeyboardClicker.clickOnKey("+");
-		//		catKeyboardClicker.clickOnKey("+");
-		//		catKeyboardClicker.clickOnKey("9");
-		//		solo.goBack();
-		//		solo.sleep(500);
-		//		catKeyboardClicker.clickOnKey("del");
-		//		assertEquals("Text not deleted correctly",
-		//				"8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( 0 , 1 ) + 9 ", solo
-		//						.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
-		//		catKeyboardClicker.clearEditTextPortraitModeOnlyQuickly(0);
+		catKeyboardClicker.clickOnKey("8");
+		catKeyboardClicker.clickOnKey("+");
+		catKeyboardClicker.clickOnKey("rand");
+		editTextString = "8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( 0 , 1) ";
+		solo.clickOnScreen(oneCharacterWidthApproximation * editTextString.length(), firstLineYCoordinate);
+		catKeyboardClicker.clickOnKey("+");
+		catKeyboardClicker.clickOnKey("+");
+		catKeyboardClicker.clickOnKey("9");
+		solo.goBack();
+		solo.sleep(500);
+		catKeyboardClicker.clickOnKey("del");
+		assertEquals("Text not deleted correctly",
+				"8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( 0 , 1 ) + 9 ", solo
+						.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
+		catKeyboardClicker.clearEditTextPortraitModeOnlyQuickly(0);
+		catKeyboardClicker.clickOnKey("del");
+		catKeyboardClicker.clickOnKey("del");
+		catKeyboardClicker.clickOnKey("del");
+		catKeyboardClicker.clearEditTextPortraitModeOnlyQuickly(0);
+		catKeyboardClicker.clickOnKey("del");
 
 		catKeyboardClicker.clickOnKey("8");
 		catKeyboardClicker.clickOnKey("+");
 		catKeyboardClicker.clickOnKey("rand");
 		editTextString = "8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( 0 ,";
-		solo.clickOnScreen(oneCharacterWidthApproximation * editTextString.length(), firstLineYCoordinate);
+		solo.clickOnScreen(oneCharacterWidthApproximation * (editTextString.length() + 2), firstLineYCoordinate);
 		catKeyboardClicker.clickOnKey("del");
 		catKeyboardClicker.clickOnKey("+");
 		catKeyboardClicker.clickOnKey("2");
@@ -586,55 +593,6 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		catKeyboardClicker.clickOnKey("del");
 		assertEquals("Text not deleted correctly", "8 + 3 ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText()
 				.toString());
-		catKeyboardClicker.clearEditTextPortraitModeOnlyQuickly(0);
-		catKeyboardClicker.clickOnKey("del");
-		catKeyboardClicker.clickOnKey("del");
-		catKeyboardClicker.clickOnKey("del");
-		catKeyboardClicker.clickOnKey("del");
-
-		catKeyboardClicker.clickOnKey("8");
-		catKeyboardClicker.clickOnKey("+");
-		catKeyboardClicker.clickOnKey("rand");
-		catKeyboardClicker.clickOnKey("rand");
-		editTextString = "8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( ";
-		editTextString += getActivity().getString(R.string.formula_editor_function_rand) + "( 0 , 1 ) ,";
-
-		float x = oneCharacterWidthApproximation * editTextString.length(); // % 700 + oneCharacterWidth
-		//		float x = StringUtilShort.countMatches(string, subString);
-		float y = firstLineYCoordinate;
-
-		Log.i("info", "x:" + x + " y:" + y);
-
-		solo.clickOnScreen(x, y);
-		solo.sleep(100);
-		catKeyboardClicker.clickOnKey("+");
-		catKeyboardClicker.clickOnKey("3");
-		editTextString = "8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( ";
-		editTextString += getActivity().getString(R.string.formula_editor_function_rand) + "( 0 ";
-
-		x = oneCharacterWidthApproximation * editTextString.length(); // % 700 + oneCharacterWidth
-		y = firstLineYCoordinate;
-
-		Log.i("info", "x:" + x + " y:" + y);
-
-		solo.clickOnScreen(x, y);
-		catKeyboardClicker.clickOnKey("del");
-		catKeyboardClicker.clickOnKey("+");
-		catKeyboardClicker.clickOnKey("2");
-		solo.goBack();
-		solo.sleep(500);
-		catKeyboardClicker.clickOnKey("del");
-		//TODO: adapt this code to all devices. same code as in testSingleParseTest()
-		//		catKeyboardClicker.clickOnKey("del");
-		//		catKeyboardClicker.clickOnKey("0");
-		//		assertEquals("Text not deleted correctly",
-		//				"8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( 0 , 1 ) + 3 ", solo
-		//						.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
-		assertEquals("Text not deleted correctly",
-				"8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( 2 , 1 ) + 3 ", solo
-						.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
-
-		catKeyboardClicker.clearEditTextPortraitModeOnlyQuickly(0);
 
 		solo.goBack();
 	}
