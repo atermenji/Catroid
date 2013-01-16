@@ -438,6 +438,7 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		solo.goBack();
 		assertTrue("Toast not found", solo.searchText(solo.getString(R.string.formula_editor_parse_fail)));
 		catKeyboardClicker.clickOnKey("del");
+		solo.clickOnEditText(FORMULA_EDITOR_EDIT_TEXT_ID); // empty EditText
 		catKeyboardClicker.clickOnKey("+");
 		solo.goBack();
 		solo.sleep(50);
