@@ -312,24 +312,26 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 				absoluteCursorPosition = tempCursorPosition;
 				postInvalidate();
 
-				InternTokenType internTokenType = internFormula.getFirstLeftInternToken(absoluteCursorPosition)
-						.getInternTokenType();
+				InternToken internToken = internFormula.getFirstLeftInternToken(absoluteCursorPosition);
+				if (internToken != null) {
+					InternTokenType internTokenType = internToken.getInternTokenType();
 
-				if ((internTokenType == InternTokenType.FUNCTION_NAME)
-						|| (internTokenType == InternTokenType.FUNCTION_PARAMETER_DELIMITER)
-						|| (internTokenType == InternTokenType.FUNCTION_PARAMETERS_BRACKET_CLOSE)
-						|| (internTokenType == InternTokenType.FUNCTION_PARAMETERS_BRACKET_OPEN)
-						|| (internTokenType == InternTokenType.SENSOR)
-						|| (internTokenType == InternTokenType.USER_VARIABLE)
-						|| (internTokenType == InternTokenType.LOOK)) {
-					internFormula.setCursorAndSelection(absoluteCursorPosition, true);
-				} else {
-					internFormula.setCursorAndSelection(absoluteCursorPosition, false);
+					if ((internTokenType == InternTokenType.FUNCTION_NAME)
+							|| (internTokenType == InternTokenType.FUNCTION_PARAMETER_DELIMITER)
+							|| (internTokenType == InternTokenType.FUNCTION_PARAMETERS_BRACKET_CLOSE)
+							|| (internTokenType == InternTokenType.FUNCTION_PARAMETERS_BRACKET_OPEN)
+							|| (internTokenType == InternTokenType.SENSOR)
+							|| (internTokenType == InternTokenType.USER_VARIABLE)
+							|| (internTokenType == InternTokenType.LOOK)) {
+						internFormula.setCursorAndSelection(absoluteCursorPosition, true);
+					} else {
+						internFormula.setCursorAndSelection(absoluteCursorPosition, false);
+					}
+
+					highlightSelection();
+
+					history.updateCurrentSelection(internFormula.getSelection());
 				}
-
-				highlightSelection();
-
-				history.updateCurrentSelection(internFormula.getSelection());
 			}
 			return true;
 
