@@ -172,7 +172,8 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		super.onPrepareOptionsMenu(menu);
 
 		menu.clear();
-		getSherlockActivity().getSupportMenuInflater().inflate(R.menu.menu_formula_editor, menu);
+		// TODO delete artefacts from old FE actionbar.
+		//		getSherlockActivity().getSupportMenuInflater().inflate(R.menu.menu_formula_editor, menu);
 		getSherlockActivity().getSupportActionBar().setTitle(getString(R.string.formula_editor_title));
 
 	}
@@ -183,12 +184,6 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		switch (item.getItemId()) {
 			case android.R.id.home:
 				endFormulaEditor();
-				return true;
-			case R.id.menu_undo:
-				formulaEditorEditText.undo();
-				return true;
-			case R.id.menu_redo:
-				formulaEditorEditText.redo();
 				return true;
 		}
 		return super.onOptionsItemSelected(item);

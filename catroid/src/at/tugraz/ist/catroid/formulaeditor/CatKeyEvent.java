@@ -45,6 +45,9 @@ public class CatKeyEvent extends KeyEvent {
 	public static final int KEYCODE_RANDOM = 1008;
 	public static final int KEYCODE_ABS = 1009;
 	public static final int KEYCODE_ROUND = 1010;
+	public static final int KEYCODE_UNDO = 1011;
+	public static final int KEYCODE_REDO = 1012;
+	public static final int KEYCODE_COMPUTE = 1013;
 
 	/* SENSOR */
 	public static final int KEYCODE_SENSOR1 = 1100;
@@ -54,8 +57,9 @@ public class CatKeyEvent extends KeyEvent {
 	public static final int KEYCODE_SENSOR5 = 1104;
 	public static final int KEYCODE_SENSOR6 = 1105;
 	public static final int KEYCODE_SENSOR7 = 1106;
+	public static final int KEYCODE_SENSOR_BUTTON = 1107;
 
-	/* OTHER STUFF */
+	/* LOOK + Backets */
 	public static final int KEYCODE_BRACKET = 1200;
 	public static final int KEYCODE_LOOK_BUTTON = 1201;
 	public static final int KEYCODE_LOOK_X = 1202;
@@ -72,14 +76,21 @@ public class CatKeyEvent extends KeyEvent {
 	public static final int KEYCODE_GREATER_THAN = 1302;
 	public static final int KEYCODE_LOGICAL_AND = 1303;
 	public static final int KEYCODE_LOGICAL_OR = 1304;
+	//	public static final int KEYCODE_EQUAL = 1305 // TODO
+
+	public static final int KEYCODE_OBJECT_BUTTON = 1400;
+	public static final int KEYCODE_MATH_BUTTON = 1500;
+	public static final int KEYCODE_LOGIC_BUTTON = 1600;
+	public static final int KEYCODE_VARIABLES_BUTTON = 1700;
 
 	// Please update the functions of this class if you add new KEY_CODE constants ^_^
 
-	/**
-	 * @param origEvent
-	 */
 	public CatKeyEvent(KeyEvent origEvent) {
 		super(origEvent);
+	}
+
+	public CatKeyEvent(int action, int code) {
+		super(action, code);
 	}
 
 	public List<InternToken> createInternTokensByCatKeyEvent() {

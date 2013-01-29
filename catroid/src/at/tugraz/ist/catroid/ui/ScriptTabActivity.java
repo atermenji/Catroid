@@ -45,6 +45,7 @@ import at.tugraz.ist.catroid.ui.dragndrop.DragAndDropListView;
 import at.tugraz.ist.catroid.ui.fragment.CostumeFragment;
 import at.tugraz.ist.catroid.ui.fragment.FormulaEditorFragment;
 import at.tugraz.ist.catroid.ui.fragment.LookFragment;
+import at.tugraz.ist.catroid.ui.fragment.LogicFragment;
 import at.tugraz.ist.catroid.ui.fragment.ScriptFragment;
 import at.tugraz.ist.catroid.ui.fragment.SoundFragment;
 import at.tugraz.ist.catroid.utils.ErrorListenerInterface;
@@ -88,12 +89,6 @@ public class ScriptTabActivity extends SherlockFragmentActivity implements Error
 
 		setUpActionBar();
 		Log.i("info", "ScriptTabActivity.onCreate()");
-
-		//		if ((FormulaEditorFragment) getSupportFragmentManager().findFragmentByTag(
-		//				FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG) != null) {
-		//			return;
-		//		}
-		//findViewById(R.id.fragment_formula_editor).setVisibility(View.GONE); //TODO why on earth is this fragment even visible here?
 
 		setupTabHost();
 		viewPager = (ViewPager) findViewById(R.id.pager);
@@ -179,6 +174,13 @@ public class ScriptTabActivity extends SherlockFragmentActivity implements Error
 
 		if (lookFragment != null) {
 			return lookFragment.onKey(null, keyCode, event);
+		}
+
+		LogicFragment operatorFragment = (LogicFragment) getSupportFragmentManager().findFragmentByTag(
+				LogicFragment.OPERATOR_FRAGMENT_TAG);
+
+		if (operatorFragment != null) {
+			return operatorFragment.onKey(null, keyCode, event);
 		}
 
 		FormulaEditorFragment formulaEditor = (FormulaEditorFragment) getSupportFragmentManager().findFragmentByTag(

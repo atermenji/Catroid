@@ -344,5 +344,14 @@
     <string name="formula_editor_look_size">look_size</string>
     <string name="formula_editor_look_rotation">look_rotation</string>
     <string name="formula_editor_look_layer">look_layer</string>
-
+	<string name="formula_editor_undo">Undo</string>
+	<string name="formula_editor_redo">Redo</string>
+	<string name="formula_editor_compute">Compute</string>	
+	<string name="formula_editor_delete">Delete</string>
+	<string name="formula_editor_object">Object</string>
+	<string name="formula_editor_math">Math</string>
+	<string name="formula_editor_logic">Logic</string>
+	<string name="formula_editor_sensors">Sensors</string>
+	<string name="formula_editor_variables">Variables</string>
+	
 </resources>

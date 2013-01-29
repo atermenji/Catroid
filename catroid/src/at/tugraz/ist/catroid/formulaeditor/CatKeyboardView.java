@@ -38,90 +38,36 @@
 
 package at.tugraz.ist.catroid.formulaeditor;
 
-import java.util.Locale;
-
 import android.content.Context;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
 import at.tugraz.ist.catroid.R;
-import at.tugraz.ist.catroid.ui.dialogs.ChooseLookVariableFragment;
-import at.tugraz.ist.catroid.ui.dialogs.FormulaEditorChooseOperatorDialog;
 import at.tugraz.ist.catroid.ui.fragment.LookFragment;
+import at.tugraz.ist.catroid.ui.fragment.LogicFragment;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 public class CatKeyboardView extends KeyboardView implements KeyboardView.OnKeyboardActionListener {
 
-	static final int NUMBER_KEYBOARD = 1;
-	static final int FUNCTION_KEYBOARD = 0;
-	static final int SENSOR_KEYBOARD = 2;
-
-	private FormulaEditorEditText editText;
-
-	private Keyboard symbolsNumbers;
-	private Keyboard symbolsFunctions;
-	private Keyboard symbolsSensors;
-	private LookFragment lookFragment;
-	private Context context;
-	private ChooseLookVariableFragment chooseLookVariablesFragment;
-	private FormulaEditorChooseOperatorDialog chooseOperatorDialogFragment;
+	private FormulaEditorEditText mFormulaEditorEditText;
+	private Keyboard mFormulaEditorKeyboard;
+	private Context mContext;
 
 	public CatKeyboardView(Context context, AttributeSet attrs) {
 
 		super(context, attrs);
-		this.context = context;
+		mContext = context;
 		setOnKeyboardActionListener(this);
-		this.editText = null;
-		this.symbolsNumbers = null;
+		mFormulaEditorEditText = null;
+		mFormulaEditorKeyboard = null;
 
-		if (Locale.getDefault().getDisplayLanguage().contentEquals(Locale.GERMAN.getDisplayLanguage())) {
-			this.symbolsNumbers = new Keyboard(this.getContext(), R.xml.symbols_de_numbers);
-			this.symbolsFunctions = new Keyboard(this.getContext(), R.xml.symbols_de_functions);
-			this.symbolsSensors = new Keyboard(this.getContext(), R.xml.symbols_de_sensors);
-		} else {//if (Locale.getDefault().getDisplayLanguage().contentEquals(Locale.ENGLISH.getDisplayLanguage())) {
-			this.symbolsNumbers = new Keyboard(this.getContext(), R.xml.symbols_eng_numbers);
-			this.symbolsFunctions = new Keyboard(this.getContext(), R.xml.symbols_eng_functions);
-			this.symbolsSensors = new Keyboard(this.getContext(), R.xml.symbols_eng_sensors);
-
-		}
-
-		this.setKeyboard(symbolsNumbers);
-
-		//		if (((SherlockFragmentActivity) context).getSupportFragmentManager().findFragmentByTag(
-		//				"chooseLookVariablesDialogFragment") == null) {
-		//			this.chooseLookVariablesFragment = ChooseLookVariableFragment
-		//					.newInstance(android.R.string.dialog_alert_title);
-		//
-		//		} else {
-		//			this.chooseLookVariablesFragment = (ChooseLookVariableFragment) ((SherlockFragmentActivity) context)
-		//					.getSupportFragmentManager().findFragmentByTag("chooseLookVariablesDialogFragment");
-		//		}
-		//		this.chooseLookVariablesFragment.setCatKeyboardView(this);
-
-		Fragment fragment = ((SherlockFragmentActivity) context).getSupportFragmentManager().findFragmentByTag(
-				LookFragment.LOOK_FRAGMENT_TAG);
-		if (fragment == null) {
-			this.lookFragment = LookFragment.newInstance();
-
-		} else {
-			this.lookFragment = (LookFragment) fragment;
-		}
-		this.lookFragment.setCatKeyboardView(this);
-
-		if (((SherlockFragmentActivity) context).getSupportFragmentManager().findFragmentByTag(
-				"chooseOperatorDialogFragment") == null) {
-			this.chooseOperatorDialogFragment = FormulaEditorChooseOperatorDialog
-					.newInstance(android.R.string.dialog_alert_title);
-
-		} else {
-			this.chooseOperatorDialogFragment = (FormulaEditorChooseOperatorDialog) ((SherlockFragmentActivity) context)
-					.getSupportFragmentManager().findFragmentByTag("chooseOperatorDialogFragment");
-		}
-		this.chooseOperatorDialogFragment.setCatKeyboardView(this);
+		mFormulaEditorKeyboard = new Keyboard(this.getContext(), R.xml.formula_editor_keyboard);
+		setKeyboard(mFormulaEditorKeyboard);
 
 		//		LayoutParams relative = new LayoutParams(source);
 		//		this.symbols.setShifted(false);
@@ -147,67 +93,58 @@ public class CatKeyboardView extends KeyboardView implements KeyboardView.OnKeyb
 	public void onKey(int primaryCode, int[] keyCodes) {
 
 		CatKeyEvent catKeyEvent = null;
+		FragmentManager fragmentManager = ((SherlockFragmentActivity) mContext).getSupportFragmentManager();
+		Fragment fragment = null;
 
 		switch (primaryCode) {
-			case KeyEvent.KEYCODE_SHIFT_RIGHT:
-				this.goRight();
-				break;
-			case KeyEvent.KEYCODE_SHIFT_LEFT:
-				this.goLeft();
-				break;
-			//			case CatKeyEvent.KEYCODE_LOOK_BUTTON:
-			//				this.chooseLookVariablesFragment.show(((SherlockFragmentActivity) context).getSupportFragmentManager(),
-			//						"chooseLookVariablesDialogFragment");
-			//				break;
-			case CatKeyEvent.KEYCODE_LOOK_BUTTON:
-				this.lookFragment.showFragment(context);
-				break;
 			case KeyEvent.KEYCODE_MENU:
-				this.chooseOperatorDialogFragment.show(
-						((SherlockFragmentActivity) context).getSupportFragmentManager(),
-						"chooseOperatorDialogFragment");
 
+				break;
+			case KeyEvent.KEYCODE_EQUALS:
+				//TODO implement 
+				break;
+			case CatKeyEvent.KEYCODE_COMPUTE:
+				//TODO implement functionality (interpret) and output dialog ( Issue 8.64c)
+				break;
+			case CatKeyEvent.KEYCODE_UNDO:
+				mFormulaEditorEditText.undo();
+				break;
+			case CatKeyEvent.KEYCODE_REDO:
+				mFormulaEditorEditText.redo();
+				break;
+			case CatKeyEvent.KEYCODE_MATH_BUTTON:
+				//TODO implement Fragment
+				break;
+			case CatKeyEvent.KEYCODE_LOGIC_BUTTON:
+				fragment = fragmentManager.findFragmentByTag(LogicFragment.OPERATOR_FRAGMENT_TAG);
+
+				if (fragment == null) {
+					fragment = new LogicFragment(mFormulaEditorEditText);
+				}
+				((LogicFragment) fragment).showFragment(mContext);
+				break;
+			case CatKeyEvent.KEYCODE_OBJECT_BUTTON:
+
+				fragment = fragmentManager.findFragmentByTag(LookFragment.LOOK_FRAGMENT_TAG);
+
+				if (fragment == null) {
+					fragment = new LookFragment(mFormulaEditorEditText);
+				}
+
+				((LookFragment) fragment).showFragment(mContext);
+				break;
+			case CatKeyEvent.KEYCODE_SENSOR_BUTTON:
+				//TODO implement Fragment
+				break;
+			case CatKeyEvent.KEYCODE_VARIABLES_BUTTON:
+				//TODO implement Fragment
 				break;
 			default:
 				catKeyEvent = new CatKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, primaryCode));
-				editText.handleKeyEvent(catKeyEvent);
+				mFormulaEditorEditText.handleKeyEvent(catKeyEvent);
 				break;
 		}
 
-	}
-
-	public void goLeft() {
-		//Log.i("info", "swipeRight()");
-
-		if (this.getKeyboard() == this.symbolsNumbers) {
-			this.setKeyboard(this.symbolsSensors);
-			return;
-		}
-		if (this.getKeyboard() == this.symbolsFunctions) {
-			this.setKeyboard(this.symbolsNumbers);
-			return;
-		}
-		if (this.getKeyboard() == this.symbolsSensors) {
-			this.setKeyboard(this.symbolsFunctions);
-			return;
-		}
-
-	}
-
-	public void goRight() {
-
-		if (this.getKeyboard() == this.symbolsNumbers) {
-			this.setKeyboard(this.symbolsFunctions);
-			return;
-		}
-		if (this.getKeyboard() == this.symbolsFunctions) {
-			this.setKeyboard(this.symbolsSensors);
-			return;
-		}
-		if (this.getKeyboard() == this.symbolsSensors) {
-			this.setKeyboard(this.symbolsNumbers);
-			return;
-		}
 	}
 
 	@Override
@@ -245,6 +182,6 @@ public class CatKeyboardView extends KeyboardView implements KeyboardView.OnKeyb
 	}
 
 	public void setFormulaEditText(FormulaEditorEditText formulaEditorEditText) {
-		editText = formulaEditorEditText;
+		mFormulaEditorEditText = formulaEditorEditText;
 	}
 }
