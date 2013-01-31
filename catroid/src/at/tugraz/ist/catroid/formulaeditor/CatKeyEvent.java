@@ -27,10 +27,6 @@ import java.util.List;
 
 import android.view.KeyEvent;
 
-/**
- * @author obusher
- * 
- */
 public class CatKeyEvent extends KeyEvent {
 
 	/* FUNCTIONS */
@@ -45,9 +41,6 @@ public class CatKeyEvent extends KeyEvent {
 	public static final int KEYCODE_RANDOM = 1008;
 	public static final int KEYCODE_ABS = 1009;
 	public static final int KEYCODE_ROUND = 1010;
-	public static final int KEYCODE_UNDO = 1011;
-	public static final int KEYCODE_REDO = 1012;
-	public static final int KEYCODE_COMPUTE = 1013;
 
 	/* SENSOR */
 	public static final int KEYCODE_SENSOR1 = 1100;
@@ -82,6 +75,9 @@ public class CatKeyEvent extends KeyEvent {
 	public static final int KEYCODE_MATH_BUTTON = 1500;
 	public static final int KEYCODE_LOGIC_BUTTON = 1600;
 	public static final int KEYCODE_VARIABLES_BUTTON = 1700;
+	public static final int KEYCODE_UNDO = 1800;
+	public static final int KEYCODE_REDO = 1900;
+	public static final int KEYCODE_COMPUTE = 2000;
 
 	// Please update the functions of this class if you add new KEY_CODE constants ^_^
 

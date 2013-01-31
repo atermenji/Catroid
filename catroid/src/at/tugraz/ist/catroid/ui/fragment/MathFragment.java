@@ -40,42 +40,34 @@ import android.widget.ListView;
 import at.tugraz.ist.catroid.R;
 import at.tugraz.ist.catroid.formulaeditor.CatKeyEvent;
 import at.tugraz.ist.catroid.formulaeditor.FormulaEditorEditText;
-import at.tugraz.ist.catroid.formulaeditor.Operators;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 
-public class LogicFragment extends SherlockListFragment implements Dialog.OnKeyListener {
+public class MathFragment extends SherlockListFragment implements Dialog.OnKeyListener {
 
-	public final static String OPERATOR_FRAGMENT_TAG = "operatorFragment";
+	public final static String MATH_FRAGMENT_TAG = "mathFragment";
 
-	private final String[] items = { Operators.NOT_EQUAL.operatorName, Operators.GREATER_THAN.operatorName,
-			Operators.SMALLER_THAN.operatorName, /** Operators.EQUAL.operatorName, */
-			Operators.LOGICAL_AND.operatorName, Operators.LOGICAL_OR.operatorName };
+	private final int[] itemsId = { R.string.formula_editor_function_sin, R.string.formula_editor_function_cos,
+			R.string.formula_editor_function_tan, R.string.formula_editor_function_ln,
+			R.string.formula_editor_function_log, R.string.formula_editor_function_pi,
+			R.string.formula_editor_function_sqrt, R.string.formula_editor_function_e,
+			R.string.formula_editor_function_rand, R.string.formula_editor_function_abs,
+			R.string.formula_editor_function_round };
 
 	private FormulaEditorEditText mFormulaEditorEditText;
-
-	//	private static final Map<String, Integer> indexToKeyCode = new HashMap<String, Integer>();
-	//	static {
-	//		indexToKeyCode.put(Operators.GREATER_THAN.operatorName, CatKeyEvent.KEYCODE_GREATER_THAN);
-	//		indexToKeyCode.put(Operators.SMALLER_THAN.operatorName, CatKeyEvent.KEYCODE_SMALLER_THAN);
-	//		indexToKeyCode.put(Operators.EQUAL.operatorName, KeyEvent.KEYCODE_EQUALS);
-	//		indexToKeyCode.put(Operators.NOT_EQUAL.operatorName, CatKeyEvent.KEYCODE_NOT_EQUAL);
-	//		indexToKeyCode.put(Operators.LOGICAL_AND.operatorName, CatKeyEvent.KEYCODE_LOGICAL_AND);
-	//		indexToKeyCode.put(Operators.LOGICAL_OR.operatorName, CatKeyEvent.KEYCODE_LOGICAL_OR);
-	//	}
 
 	@Override
 	public void onListItemClick(ListView listView, View view, int position, long id) {
 
-		mFormulaEditorEditText.handleKeyEvent(new CatKeyEvent(CatKeyEvent.ACTION_DOWN, CatKeyEvent.KEYCODE_NOT_EQUAL
+		mFormulaEditorEditText.handleKeyEvent(new CatKeyEvent(CatKeyEvent.ACTION_DOWN, CatKeyEvent.KEYCODE_SIN
 				+ position));
 		KeyEvent keyEvent = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK);
 		onKey(null, keyEvent.getKeyCode(), keyEvent);
 	}
 
-	public LogicFragment(FormulaEditorEditText formulaEditorEditText) {
+	public MathFragment(FormulaEditorEditText formulaEditorEditText) {
 		mFormulaEditorEditText = formulaEditorEditText;
 	}
 
@@ -84,6 +76,13 @@ public class LogicFragment extends SherlockListFragment implements Dialog.OnKeyL
 
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+
+		String[] items = new String[itemsId.length];
+		int index = 0;
+		for (Integer item : itemsId) {
+			items[index] = getString(item);
+			index++;
+		}
 
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_list_item_1, items);
@@ -95,7 +94,7 @@ public class LogicFragment extends SherlockListFragment implements Dialog.OnKeyL
 		menu.clear();
 		super.onPrepareOptionsMenu(menu);
 		ActionBar actionBar = getSherlockActivity().getSupportActionBar();
-		actionBar.setTitle(R.string.formula_editor_logic);
+		actionBar.setTitle(R.string.formula_editor_math);
 		actionBar.setDisplayHomeAsUpEnabled(false);
 	}
 
@@ -116,16 +115,16 @@ public class LogicFragment extends SherlockListFragment implements Dialog.OnKeyL
 		fragTransaction.hide(formulaEditorFragment);
 		//		fragTransaction.replace(R.id.fragment_formula_editor, this);
 		//		fragTransaction.remove(formulaEditorFragment);
-		fragTransaction.add(android.R.id.tabhost, this, OPERATOR_FRAGMENT_TAG);
+		fragTransaction.add(android.R.id.tabhost, this, MATH_FRAGMENT_TAG);
 		fragTransaction.commit();
 	}
 
 	@Override
 	public boolean onKey(DialogInterface d, int keyCode, KeyEvent event) {
-		Log.i("info", "onKey() in OperatorFragment! keyCode: " + keyCode);
+		Log.i("info", "onKey() in MathFragment! keyCode: " + keyCode);
 		switch (keyCode) {
 			case KeyEvent.KEYCODE_BACK:
-				Log.i("info", "KEYCODE_BACK pressed in OperatorFragment!");
+				Log.i("info", "KEYCODE_BACK pressed in MathFragment!");
 				FragmentTransaction fragTransaction = getSherlockActivity().getSupportFragmentManager()
 						.beginTransaction();
 				fragTransaction.remove(this);
@@ -138,4 +137,5 @@ public class LogicFragment extends SherlockListFragment implements Dialog.OnKeyL
 		}
 		return false;
 	}
+
 }

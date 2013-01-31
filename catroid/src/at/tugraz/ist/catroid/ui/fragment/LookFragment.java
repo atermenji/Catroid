@@ -52,15 +52,15 @@ public class LookFragment extends SherlockListFragment implements Dialog.OnKeyLi
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 
-		String[] lookNames = new String[lookResourceIds.length];
+		String[] items = new String[lookResourceIds.length];
 		int index = 0;
 		for (Integer lookResourceID : lookResourceIds) {
-			lookNames[index] = getString(lookResourceID);
+			items[index] = getString(lookResourceID);
 			index++;
 
 		}
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
-				android.R.layout.simple_list_item_1, lookNames);
+				android.R.layout.simple_list_item_1, items);
 		setListAdapter(arrayAdapter);
 	}
 

@@ -49,9 +49,9 @@
     >
 	
 	<Row>
-        <Key android:codes="1011" android:keyLabel="@string/formula_editor_undo" android:keyEdgeFlags="left"/>
-        <Key android:codes="1012" android:keyLabel="@string/formula_editor_redo"/>
-        <Key android:codes="1013" android:keyLabel="@string/formula_editor_compute" android:keyWidth="35%p"/>
+        <Key android:codes="1800" android:keyLabel="@string/formula_editor_undo" android:keyEdgeFlags="left"/>
+        <Key android:codes="1900" android:keyLabel="@string/formula_editor_redo"/>
+        <Key android:codes="2000" android:keyLabel="@string/formula_editor_compute" android:keyWidth="35%p"/>
 		<Key android:codes="67" android:keyLabel="@string/formula_editor_delete" android:keyWidth="30%p" android:keyEdgeFlags="right" />
     </Row> 
 	

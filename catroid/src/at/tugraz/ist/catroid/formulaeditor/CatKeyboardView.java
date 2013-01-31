@@ -47,8 +47,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
 import at.tugraz.ist.catroid.R;
-import at.tugraz.ist.catroid.ui.fragment.LookFragment;
 import at.tugraz.ist.catroid.ui.fragment.LogicFragment;
+import at.tugraz.ist.catroid.ui.fragment.LookFragment;
+import at.tugraz.ist.catroid.ui.fragment.MathFragment;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -113,7 +114,12 @@ public class CatKeyboardView extends KeyboardView implements KeyboardView.OnKeyb
 				mFormulaEditorEditText.redo();
 				break;
 			case CatKeyEvent.KEYCODE_MATH_BUTTON:
-				//TODO implement Fragment
+				fragment = fragmentManager.findFragmentByTag(MathFragment.MATH_FRAGMENT_TAG);
+
+				if (fragment == null) {
+					fragment = new MathFragment(mFormulaEditorEditText);
+				}
+				((MathFragment) fragment).showFragment(mContext);
 				break;
 			case CatKeyEvent.KEYCODE_LOGIC_BUTTON:
 				fragment = fragmentManager.findFragmentByTag(LogicFragment.OPERATOR_FRAGMENT_TAG);
