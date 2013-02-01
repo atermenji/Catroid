@@ -22,17 +22,47 @@
  */
 package at.tugraz.ist.catroid.formulaeditor;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import at.tugraz.ist.catroid.ProjectManager;
 import at.tugraz.ist.catroid.content.Costume;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
-public class SensorManager {
+public class SensorHandler implements SensorEventListener {
+	private static SensorHandler instance = null;
 	private static Input sensors = null;
+	private static android.hardware.SensorManager mySensorManager = null;
+	private static Sensor mAccelerometer = null;
 
-	public static void setSensorSourceForNextCall(Input source) {
-		sensors = source;
+	private static float linearAcceleartionX = 0f;
+	private static float linearAcceleartionY = 0f;
+	private static float linearAcceleartionZ = 0f;
+
+	private SensorHandler(Context context) {
+		mySensorManager = (android.hardware.SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+		mAccelerometer = mySensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+	}
+
+	public static void startSensorListener(Context context) {
+
+		if (instance == null) {
+			instance = new SensorHandler(context);
+		}
+		mySensorManager.unregisterListener(instance);
+		mySensorManager.registerListener(instance, mAccelerometer, android.hardware.SensorManager.SENSOR_DELAY_NORMAL);
+
+	}
+
+	public static void stopSensorListeners() {
+		if (instance == null) {
+			return;
+		}
+		mySensorManager.unregisterListener(instance);
 	}
 
 	public static Double getSensorValue(String sensorName) {
@@ -42,22 +72,46 @@ public class SensorManager {
 		Double sensorValue = 0.0;
 		if (sensorName.equals(Sensors.X_ACCELERATION_.sensorName)) {
 
-			sensorValue = Double.valueOf(sensors.getAccelerometerX());
+			sensorValue = Double.valueOf(linearAcceleartionX);
 		}
 		if (sensorName.equals(Sensors.Y_ACCELERATION_.sensorName)) {
-			sensorValue = Double.valueOf(-sensors.getAccelerometerY());
+			sensorValue = Double.valueOf(linearAcceleartionY);
 		}
 		if (sensorName.equals(Sensors.Z_ACCELERATION_.sensorName)) {
-			sensorValue = Double.valueOf(-sensors.getAccelerometerZ());
+			sensorValue = Double.valueOf(linearAcceleartionZ);
 		}
 		if (sensorName.equals(Sensors.AZIMUTH_ORIENTATION_.sensorName)) {
-			sensorValue = Double.valueOf(sensors.getAzimuth());
+			if (mySensorManager == null) {
+				return 0d;
+			}
+
+			float[] orientations = new float[3];
+			SensorManager.getOrientation(new float[3], orientations);
+			sensorValue = Double.valueOf(orientations[0]);
+
+			/*
+			 * 
+			 * values[0]: azimuth, rotation around the Z axis.
+			 * values[1]: pitch, rotation around the X axis.
+			 * values[2]: roll, rotation around the Y axis.
+			 */
+
 		}
 		if (sensorName.equals(Sensors.PITCH_ORIENTATION_.sensorName)) {
-			sensorValue = Double.valueOf(sensors.getPitch());
+			if (mySensorManager == null) {
+				return 0d;
+			}
+			float[] orientations = new float[3];
+			SensorManager.getOrientation(new float[3], orientations);
+			sensorValue = Double.valueOf(orientations[1]);
 		}
 		if (sensorName.equals(Sensors.ROLL_ORIENTATION_.sensorName)) {
-			sensorValue = Double.valueOf(-sensors.getRoll());
+			if (mySensorManager == null) {
+				return 0d;
+			}
+			float[] orientations = new float[3];
+			SensorManager.getOrientation(new float[3], orientations);
+			sensorValue = Double.valueOf(orientations[2]);
 		}
 		//Look VALUES
 
@@ -98,4 +152,20 @@ public class SensorManager {
 		return ProjectManager.getInstance().getCurrentSprite().costume;
 	}
 
+	@Override
+	public void onAccuracyChanged(Sensor arg0, int arg1) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onSensorChanged(SensorEvent event) {
+		switch (event.sensor.getType()) {
+			case Sensor.TYPE_LINEAR_ACCELERATION:
+				linearAcceleartionX = event.values[0];
+				linearAcceleartionY = event.values[1];
+				linearAcceleartionZ = event.values[2];
+		}
+
+	}
 }
