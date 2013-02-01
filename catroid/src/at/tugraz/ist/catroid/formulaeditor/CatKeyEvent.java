@@ -43,14 +43,14 @@ public class CatKeyEvent extends KeyEvent {
 	public static final int KEYCODE_ROUND = 1010;
 
 	/* SENSOR */
-	public static final int KEYCODE_SENSOR1 = 1100;
-	public static final int KEYCODE_SENSOR2 = 1101;
-	public static final int KEYCODE_SENSOR3 = 1102;
-	public static final int KEYCODE_SENSOR4 = 1103;
-	public static final int KEYCODE_SENSOR5 = 1104;
-	public static final int KEYCODE_SENSOR6 = 1105;
-	public static final int KEYCODE_SENSOR7 = 1106;
-	public static final int KEYCODE_SENSOR_BUTTON = 1107;
+	public static final int KEYCODE_SENSOR_BUTTON = 1100;
+	public static final int KEYCODE_SENSOR1 = 1101;
+	public static final int KEYCODE_SENSOR2 = 1102;
+	public static final int KEYCODE_SENSOR3 = 1103;
+	public static final int KEYCODE_SENSOR4 = 1104;
+	public static final int KEYCODE_SENSOR5 = 1105;
+	public static final int KEYCODE_SENSOR6 = 1106;
+	public static final int KEYCODE_SENSOR7 = 1107;
 
 	/* LOOK + Backets */
 	public static final int KEYCODE_BRACKET = 1200;

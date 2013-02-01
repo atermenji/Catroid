@@ -50,6 +50,7 @@ import at.tugraz.ist.catroid.R;
 import at.tugraz.ist.catroid.ui.fragment.LogicFragment;
 import at.tugraz.ist.catroid.ui.fragment.LookFragment;
 import at.tugraz.ist.catroid.ui.fragment.MathFragment;
+import at.tugraz.ist.catroid.ui.fragment.SensorFragment;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -140,7 +141,12 @@ public class CatKeyboardView extends KeyboardView implements KeyboardView.OnKeyb
 				((LookFragment) fragment).showFragment(mContext);
 				break;
 			case CatKeyEvent.KEYCODE_SENSOR_BUTTON:
-				//TODO implement Fragment
+				fragment = fragmentManager.findFragmentByTag(SensorFragment.SENSOR_FRAGMENT_TAG);
+
+				if (fragment == null) {
+					fragment = new SensorFragment(mFormulaEditorEditText);
+				}
+				((SensorFragment) fragment).showFragment(mContext);
 				break;
 			case CatKeyEvent.KEYCODE_VARIABLES_BUTTON:
 				//TODO implement Fragment

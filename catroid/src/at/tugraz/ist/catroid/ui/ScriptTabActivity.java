@@ -48,6 +48,7 @@ import at.tugraz.ist.catroid.ui.fragment.LogicFragment;
 import at.tugraz.ist.catroid.ui.fragment.LookFragment;
 import at.tugraz.ist.catroid.ui.fragment.MathFragment;
 import at.tugraz.ist.catroid.ui.fragment.ScriptFragment;
+import at.tugraz.ist.catroid.ui.fragment.SensorFragment;
 import at.tugraz.ist.catroid.ui.fragment.SoundFragment;
 import at.tugraz.ist.catroid.utils.ErrorListenerInterface;
 import at.tugraz.ist.catroid.utils.Utils;
@@ -169,6 +170,13 @@ public class ScriptTabActivity extends SherlockFragmentActivity implements Error
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 
 		Log.i("info", "onKeyDown() ScriptTabActivity.... keyCode: " + keyCode);
+
+		SensorFragment sensorFragment = (SensorFragment) getSupportFragmentManager().findFragmentByTag(
+				SensorFragment.SENSOR_FRAGMENT_TAG);
+
+		if (sensorFragment != null) {
+			return sensorFragment.onKey(null, keyCode, event);
+		}
 
 		MathFragment mathFragment = (MathFragment) getSupportFragmentManager().findFragmentByTag(
 				MathFragment.MATH_FRAGMENT_TAG);
