@@ -27,7 +27,6 @@ import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -44,6 +43,7 @@ import at.tugraz.ist.catroid.formulaeditor.FormulaElement;
 import at.tugraz.ist.catroid.formulaeditor.InternFormulaParser;
 import at.tugraz.ist.catroid.formulaeditor.InternToken;
 import at.tugraz.ist.catroid.formulaeditor.InternTokenType;
+import at.tugraz.ist.catroid.formulaeditor.SensorHandler;
 import at.tugraz.ist.catroid.formulaeditor.Sensors;
 import at.tugraz.ist.catroid.ui.MainMenuActivity;
 import at.tugraz.ist.catroid.ui.ScriptTabActivity;
@@ -82,7 +82,8 @@ public class SensorTest extends ActivityInstrumentationTestCase2<MainMenuActivit
 	}
 
 	@Test
-	public void testSensors() {
+	public void testSensors() throws SecurityException, IllegalArgumentException, NoSuchFieldException,
+			IllegalAccessException {
 		solo.waitForActivity(ScriptTabActivity.class.getSimpleName());
 		int expectedX = 995;
 		int expectedY = 990;
@@ -120,30 +121,40 @@ public class SensorTest extends ActivityInstrumentationTestCase2<MainMenuActivit
 		ProjectManager.getInstance().setProject(project);
 		ProjectManager.getInstance().setCurrentSprite(firstSprite);
 
-		assertEquals("Sensor value is wrong", tryMock("getAccelerometerX", formula, expectedX), expectedX);
-		assertEquals("Sensor value is wrong", tryMock("getAccelerometerY", formula1, expectedY), -expectedY);
-		assertEquals("Sensor value is wrong", tryMock("getAccelerometerZ", formula2, expectedZ), -expectedZ);
-		assertEquals("Sensor value is wrong", tryMock("getAzimuth", formula3, expectedAzimuth), expectedAzimuth);
-		assertEquals("Sensor value is wrong", tryMock("getPitch", formula4, expectedPitch), expectedPitch);
-		assertEquals("Sensor value is wrong", tryMock("getRoll", formula5, expectedRoll), -expectedRoll);
+		//start and stop for initialization
+		SensorHandler.startSensorListener(getActivity());
+		SensorHandler.stopSensorListeners();
+
+		UiTestUtils.setPrivateField2(SensorHandler.class, null, "linearAcceleartionX", expectedX);
+		UiTestUtils.setPrivateField2(SensorHandler.class, null, "linearAcceleartionY", expectedY);
+		UiTestUtils.setPrivateField2(SensorHandler.class, null, "linearAcceleartionZ", expectedZ);
+		UiTestUtils.setPrivateField2(SensorHandler.class, null, "rotationVector", new float[] { 1f, 1f, 1f });
+
+		assertEquals("Sensor value is wrong", formula.interpretInteger(), expectedX);
+		assertEquals("Sensor value is wrong", formula1.interpretInteger(), expectedY);
+		assertEquals("Sensor value is wrong", formula2.interpretInteger(), expectedZ);
+
+		assertEquals("Sensor value is wrong", 2, formula3.interpretInteger());
+		assertEquals("Sensor value is wrong", 1, formula4.interpretInteger());
+		assertEquals("Sensor value is wrong", -2, formula5.interpretInteger());
 
 	}
 
-	private int tryMock(String method, Formula formula, int expectedResult) {
-		Input mock = PowerMock.createPartialMock(Input.class, method);
-		//		SensorHandler.setSensorSourceForNextCall(mock); TODO
-
-		try {
-			PowerMock.expectPrivate(mock, method).andReturn(expectedResult);
-			PowerMock.replayAll();
-			return formula.interpretInteger();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return -1;
-
-	}
+	//	private int tryMock(String method, Formula formula, int expectedResult) {
+	//		Input mock = PowerMock.createPartialMock(Input.class, method);
+	//		//		SensorHandler.setSensorSourceForNextCall(mock); TODO
+	//
+	//		try {
+	//			PowerMock.expectPrivate(mock, method).andReturn(expectedResult);
+	//			PowerMock.replayAll();
+	//			return formula.interpretInteger();
+	//
+	//		} catch (Exception e) {
+	//			e.printStackTrace();
+	//		}
+	//		return -1;
+	//
+	//	}
 
 	private Formula createFormulaWithSensor(Sensors sensor) {
 

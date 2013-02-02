@@ -30,18 +30,13 @@ import android.hardware.SensorManager;
 import at.tugraz.ist.catroid.ProjectManager;
 import at.tugraz.ist.catroid.content.Costume;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-
 public class SensorHandler implements SensorEventListener {
 	private static SensorHandler instance = null;
-	private static Input sensors = null;
 	private static android.hardware.SensorManager mySensorManager = null;
 	private static Sensor mAccelerometer = null;
 	private static Sensor mRotationVector = null;
 	private static float[] rotationMatrix = new float[16];
 	private static float[] rotationVector = new float[3];
-	private static float[] floatArrayDummy = new float[16];
 
 	private static float linearAcceleartionX = 0f;
 	private static float linearAcceleartionY = 0f;
@@ -71,9 +66,6 @@ public class SensorHandler implements SensorEventListener {
 	}
 
 	public static Double getSensorValue(String sensorName) {
-		if (sensors == null) {
-			sensors = Gdx.input;
-		}
 		Double sensorValue = 0.0;
 		if (sensorName.equals(Sensors.X_ACCELERATION_.sensorName)) {
 
@@ -142,7 +134,6 @@ public class SensorHandler implements SensorEventListener {
 			sensorValue = Double.valueOf(getCurrentObjectLook().zPosition);
 		}
 
-		sensors = null;
 		return sensorValue;
 	}
 
