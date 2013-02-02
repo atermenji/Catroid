@@ -59,7 +59,7 @@
         <Key android:codes="14" android:keyLabel="7" android:keyEdgeFlags="left"/>
         <Key android:codes="15" android:keyLabel="8"/>
         <Key android:codes="16" android:keyLabel="9"/>
-        <Key android:codes="76" android:keyLabel="÷" />
+        <Key android:codes="76" android:keyLabel="@string/formula_editor_operator_divide" />
 		<Key android:codes="1400" android:keyLabel="@string/formula_editor_object" android:keyWidth="30%p" android:keyEdgeFlags="right" />
     </Row> 
     
@@ -67,7 +67,7 @@
         <Key android:codes="11" android:keyLabel="4" android:keyEdgeFlags="left"/>
         <Key android:codes="12" android:keyLabel="5"/>
         <Key android:codes="13" android:keyLabel="6"/>
-		<Key android:codes="17" android:keyLabel="×"/>
+		<Key android:codes="17" android:keyLabel="@string/formula_editor_operator_mult"/>
 		<Key android:codes="1500" android:keyLabel="@string/formula_editor_math" android:keyWidth="30%p" android:keyEdgeFlags="right" />
     </Row>
     
@@ -75,15 +75,15 @@
         <Key android:codes="8" android:keyLabel="1" android:keyEdgeFlags="left"/>
         <Key android:codes="9" android:keyLabel="2"/>
         <Key android:codes="10" android:keyLabel="3"/>
-        <Key android:codes="69" android:keyLabel="-" />
+        <Key android:codes="69" android:keyLabel="@string/formula_editor_operator_minus" />
 		<Key android:codes="1600" android:keyLabel="@string/formula_editor_logic" android:keyWidth="30%p" android:keyEdgeFlags="right" />
     </Row>
     
     <Row>
-	    <Key android:codes="56" android:keyLabel="."  android:keyEdgeFlags="left"/>
+	    <Key android:codes="56" android:keyLabel="@string/formula_editor_decimal_mark"  android:keyEdgeFlags="left"/>
         <Key android:codes="7" android:keyLabel="0" />
 		<Key android:codes="70" android:keyLabel="="/> 
-		<Key android:codes="81" android:keyLabel="+"/>
+		<Key android:codes="81" android:keyLabel="@string/formula_editor_operator_plus"/>
         <Key android:codes="1100" android:keyLabel="@string/formula_editor_sensors" android:keyWidth="30%p" android:keyEdgeFlags="right" />
 		
 	</Row>

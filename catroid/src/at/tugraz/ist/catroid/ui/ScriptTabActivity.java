@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -44,11 +45,8 @@ import at.tugraz.ist.catroid.ui.adapter.TabsPagerAdapter;
 import at.tugraz.ist.catroid.ui.dragndrop.DragAndDropListView;
 import at.tugraz.ist.catroid.ui.fragment.CostumeFragment;
 import at.tugraz.ist.catroid.ui.fragment.FormulaEditorFragment;
-import at.tugraz.ist.catroid.ui.fragment.LogicFragment;
-import at.tugraz.ist.catroid.ui.fragment.LookFragment;
-import at.tugraz.ist.catroid.ui.fragment.MathFragment;
+import at.tugraz.ist.catroid.ui.fragment.FormulaEditorListFragment;
 import at.tugraz.ist.catroid.ui.fragment.ScriptFragment;
-import at.tugraz.ist.catroid.ui.fragment.SensorFragment;
 import at.tugraz.ist.catroid.ui.fragment.SoundFragment;
 import at.tugraz.ist.catroid.utils.ErrorListenerInterface;
 import at.tugraz.ist.catroid.utils.Utils;
@@ -171,32 +169,13 @@ public class ScriptTabActivity extends SherlockFragmentActivity implements Error
 
 		Log.i("info", "onKeyDown() ScriptTabActivity.... keyCode: " + keyCode);
 
-		SensorFragment sensorFragment = (SensorFragment) getSupportFragmentManager().findFragmentByTag(
-				SensorFragment.SENSOR_FRAGMENT_TAG);
+		FragmentManager fragmentManager = getSupportFragmentManager();
 
-		if (sensorFragment != null) {
-			return sensorFragment.onKey(null, keyCode, event);
-		}
-
-		MathFragment mathFragment = (MathFragment) getSupportFragmentManager().findFragmentByTag(
-				MathFragment.MATH_FRAGMENT_TAG);
-
-		if (mathFragment != null) {
-			return mathFragment.onKey(null, keyCode, event);
-		}
-
-		LookFragment lookFragment = (LookFragment) getSupportFragmentManager().findFragmentByTag(
-				LookFragment.LOOK_FRAGMENT_TAG);
-
-		if (lookFragment != null) {
-			return lookFragment.onKey(null, keyCode, event);
-		}
-
-		LogicFragment operatorFragment = (LogicFragment) getSupportFragmentManager().findFragmentByTag(
-				LogicFragment.OPERATOR_FRAGMENT_TAG);
-
-		if (operatorFragment != null) {
-			return operatorFragment.onKey(null, keyCode, event);
+		for (String tag : FormulaEditorListFragment.TAGS) {
+			FormulaEditorListFragment fragment = (FormulaEditorListFragment) fragmentManager.findFragmentByTag(tag);
+			if (fragment != null) {
+				return fragment.onKey(null, keyCode, event);
+			}
 		}
 
 		FormulaEditorFragment formulaEditor = (FormulaEditorFragment) getSupportFragmentManager().findFragmentByTag(
@@ -204,7 +183,6 @@ public class ScriptTabActivity extends SherlockFragmentActivity implements Error
 
 		if (formulaEditor != null) {
 			tabsAdapter.onTabChanged(ACTION_BRICK_LIST_CHANGED);
-
 			return formulaEditor.onKey(null, keyCode, event);
 		}
 

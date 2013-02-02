@@ -65,7 +65,7 @@ public class CatKeyEvent extends KeyEvent {
 
 	/* OPERATORS */
 	public static final int KEYCODE_NOT_EQUAL = 1300;
-	public static final int KEYCODE_SMALLER_THAN = 1301;
+	public static final int KEYCODE_LESSER_THAN = 1301;
 	public static final int KEYCODE_GREATER_THAN = 1302;
 	public static final int KEYCODE_LOGICAL_AND = 1303;
 	public static final int KEYCODE_LOGICAL_OR = 1304;
@@ -156,7 +156,7 @@ public class CatKeyEvent extends KeyEvent {
 				return buildOperator(Operators.EQUAL);
 			case CatKeyEvent.KEYCODE_NOT_EQUAL:
 				return buildOperator(Operators.NOT_EQUAL);
-			case CatKeyEvent.KEYCODE_SMALLER_THAN:
+			case CatKeyEvent.KEYCODE_LESSER_THAN:
 				return buildOperator(Operators.SMALLER_THAN);
 			case CatKeyEvent.KEYCODE_GREATER_THAN:
 				return buildOperator(Operators.GREATER_THAN);

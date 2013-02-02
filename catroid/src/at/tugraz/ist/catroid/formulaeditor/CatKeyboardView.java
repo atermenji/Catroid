@@ -47,10 +47,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
 import at.tugraz.ist.catroid.R;
-import at.tugraz.ist.catroid.ui.fragment.LogicFragment;
-import at.tugraz.ist.catroid.ui.fragment.LookFragment;
-import at.tugraz.ist.catroid.ui.fragment.MathFragment;
-import at.tugraz.ist.catroid.ui.fragment.SensorFragment;
+import at.tugraz.ist.catroid.ui.fragment.FormulaEditorListFragment;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -95,12 +92,10 @@ public class CatKeyboardView extends KeyboardView implements KeyboardView.OnKeyb
 	public void onKey(int primaryCode, int[] keyCodes) {
 
 		CatKeyEvent catKeyEvent = null;
-		FragmentManager fragmentManager = ((SherlockFragmentActivity) mContext).getSupportFragmentManager();
-		Fragment fragment = null;
 
 		switch (primaryCode) {
 			case KeyEvent.KEYCODE_MENU:
-
+				// TODO: Do we need this KeyEvent ? :O
 				break;
 			case KeyEvent.KEYCODE_EQUALS:
 				//TODO implement 
@@ -115,38 +110,20 @@ public class CatKeyboardView extends KeyboardView implements KeyboardView.OnKeyb
 				mFormulaEditorEditText.redo();
 				break;
 			case CatKeyEvent.KEYCODE_MATH_BUTTON:
-				fragment = fragmentManager.findFragmentByTag(MathFragment.MATH_FRAGMENT_TAG);
-
-				if (fragment == null) {
-					fragment = new MathFragment(mFormulaEditorEditText);
-				}
-				((MathFragment) fragment).showFragment(mContext);
+				showFormulaEditorListFragment(FormulaEditorListFragment.MATH_TAG, R.string.formula_editor_math,
+						CatKeyEvent.KEYCODE_SIN);
 				break;
 			case CatKeyEvent.KEYCODE_LOGIC_BUTTON:
-				fragment = fragmentManager.findFragmentByTag(LogicFragment.OPERATOR_FRAGMENT_TAG);
-
-				if (fragment == null) {
-					fragment = new LogicFragment(mFormulaEditorEditText);
-				}
-				((LogicFragment) fragment).showFragment(mContext);
+				showFormulaEditorListFragment(FormulaEditorListFragment.LOGIC_TAG, R.string.formula_editor_logic,
+						CatKeyEvent.KEYCODE_NOT_EQUAL);
 				break;
 			case CatKeyEvent.KEYCODE_OBJECT_BUTTON:
-
-				fragment = fragmentManager.findFragmentByTag(LookFragment.LOOK_FRAGMENT_TAG);
-
-				if (fragment == null) {
-					fragment = new LookFragment(mFormulaEditorEditText);
-				}
-
-				((LookFragment) fragment).showFragment(mContext);
+				showFormulaEditorListFragment(FormulaEditorListFragment.OBJECT_TAG,
+						R.string.formula_editor_choose_look_variable, CatKeyEvent.KEYCODE_LOOK_X);
 				break;
 			case CatKeyEvent.KEYCODE_SENSOR_BUTTON:
-				fragment = fragmentManager.findFragmentByTag(SensorFragment.SENSOR_FRAGMENT_TAG);
-
-				if (fragment == null) {
-					fragment = new SensorFragment(mFormulaEditorEditText);
-				}
-				((SensorFragment) fragment).showFragment(mContext);
+				showFormulaEditorListFragment(FormulaEditorListFragment.SENSOR_TAG, R.string.formula_editor_sensors,
+						CatKeyEvent.KEYCODE_SENSOR1);
 				break;
 			case CatKeyEvent.KEYCODE_VARIABLES_BUTTON:
 				//TODO implement Fragment
@@ -195,5 +172,16 @@ public class CatKeyboardView extends KeyboardView implements KeyboardView.OnKeyb
 
 	public void setFormulaEditText(FormulaEditorEditText formulaEditorEditText) {
 		mFormulaEditorEditText = formulaEditorEditText;
+	}
+
+	private void showFormulaEditorListFragment(String tag, int actionbarResId, int keycodeOffset) {
+		FragmentManager fragmentManager = ((SherlockFragmentActivity) mContext).getSupportFragmentManager();
+		Fragment fragment = fragmentManager.findFragmentByTag(tag);
+
+		if (fragment == null) {
+			fragment = new FormulaEditorListFragment(mFormulaEditorEditText, keycodeOffset,
+					mContext.getString(actionbarResId), tag);
+		}
+		((FormulaEditorListFragment) fragment).showFragment(mContext);
 	}
 }

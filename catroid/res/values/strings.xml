@@ -353,5 +353,21 @@
 	<string name="formula_editor_logic">Logic</string>
 	<string name="formula_editor_sensors">Sensors</string>
 	<string name="formula_editor_variables">Variables</string>
+	<string name="formula_editor_logic_notequal">&#x2260;</string>	
+	<string name="formula_editor_logic_lesserthan">&lt;</string>
+	<string name="formula_editor_logic_greaterthan">&gt;</string>
+	<string name="formula_editor_logic_and">AND</string>
+	<string name="formula_editor_logic_or">OR</string>
+	<string name="formula_editor_logic_not">NOT</string>	
+	<string name="formula_editor_logic_greaterequal">&#x2265;</string>
+	<string name="formula_editor_logic_leserequal">&#x2264;</string>
+	<string name="formula_editor_logic_equal">=</string>
+	<string name="formula_editor_operator_mult">×</string>
+	<string name="formula_editor_operator_plus">+</string>
+	<string name="formula_editor_operator_minus">-</string>
+	<string name="formula_editor_operator_divide">÷</string>
+	<string name="formula_editor_operator_modulus">%</string>
+	<string name="formula_editor_operator_power">^</string>
 	
+
 </resources>
