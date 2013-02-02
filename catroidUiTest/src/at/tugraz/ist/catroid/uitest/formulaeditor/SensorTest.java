@@ -44,7 +44,6 @@ import at.tugraz.ist.catroid.formulaeditor.FormulaElement;
 import at.tugraz.ist.catroid.formulaeditor.InternFormulaParser;
 import at.tugraz.ist.catroid.formulaeditor.InternToken;
 import at.tugraz.ist.catroid.formulaeditor.InternTokenType;
-import at.tugraz.ist.catroid.formulaeditor.SensorHandler;
 import at.tugraz.ist.catroid.formulaeditor.Sensors;
 import at.tugraz.ist.catroid.ui.MainMenuActivity;
 import at.tugraz.ist.catroid.ui.ScriptTabActivity;
@@ -132,7 +131,7 @@ public class SensorTest extends ActivityInstrumentationTestCase2<MainMenuActivit
 
 	private int tryMock(String method, Formula formula, int expectedResult) {
 		Input mock = PowerMock.createPartialMock(Input.class, method);
-		SensorHandler.setSensorSourceForNextCall(mock);
+		//		SensorHandler.setSensorSourceForNextCall(mock); TODO
 
 		try {
 			PowerMock.expectPrivate(mock, method).andReturn(expectedResult);
