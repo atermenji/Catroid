@@ -38,6 +38,10 @@ public class SensorHandler implements SensorEventListener {
 	private static Input sensors = null;
 	private static android.hardware.SensorManager mySensorManager = null;
 	private static Sensor mAccelerometer = null;
+	private static Sensor mRotationVector = null;
+	private static float[] rotationMatrix = new float[16];
+	private static float[] rotationVector = new float[3];
+	private static float[] floatArrayDummy = new float[16];
 
 	private static float linearAcceleartionX = 0f;
 	private static float linearAcceleartionY = 0f;
@@ -46,6 +50,7 @@ public class SensorHandler implements SensorEventListener {
 	private SensorHandler(Context context) {
 		mySensorManager = (android.hardware.SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
 		mAccelerometer = mySensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+		mRotationVector = mySensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 	}
 
 	public static void startSensorListener(Context context) {
@@ -55,7 +60,7 @@ public class SensorHandler implements SensorEventListener {
 		}
 		mySensorManager.unregisterListener(instance);
 		mySensorManager.registerListener(instance, mAccelerometer, android.hardware.SensorManager.SENSOR_DELAY_NORMAL);
-
+		mySensorManager.registerListener(instance, mRotationVector, android.hardware.SensorManager.SENSOR_DELAY_NORMAL);
 	}
 
 	public static void stopSensorListeners() {
@@ -86,15 +91,9 @@ public class SensorHandler implements SensorEventListener {
 			}
 
 			float[] orientations = new float[3];
-			SensorManager.getOrientation(new float[3], orientations);
+			getRotationMatrixFromVector(rotationMatrix, rotationVector);
+			SensorManager.getOrientation(rotationMatrix, orientations);
 			sensorValue = Double.valueOf(orientations[0]);
-
-			/*
-			 * 
-			 * values[0]: azimuth, rotation around the Z axis.
-			 * values[1]: pitch, rotation around the X axis.
-			 * values[2]: roll, rotation around the Y axis.
-			 */
 
 		}
 		if (sensorName.equals(Sensors.PITCH_ORIENTATION_.sensorName)) {
@@ -102,7 +101,8 @@ public class SensorHandler implements SensorEventListener {
 				return 0d;
 			}
 			float[] orientations = new float[3];
-			SensorManager.getOrientation(new float[3], orientations);
+			getRotationMatrixFromVector(rotationMatrix, rotationVector);
+			SensorManager.getOrientation(rotationMatrix, orientations);
 			sensorValue = Double.valueOf(orientations[1]);
 		}
 		if (sensorName.equals(Sensors.ROLL_ORIENTATION_.sensorName)) {
@@ -110,7 +110,8 @@ public class SensorHandler implements SensorEventListener {
 				return 0d;
 			}
 			float[] orientations = new float[3];
-			SensorManager.getOrientation(new float[3], orientations);
+			getRotationMatrixFromVector(rotationMatrix, rotationVector);
+			SensorManager.getOrientation(rotationMatrix, orientations);
 			sensorValue = Double.valueOf(orientations[2]);
 		}
 		//Look VALUES
@@ -165,7 +166,54 @@ public class SensorHandler implements SensorEventListener {
 				linearAcceleartionX = event.values[0];
 				linearAcceleartionY = event.values[1];
 				linearAcceleartionZ = event.values[2];
+				break;
+			case Sensor.TYPE_ROTATION_VECTOR:
+				rotationVector[0] = event.values[0];
+				rotationVector[1] = event.values[1];
+				rotationVector[2] = event.values[2];
+				break;
 		}
+
+	}
+
+	//For API Level < 9
+	public static void getRotationMatrixFromVector(float[] R, float[] rotationVector) {
+
+		float q0;
+		float q1 = rotationVector[0];
+		float q2 = rotationVector[1];
+		float q3 = rotationVector[2];
+
+		q0 = 1 - q1 * q1 - q2 * q2 - q3 * q3;
+		q0 = (q0 > 0) ? (float) Math.sqrt(q0) : 0;
+
+		float sq_q1 = 2 * q1 * q1;
+		float sq_q2 = 2 * q2 * q2;
+		float sq_q3 = 2 * q3 * q3;
+		float q1_q2 = 2 * q1 * q2;
+		float q3_q0 = 2 * q3 * q0;
+		float q1_q3 = 2 * q1 * q3;
+		float q2_q0 = 2 * q2 * q0;
+		float q2_q3 = 2 * q2 * q3;
+		float q1_q0 = 2 * q1 * q0;
+
+		R[0] = 1 - sq_q2 - sq_q3;
+		R[1] = q1_q2 - q3_q0;
+		R[2] = q1_q3 + q2_q0;
+		R[3] = 0.0f;
+
+		R[4] = q1_q2 + q3_q0;
+		R[5] = 1 - sq_q1 - sq_q3;
+		R[6] = q2_q3 - q1_q0;
+		R[7] = 0.0f;
+
+		R[8] = q1_q3 - q2_q0;
+		R[9] = q2_q3 + q1_q0;
+		R[10] = 1 - sq_q1 - sq_q2;
+		R[11] = 0.0f;
+
+		R[12] = R[13] = R[14] = 0.0f;
+		R[15] = 1.0f;
 
 	}
 }
