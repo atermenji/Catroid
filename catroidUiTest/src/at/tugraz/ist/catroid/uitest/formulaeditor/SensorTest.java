@@ -88,9 +88,9 @@ public class SensorTest extends ActivityInstrumentationTestCase2<MainMenuActivit
 		int expectedX = 995;
 		int expectedY = 990;
 		int expectedZ = 985;
-		int expectedRoll = 980;
-		int expectedPitch = 975;
-		int expectedAzimuth = 970;
+		int expectedOrientationZ = 2;
+		int expectedOrientationX = 1;
+		int expectedOrientationY = -2;
 
 		createProject();
 
@@ -106,15 +106,15 @@ public class SensorTest extends ActivityInstrumentationTestCase2<MainMenuActivit
 		ChangeSizeByNBrick zBrick = new ChangeSizeByNBrick(firstSprite, formula2);
 		startScript1.addBrick(zBrick);
 
-		Formula formula3 = createFormulaWithSensor(Sensors.AZIMUTH_ORIENTATION_);
+		Formula formula3 = createFormulaWithSensor(Sensors.Z_ORIENTATION_);
 		ChangeSizeByNBrick azimuthBrick = new ChangeSizeByNBrick(firstSprite, formula3);
 		startScript1.addBrick(azimuthBrick);
 
-		Formula formula4 = createFormulaWithSensor(Sensors.PITCH_ORIENTATION_);
+		Formula formula4 = createFormulaWithSensor(Sensors.X_ORIENTATION_);
 		ChangeSizeByNBrick pitchBrick = new ChangeSizeByNBrick(firstSprite, formula4);
 		startScript1.addBrick(pitchBrick);
 
-		Formula formula5 = createFormulaWithSensor(Sensors.ROLL_ORIENTATION_);
+		Formula formula5 = createFormulaWithSensor(Sensors.Y_ORIENTATION_);
 		ChangeSizeByNBrick rollBrick = new ChangeSizeByNBrick(firstSprite, formula5);
 		startScript1.addBrick(rollBrick);
 
@@ -130,13 +130,13 @@ public class SensorTest extends ActivityInstrumentationTestCase2<MainMenuActivit
 		UiTestUtils.setPrivateField2(SensorHandler.class, null, "linearAcceleartionZ", expectedZ);
 		UiTestUtils.setPrivateField2(SensorHandler.class, null, "rotationVector", new float[] { 1f, 1f, 1f });
 
-		assertEquals("Sensor value is wrong", formula.interpretInteger(), expectedX);
-		assertEquals("Sensor value is wrong", formula1.interpretInteger(), expectedY);
-		assertEquals("Sensor value is wrong", formula2.interpretInteger(), expectedZ);
+		assertEquals("Sensor value is wrong", expectedX, formula.interpretInteger());
+		assertEquals("Sensor value is wrong", expectedY, formula1.interpretInteger());
+		assertEquals("Sensor value is wrong", expectedZ, formula2.interpretInteger());
 
-		assertEquals("Sensor value is wrong", 2, formula3.interpretInteger());
-		assertEquals("Sensor value is wrong", 1, formula4.interpretInteger());
-		assertEquals("Sensor value is wrong", -2, formula5.interpretInteger());
+		assertEquals("Sensor value is wrong", expectedOrientationZ, formula3.interpretInteger());
+		assertEquals("Sensor value is wrong", expectedOrientationX, formula4.interpretInteger());
+		assertEquals("Sensor value is wrong", expectedOrientationY, formula5.interpretInteger());
 
 	}
 

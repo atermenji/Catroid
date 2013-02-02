@@ -130,11 +130,11 @@ public class CatKeyEvent extends KeyEvent {
 			case CatKeyEvent.KEYCODE_SENSOR3:
 				return buildSensor(Sensors.Z_ACCELERATION_);
 			case CatKeyEvent.KEYCODE_SENSOR4:
-				return buildSensor(Sensors.AZIMUTH_ORIENTATION_);
+				return buildSensor(Sensors.Z_ORIENTATION_);
 			case CatKeyEvent.KEYCODE_SENSOR5:
-				return buildSensor(Sensors.PITCH_ORIENTATION_);
+				return buildSensor(Sensors.X_ORIENTATION_);
 			case CatKeyEvent.KEYCODE_SENSOR6:
-				return buildSensor(Sensors.ROLL_ORIENTATION_);
+				return buildSensor(Sensors.Y_ORIENTATION_);
 
 				//PERIOD
 			case CatKeyEvent.KEYCODE_PERIOD:

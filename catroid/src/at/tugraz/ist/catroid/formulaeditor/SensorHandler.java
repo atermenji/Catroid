@@ -77,7 +77,7 @@ public class SensorHandler implements SensorEventListener {
 		if (sensorName.equals(Sensors.Z_ACCELERATION_.sensorName)) {
 			sensorValue = Double.valueOf(linearAcceleartionZ);
 		}
-		if (sensorName.equals(Sensors.AZIMUTH_ORIENTATION_.sensorName)) {
+		if (sensorName.equals(Sensors.Z_ORIENTATION_.sensorName)) {
 			if (mySensorManager == null) {
 				return 0d;
 			}
@@ -88,7 +88,7 @@ public class SensorHandler implements SensorEventListener {
 			sensorValue = Double.valueOf(orientations[0]);
 
 		}
-		if (sensorName.equals(Sensors.PITCH_ORIENTATION_.sensorName)) {
+		if (sensorName.equals(Sensors.X_ORIENTATION_.sensorName)) {
 			if (mySensorManager == null) {
 				return 0d;
 			}
@@ -97,7 +97,7 @@ public class SensorHandler implements SensorEventListener {
 			SensorManager.getOrientation(rotationMatrix, orientations);
 			sensorValue = Double.valueOf(orientations[1]);
 		}
-		if (sensorName.equals(Sensors.ROLL_ORIENTATION_.sensorName)) {
+		if (sensorName.equals(Sensors.Y_ORIENTATION_.sensorName)) {
 			if (mySensorManager == null) {
 				return 0d;
 			}
