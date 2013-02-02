@@ -265,7 +265,7 @@ public class FormulaElement implements Serializable {
 				returnValue = java.lang.Math.E;
 			}
 		} else if (type == ElementType.SENSOR) {
-			returnValue = SensorManager.getSensorValue(value);
+			returnValue = SensorHandler.getSensorValue(value);
 		} else if (type == ElementType.USER_VARIABLE) {
 			//			TODO handle UserVariables
 			return null;
