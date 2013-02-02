@@ -48,6 +48,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import at.tugraz.ist.catroid.R;
 import at.tugraz.ist.catroid.ui.fragment.FormulaEditorListFragment;
+import at.tugraz.ist.catroid.ui.fragment.FormulaEditorVariableListFragment;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -126,7 +127,8 @@ public class CatKeyboardView extends KeyboardView implements KeyboardView.OnKeyb
 						CatKeyEvent.KEYCODE_SENSOR1);
 				break;
 			case CatKeyEvent.KEYCODE_VARIABLES_BUTTON:
-				//TODO implement Fragment
+				showFormulaEditorVariableListFragment(FormulaEditorVariableListFragment.VARIABLE_TAG,
+						R.string.formula_editor_variables);
 				break;
 			default:
 				catKeyEvent = new CatKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, primaryCode));
@@ -183,5 +185,16 @@ public class CatKeyboardView extends KeyboardView implements KeyboardView.OnKeyb
 					mContext.getString(actionbarResId), tag);
 		}
 		((FormulaEditorListFragment) fragment).showFragment(mContext);
+	}
+
+	private void showFormulaEditorVariableListFragment(String tag, int actionbarResId) {
+		FragmentManager fragmentManager = ((SherlockFragmentActivity) mContext).getSupportFragmentManager();
+		Fragment fragment = fragmentManager.findFragmentByTag(tag);
+
+		if (fragment == null) {
+			fragment = new FormulaEditorVariableListFragment(mFormulaEditorEditText,
+					mContext.getString(actionbarResId), tag);
+		}
+		((FormulaEditorVariableListFragment) fragment).showFragment(mContext);
 	}
 }
