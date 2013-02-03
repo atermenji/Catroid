@@ -47,6 +47,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
 import at.tugraz.ist.catroid.R;
+import at.tugraz.ist.catroid.ui.dialogs.FormulaEditorComputeDialog;
 import at.tugraz.ist.catroid.ui.fragment.FormulaEditorListFragment;
 import at.tugraz.ist.catroid.ui.fragment.FormulaEditorVariableListFragment;
 
@@ -103,6 +104,19 @@ public class CatKeyboardView extends KeyboardView implements KeyboardView.OnKeyb
 				break;
 			case CatKeyEvent.KEYCODE_COMPUTE:
 				//TODO implement functionality (interpret) and output dialog ( Issue 8.64c)
+
+				FormulaElement formulaElement = mFormulaEditorEditText.getFormulaParser().parseFormula();
+				if (formulaElement == null) {
+					//TODO Error handling
+					return;
+				}
+				Formula formulaToCompute = new Formula(formulaElement);
+
+				FormulaEditorComputeDialog computeDialog = new FormulaEditorComputeDialog(mContext);
+
+				computeDialog.setFormula(formulaToCompute);
+				computeDialog.show();
+
 				break;
 			case CatKeyEvent.KEYCODE_UNDO:
 				mFormulaEditorEditText.undo();
