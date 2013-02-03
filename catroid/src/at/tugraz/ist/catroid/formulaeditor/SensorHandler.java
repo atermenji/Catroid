@@ -27,6 +27,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
 import at.tugraz.ist.catroid.ProjectManager;
 import at.tugraz.ist.catroid.content.Costume;
 
@@ -37,6 +38,7 @@ public class SensorHandler implements SensorEventListener {
 	private static Sensor mRotationVector = null;
 	private static float[] rotationMatrix = new float[16];
 	private static float[] rotationVector = new float[3];
+	private static float radianToDegreeConst = 180f / (float) Math.PI;
 
 	private static float linearAcceleartionX = 0f;
 	private static float linearAcceleartionY = 0f;
@@ -86,6 +88,8 @@ public class SensorHandler implements SensorEventListener {
 			getRotationMatrixFromVector(rotationMatrix, rotationVector);
 			SensorManager.getOrientation(rotationMatrix, orientations);
 			sensorValue = Double.valueOf(orientations[0]);
+			sensorValue *= radianToDegreeConst;
+			Log.e("info", "Z-Orientierung: " + sensorValue);
 
 		}
 		if (sensorName.equals(Sensors.X_ORIENTATION_.sensorName)) {
@@ -96,6 +100,8 @@ public class SensorHandler implements SensorEventListener {
 			getRotationMatrixFromVector(rotationMatrix, rotationVector);
 			SensorManager.getOrientation(rotationMatrix, orientations);
 			sensorValue = Double.valueOf(orientations[1]);
+			sensorValue *= radianToDegreeConst;
+			Log.e("info", "X-Orientierung: " + sensorValue);
 		}
 		if (sensorName.equals(Sensors.Y_ORIENTATION_.sensorName)) {
 			if (mySensorManager == null) {
@@ -105,6 +111,8 @@ public class SensorHandler implements SensorEventListener {
 			getRotationMatrixFromVector(rotationMatrix, rotationVector);
 			SensorManager.getOrientation(rotationMatrix, orientations);
 			sensorValue = Double.valueOf(orientations[2]);
+			sensorValue *= radianToDegreeConst;
+			Log.e("info", "Y-Orientierung: " + sensorValue);
 		}
 		//Look VALUES
 
