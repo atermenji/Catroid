@@ -313,16 +313,14 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 				postInvalidate();
 
 				InternToken internToken = internFormula.getFirstLeftInternToken(absoluteCursorPosition);
+
 				if (internToken != null) {
 					InternTokenType internTokenType = internToken.getInternTokenType();
 
-					if ((internTokenType == InternTokenType.FUNCTION_NAME)
-							|| (internTokenType == InternTokenType.FUNCTION_PARAMETER_DELIMITER)
-							|| (internTokenType == InternTokenType.FUNCTION_PARAMETERS_BRACKET_CLOSE)
-							|| (internTokenType == InternTokenType.FUNCTION_PARAMETERS_BRACKET_OPEN)
-							|| (internTokenType == InternTokenType.SENSOR)
-							|| (internTokenType == InternTokenType.USER_VARIABLE)
-							|| (internTokenType == InternTokenType.LOOK)) {
+					if ((internFormula.getFirstLeftInternToken(absoluteCursorPosition - 1) == internToken)
+							&& ((internTokenType == InternTokenType.FUNCTION_NAME)
+									|| (internTokenType == InternTokenType.SENSOR)
+									|| (internTokenType == InternTokenType.USER_VARIABLE) || (internTokenType == InternTokenType.LOOK))) {
 						internFormula.setCursorAndSelection(absoluteCursorPosition, true);
 					} else {
 						internFormula.setCursorAndSelection(absoluteCursorPosition, false);
