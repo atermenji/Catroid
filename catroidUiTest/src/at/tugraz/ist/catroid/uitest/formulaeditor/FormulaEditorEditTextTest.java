@@ -672,20 +672,19 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 				isFound);
 
 		catKeyboardClicker.clickOnKey("azimuth");
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_sensor_azimuth_orientation));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_sensor_azimuth_orientation)
-				+ "not found!", isFound);
+		isFound = solo.searchText(solo.getString(R.string.formula_editor_sensor_z_orientation));
+		assertTrue("String: " + getActivity().getString(R.string.formula_editor_sensor_z_orientation) + "not found!",
+				isFound);
 
 		catKeyboardClicker.clickOnKey("roll");
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_sensor_roll_orientation));
-		assertTrue(
-				"String: " + getActivity().getString(R.string.formula_editor_sensor_roll_orientation) + "not found!",
+		isFound = solo.searchText(solo.getString(R.string.formula_editor_sensor_y_orientation));
+		assertTrue("String: " + getActivity().getString(R.string.formula_editor_sensor_y_orientation) + "not found!",
 				isFound);
 
 		catKeyboardClicker.clickOnKey("pitch");
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_sensor_pitch_orientation));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_sensor_pitch_orientation)
-				+ "not found!", isFound);
+		isFound = solo.searchText(solo.getString(R.string.formula_editor_sensor_x_orientation));
+		assertTrue("String: " + getActivity().getString(R.string.formula_editor_sensor_x_orientation) + "not found!",
+				isFound);
 
 		catKeyboardClicker.switchToNumberKeyboard();
 		catKeyboardClicker.clickOnKey("look");
