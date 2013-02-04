@@ -42,52 +42,20 @@ import at.tugraz.ist.catroid.formulaeditor.FormulaEditorEditText;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 public class FormulaEditorVariableListFragment extends SherlockListFragment implements Dialog.OnKeyListener {
 
 	public static final String VARIABLE_TAG = "variableFragment";
 
-	//	public static final String OBJECT_TAG = "objectFragment";
-	//	public static final String MATH_TAG = "mathFragment";
-	//	public static final String LOGIC_TAG = "logicFragment";
-	//	public static final String SENSOR_TAG = "sensorFragment";
-	//
-	//	public static final String[] TAGS = { OBJECT_TAG, MATH_TAG, LOGIC_TAG, SENSOR_TAG };
-	//
-	//	private static final int[] OBJECT_ITEMS = { R.string.formula_editor_look_x, R.string.formula_editor_look_y,
-	//			R.string.formula_editor_look_ghosteffect, R.string.formula_editor_look_brightness,
-	//			R.string.formula_editor_look_size, R.string.formula_editor_look_rotation,
-	//			R.string.formula_editor_look_layer };
-	//
-	//	private static final int[] LOGIC_ITEMS = { R.string.formula_editor_logic_notequal,
-	//			R.string.formula_editor_logic_lesserthan, R.string.formula_editor_logic_greaterthan,
-	//			R.string.formula_editor_logic_and, R.string.formula_editor_logic_or };
-	//
-	//	private static final int[] MATH_ITEMS = { R.string.formula_editor_function_sin,
-	//			R.string.formula_editor_function_cos, R.string.formula_editor_function_tan,
-	//			R.string.formula_editor_function_ln, R.string.formula_editor_function_log,
-	//			R.string.formula_editor_function_pi, R.string.formula_editor_function_sqrt,
-	//			R.string.formula_editor_function_e, R.string.formula_editor_function_rand,
-	//			R.string.formula_editor_function_abs, R.string.formula_editor_function_round };
-	//
-	//	private final int[] SENSOR_ITEMS = { R.string.formula_editor_sensor_x_acceleration,
-	//			R.string.formula_editor_sensor_y_acceleration, R.string.formula_editor_sensor_z_acceleration,
-	//			R.string.formula_editor_sensor_azimuth_orientation, R.string.formula_editor_sensor_pitch_orientation,
-	//			R.string.formula_editor_sensor_roll_orientation };
-
 	private final String mTag;
 	private String[] mItems = { "EASY" };
 	private FormulaEditorEditText mFormulaEditorEditText;
-	private int mOffset;
 	private String mActionBarTitle;
-
-	@Override
-	public void onListItemClick(ListView listView, View view, int position, long id) {
-		//		mFormulaEditorEditText.handleKeyEvent(new CatKeyEvent(CatKeyEvent.ACTION_DOWN, mOffset + position));
-		//		KeyEvent keyEvent = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK);
-		//		onKey(null, keyEvent.getKeyCode(), keyEvent);
-	}
+	private com.actionbarsherlock.view.ActionMode mActionMode;
 
 	public FormulaEditorVariableListFragment(FormulaEditorEditText formulaEditorEditText, String actionBarTitle,
 			String fragmentTag) {
@@ -102,44 +70,70 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 
-		//		int[] itemsId = {};
-		//
-		//		if (mTag == OBJECT_TAG) {
-		//			itemsId = OBJECT_ITEMS;
-		//		} else if (mTag == MATH_TAG) {
-		//			itemsId = MATH_ITEMS;
-		//		} else if (mTag == LOGIC_TAG) {
-		//			itemsId = LOGIC_ITEMS;
-		//		} else if (mTag == SENSOR_TAG) {
-		//			itemsId = SENSOR_ITEMS;
-		//		}
-		//
-		//		mItems = new String[itemsId.length];
-		//		int index = 0;
-		//		for (Integer item : itemsId) {
-		//			mItems[index] = getString(item);
-		//			index++;
-		//		}
-
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_list_item_1, mItems);
 		setListAdapter(arrayAdapter);
 	}
 
 	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.menu_formulaeditor_variablelist, menu);
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
-		menu.clear();
-		menu.addSubMenu(R.string.formula_editor_function_rand);
+
 		super.onPrepareOptionsMenu(menu);
+		//		menu.removeItem(R.id.menu_add);
+		//		menu.removeItem(R.id.menu_start);
 		ActionBar actionBar = getSherlockActivity().getSupportActionBar();
 		actionBar.setTitle(mActionBarTitle);
 		actionBar.setDisplayHomeAsUpEnabled(false);
 	}
 
 	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_delete:
+				mItems[0] = "gg";
+				ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
+						android.R.layout.simple_list_item_1, mItems);
+				setListAdapter(arrayAdapter);
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
+	@Override
+	public void onListItemClick(ListView listView, View view, int position, long id) {
+		//		mFormulaEditorEditText.handleKeyEvent(new CatKeyEvent(CatKeyEvent.ACTION_DOWN, mOffset + position));
+		//		KeyEvent keyEvent = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK);
+		//		onKey(null, keyEvent.getKeyCode(), keyEvent);
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View fragmentView = inflater.inflate(R.layout.fragment_formula_editor_list, container, false);
 		return fragmentView;
+	}
+
+	@Override
+	public void onStart() {
+		getView().setOnLongClickListener(new View.OnLongClickListener() {
+
+			@Override
+			public boolean onLongClick(View view) {
+				if (mActionMode == null) {
+					mActionMode = getSherlockActivity().startActionMode(mActionModeCallback);
+					view.setSelected(true);
+					return true;
+				}
+				return false;
+			}
+		});
+		super.onStart();
 	}
 
 	public void showFragment(Context context) {
@@ -175,5 +169,37 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 		}
 		return false;
 	}
+
+	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			mode.getMenuInflater().inflate(R.menu.menu_formulaeditor_variablelist, menu);
+			return true;
+		}
+
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			return false;
+		}
+
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			switch (item.getItemId()) {
+				case R.id.menu_delete:
+					// TODO
+					mode.finish();
+					return true;
+				default:
+					return false;
+			}
+		}
+
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+			// TODO
+		}
+
+	};
 
 }
