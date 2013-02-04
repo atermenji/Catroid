@@ -32,6 +32,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 import at.tugraz.ist.catroid.R;
 import at.tugraz.ist.catroid.formulaeditor.Formula;
+import at.tugraz.ist.catroid.formulaeditor.FormulaElement.ElementType;
 import at.tugraz.ist.catroid.formulaeditor.SensorHandler;
 
 public class FormulaEditorComputeDialog extends AlertDialog implements SensorEventListener {
@@ -63,8 +64,11 @@ public class FormulaEditorComputeDialog extends AlertDialog implements SensorEve
 
 	public void setFormula(Formula formula) {
 		formulaToCompute = formula;
-		SensorHandler.startSensorListener(context);
-		SensorHandler.registerListener(this);
+
+		if (formula.containsElement(ElementType.SENSOR)) {
+			SensorHandler.startSensorListener(context);
+			SensorHandler.registerListener(this);
+		}
 
 	}
 
@@ -80,6 +84,9 @@ public class FormulaEditorComputeDialog extends AlertDialog implements SensorEve
 		if (computeTextView == null) {
 			return;
 		}
+
+		result *= 100;
+		result = Math.round(result) / 100f;
 
 		computeTextView.setText(result + "");
 
