@@ -31,15 +31,18 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import at.tugraz.ist.catroid.R;
 import at.tugraz.ist.catroid.formulaeditor.FormulaEditorEditText;
 
@@ -59,6 +62,7 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 	private FormulaEditorEditText mFormulaEditorEditText;
 	private String mActionBarTitle;
 	private com.actionbarsherlock.view.ActionMode mContextActionMode;
+	private boolean mInContextMode;
 	private int mDeleteIndex;
 
 	public FormulaEditorVariableListFragment(FormulaEditorEditText formulaEditorEditText, String actionBarTitle,
@@ -69,16 +73,14 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 
 		mContextActionMode = null;
 		mDeleteIndex = -1;
+		mInContextMode = false;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-
-		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
-				android.R.layout.simple_list_item_1, mItems);
-		setListAdapter(arrayAdapter);
+		setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mItems));
 	}
 
 	@Override
@@ -95,9 +97,11 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
-		Log.i("info", "FEVLF.onCreateContextMenu()");
-		super.onCreateContextMenu(menu, view, menuInfo);
-		getSherlockActivity().getMenuInflater().inflate(R.menu.menu_formulaeditor_variablelist, menu);
+		if (!mInContextMode) {
+			Log.i("info", "FEVLF.onCreateContextMenu()");
+			super.onCreateContextMenu(menu, view, menuInfo);
+			getSherlockActivity().getMenuInflater().inflate(R.menu.menu_formulaeditor_variablelist, menu);
+		}
 
 	}
 
@@ -112,34 +116,33 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 		actionBar.setDisplayHomeAsUpEnabled(false);
 	}
 
-	//	@Override
-	//	public void onListItemClick(ListView listView, View view, int position, long id) {
-	//		//		mFormulaEditorEditText.handleKeyEvent(new CatKeyEvent(CatKeyEvent.ACTION_DOWN, mOffset + position));
-	//		//		KeyEvent keyEvent = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK);
-	//		//		onKey(null, keyEvent.getKeyCode(), keyEvent);
-	//	}
+	@Override
+	public void onListItemClick(ListView listView, View view, int position, long id) {
+		Log.i("info", "FEVLF.onLISTItemClick()");
+		if (mInContextMode) {
+			String title = countCheckedListItems() + " items selected"; // TODO: r.string
+			mContextActionMode.setTitle(title);
+		}
+		//		mFormulaEditorEditText.handleKeyEvent(new CatKeyEvent(CatKeyEvent.ACTION_DOWN, mOffset + position));
+		//		KeyEvent keyEvent = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK);
+		//		onKey(null, keyEvent.getKeyCode(), keyEvent);
+	}
 
 	@Override
 	public void onStart() {
-		registerForContextMenu(getListView());
 
-		//		getListView().setOnItemClickListener(new OnItemClickListener() {
-		//			@Override
-		//			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		//				// TODO 
-		//			}
-		//		});
-
+		registerForContextMenu(getView());
+		getListView().setLongClickable(true);
+		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> arg0, View view, int position, long id) {
 				Log.i("info", "onItemLongClick()");
-				if (mContextActionMode == null) {
+				if (!mInContextMode) {
 					mItems[position] = "itemLongClick";
 					mDeleteIndex = position;
 					//					arg0.setPressed(true);
 					//					arg0	.setBackgroundResource(R.color.backbrown);
-					//					mContextActionMode = getSherlockActivity().startActionMode(mContextModeCallback);
 					ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
 							android.R.layout.simple_list_item_1, mItems);
 					setListAdapter(arrayAdapter);
@@ -150,8 +153,14 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 			}
 		});
 
-		getListView().setFocusable(true);
-		getListView().setLongClickable(true);
+		getListView().setOnLongClickListener(new OnLongClickListener() {
+
+			@Override
+			public boolean onLongClick(View v) {
+				Log.i("info", "FEVLFonLongClick");
+				return false;
+			}
+		});
 
 		super.onStart();
 	}
@@ -160,6 +169,7 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_delete:
+				mInContextMode = true;
 				mContextActionMode = getSherlockActivity().startActionMode(mContextModeCallback);
 				return true;
 			default:
@@ -167,19 +177,18 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 		}
 	}
 
-	//	doesnt get called from framework
-	//	@Override
-	//	public boolean onContextItemSelected(android.view.MenuItem item) {
-	//		Log.i("info", "FEVLF.onContextItemSelected");
-	//		switch (item.getItemId()) {
-	//			case R.id.menu_delete:
-	//				mItems[mDeleteIndex] = "del";
-	//				return true;
-	//			default:
-	//				return super.onContextItemSelected(item);
-	//		}
-	//
-	//	}
+	@Override
+	public boolean onContextItemSelected(android.view.MenuItem item) {
+		Log.i("info", "FEVLF.onContextItemSelected");
+		switch (item.getItemId()) {
+			case R.id.menu_delete:
+				mItems[mDeleteIndex] = "del";
+				return true;
+			default:
+				return super.onContextItemSelected(item);
+		}
+
+	}
 
 	public void showFragment(Context context) {
 		FragmentActivity activity = (FragmentActivity) context;
@@ -220,19 +229,11 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			//			mode.getMenuInflater().inflate(R.menu.menu_formulaeditor_variablelist, menu);
-			//			mode.setTitle("Delete");
+			mode.setTitle("0 items selected");// TODO: r.string
 			//			mode.setSubtitle("SubTitle");
-
-			//			View doneButton = getSherlockActivity().findViewById(R.id.abs__action_mode_close_button);
-			//			doneButton.setOnClickListener(new View.OnClickListener() {
-			//				@Override
-			//				public void onClick(View v) {
-			//					mItems[mIndexContextActionMode] = "del";
-			//					mContextActionMode.finish();
-			//				}
-			//			});
-
 			menu.removeItem(R.id.menu_delete);
+			setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_multiple_choice,
+					mItems));
 
 			return true;
 		}
@@ -260,8 +261,34 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
 			mContextActionMode = null;
+			mInContextMode = false;
+			SparseBooleanArray checkedItemPositions = getListView().getCheckedItemPositions();
+			Log.i("info", "checkedItemPositions.length(): " + checkedItemPositions.size());
+
+			for (int index = 0; index < getListView().getCount(); index++) {
+				if (checkedItemPositions.get(index) == true) {
+					mItems[index] = "checked";
+				}
+			}
+			setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mItems));
 		}
 
 	};
+
+	//	public void clickCheckBox(View view) {
+	//		int position = getListView().getPositionForView(view);
+	//		getListView().setItemChecked(position, ((CheckBox) view.findViewById(R.id.checkbox)).isChecked());
+	//	}
+
+	private int countCheckedListItems() {
+		int count = 0;
+		SparseBooleanArray checkedItemPositions = getListView().getCheckedItemPositions();
+		for (int index = 0; index < getListView().getCount(); index++) {
+			if (checkedItemPositions.get(index) == true) {
+				count++;
+			}
+		}
+		return count;
+	}
 
 }

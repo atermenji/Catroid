@@ -46,6 +46,7 @@ import at.tugraz.ist.catroid.ui.dragndrop.DragAndDropListView;
 import at.tugraz.ist.catroid.ui.fragment.CostumeFragment;
 import at.tugraz.ist.catroid.ui.fragment.FormulaEditorFragment;
 import at.tugraz.ist.catroid.ui.fragment.FormulaEditorListFragment;
+import at.tugraz.ist.catroid.ui.fragment.FormulaEditorVariableListFragment;
 import at.tugraz.ist.catroid.ui.fragment.ScriptFragment;
 import at.tugraz.ist.catroid.ui.fragment.SoundFragment;
 import at.tugraz.ist.catroid.utils.ErrorListenerInterface;
@@ -115,6 +116,14 @@ public class ScriptTabActivity extends SherlockFragmentActivity implements Error
 	}
 
 	@Override
+	public boolean onContextItemSelected(android.view.MenuItem item) {
+		Log.i("info", "STA.onContextItemSelected");
+		//		getFragmentManager().findFragmentByTag(FormulaEditorVariableListFragment.VARIABLE_TAG).onContextItemSelected(
+		//				item);
+		return super.onContextItemSelected(item);
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		switch (item.getItemId()) {
@@ -176,6 +185,13 @@ public class ScriptTabActivity extends SherlockFragmentActivity implements Error
 			if (fragment != null) {
 				return fragment.onKey(null, keyCode, event);
 			}
+		}
+
+		FormulaEditorVariableListFragment formulaEditorVariableListFragment = (FormulaEditorVariableListFragment) getSupportFragmentManager()
+				.findFragmentByTag(FormulaEditorVariableListFragment.VARIABLE_TAG);
+
+		if (formulaEditorVariableListFragment != null) {
+			return formulaEditorVariableListFragment.onKey(null, keyCode, event);
 		}
 
 		FormulaEditorFragment formulaEditor = (FormulaEditorFragment) getSupportFragmentManager().findFragmentByTag(

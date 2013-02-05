@@ -189,6 +189,12 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+	public boolean onContextItemSelected(android.view.MenuItem item) {
+		Log.i("", "FEF.onContextItemSelected");
+		return super.onContextItemSelected(item);
+	}
+
 	public void setInputFormula(Formula newFormula, int mode) {
 
 		int orientation = getResources().getConfiguration().orientation;
