@@ -304,19 +304,19 @@ public class CatKeyboardTest extends android.test.ActivityInstrumentationTestCas
 		catKeyboardClicker.clickOnKey("del");
 
 		catKeyboardClicker.clickOnKey("pitch");
-		sensorString = solo.getString(R.string.formula_editor_sensor_pitch_orientation);
+		sensorString = solo.getString(R.string.formula_editor_sensor_x_orientation);
 		assertEquals("Wrong button clicked", sensorString, text.getText().toString()
 				.substring(0, sensorString.length()));
 		catKeyboardClicker.clickOnKey("del");
 
 		catKeyboardClicker.clickOnKey("roll");
-		sensorString = solo.getString(R.string.formula_editor_sensor_roll_orientation);
+		sensorString = solo.getString(R.string.formula_editor_sensor_y_orientation);
 		assertEquals("Wrong button clicked", sensorString, text.getText().toString()
 				.substring(0, sensorString.length()));
 		catKeyboardClicker.clickOnKey("del");
 
 		catKeyboardClicker.clickOnKey("azimuth");
-		sensorString = solo.getString(R.string.formula_editor_sensor_azimuth_orientation);
+		sensorString = solo.getString(R.string.formula_editor_sensor_z_orientation);
 		assertEquals("Wrong button clicked", sensorString, text.getText().toString()
 				.substring(0, sensorString.length()));
 		catKeyboardClicker.clickOnKey("del");

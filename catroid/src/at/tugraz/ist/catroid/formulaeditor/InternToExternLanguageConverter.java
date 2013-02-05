@@ -51,11 +51,11 @@ public class InternToExternLanguageConverter {
 		internExternLanguageConverterMap.put(Sensors.Z_ACCELERATION_.sensorName,
 				R.string.formula_editor_sensor_z_acceleration);
 		internExternLanguageConverterMap.put(Sensors.Z_ORIENTATION_.sensorName,
-				R.string.formula_editor_sensor_azimuth_orientation);
+				R.string.formula_editor_sensor_z_orientation);
 		internExternLanguageConverterMap.put(Sensors.X_ORIENTATION_.sensorName,
-				R.string.formula_editor_sensor_pitch_orientation);
+				R.string.formula_editor_sensor_x_orientation);
 		internExternLanguageConverterMap.put(Sensors.Y_ORIENTATION_.sensorName,
-				R.string.formula_editor_sensor_roll_orientation);
+				R.string.formula_editor_sensor_y_orientation);
 		internExternLanguageConverterMap.put(Sensors.LOOK_X_.sensorName, R.string.formula_editor_look_x);
 		internExternLanguageConverterMap.put(Sensors.LOOK_Y_.sensorName, R.string.formula_editor_look_y);
 		internExternLanguageConverterMap.put(Sensors.LOOK_GHOSTEFFECT_.sensorName,
