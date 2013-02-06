@@ -27,9 +27,9 @@ import java.util.List;
 
 public class UserVariable {
 
-	String name;
-	Double value;
-	UserVariableScope scope;
+	private String name;
+	private Double value;
+	private UserVariableScope scope;
 
 	public UserVariable(String name, Double value, UserVariableScope scope) {
 		this.name = name;
@@ -72,7 +72,7 @@ public class UserVariable {
 		UserVariable userVariableToDelete = null;
 		boolean deleteItem = false;
 		for (UserVariable userVariable : userVariables) {
-			if (userVariable.name.equals(userVariableName)) {
+			if (userVariable.name.equals(userVariableName) && userVariable.scope.checkScope()) {
 				userVariableToDelete = userVariable;
 				deleteItem = true;
 				break;
@@ -82,5 +82,9 @@ public class UserVariable {
 			userVariables.remove(userVariableToDelete);
 		}
 
+	}
+
+	public Double getValue() {
+		return value;
 	}
 }

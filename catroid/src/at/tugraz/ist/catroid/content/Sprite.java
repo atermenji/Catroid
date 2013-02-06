@@ -117,8 +117,9 @@ public class Sprite implements Serializable {
 			@Override
 			public void run() {
 				script.run();
+
 			}
-		});
+		}, "script_" + name);
 		if (script instanceof WhenScript) {
 			if (!activeScripts.containsKey(script)) {
 				activeScripts.put(script, new LinkedList<Thread>());
