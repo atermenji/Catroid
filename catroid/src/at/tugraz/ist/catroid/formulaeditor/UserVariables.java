@@ -50,6 +50,6 @@ public class UserVariables {
 	}
 
 	public void deleteUserVariableByName(String userVariableName) {
-		UserVariable.deleteUserVariableByName(userVariableName);
+		UserVariable.deleteUserVariableByName(userVariableName, userVariables);
 	}
 }
