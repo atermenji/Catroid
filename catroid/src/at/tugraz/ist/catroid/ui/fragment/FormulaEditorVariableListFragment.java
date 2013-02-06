@@ -22,9 +22,11 @@
  */
 package at.tugraz.ist.catroid.ui.fragment;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -42,7 +44,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import at.tugraz.ist.catroid.R;
 import at.tugraz.ist.catroid.formulaeditor.FormulaEditorEditText;
 
@@ -64,6 +69,9 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 	private com.actionbarsherlock.view.ActionMode mContextActionMode;
 	private boolean mInContextMode;
 	private int mDeleteIndex;
+	private RadioButton leftDialogRadioButton;
+	private RadioButton rightDialogRadioButton;
+	private Dialog dialogNewVariable;
 
 	public FormulaEditorVariableListFragment(FormulaEditorEditText formulaEditorEditText, String actionBarTitle,
 			String fragmentTag) {
@@ -159,6 +167,63 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 			public boolean onLongClick(View v) {
 				Log.i("info", "FEVLFonLongClick");
 				return false;
+			}
+		});
+
+		Button bottomBar = (Button) getSherlockActivity().findViewById(R.id.formula_editor_variable_list_bottom_bar);
+		bottomBar.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				dialogNewVariable = new AlertDialog.Builder(getActivity())
+						.setView(
+								LayoutInflater.from(getActivity()).inflate(
+										R.layout.dialog_formula_editor_variable_name, null))
+						.setTitle("Variable name ?").setNegativeButton(R.string.cancel_button, new OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// TODO Auto-generated method stub
+
+							}
+
+						}).setPositiveButton(R.string.ok, new OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// TODO Auto-generated method stub
+
+							}
+						}).create();
+				dialogNewVariable.show();
+				leftDialogRadioButton = (RadioButton) dialogNewVariable
+						.findViewById(R.id.dialog_formula_editor_variable_name_radio_button_left);
+				leftDialogRadioButton.setChecked(true);
+				rightDialogRadioButton = (RadioButton) dialogNewVariable
+						.findViewById(R.id.dialog_formula_editor_variable_name_radio_button_right);
+				View.OnClickListener radioButtonListener = new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						RadioGroup radioGroup = (RadioGroup) dialogNewVariable
+								.findViewById(R.id.dialog_formula_editor_variable_name_radio_group);
+						switch (view.getId()) {
+							case R.id.dialog_formula_editor_variable_name_radio_button_left:
+								if (!leftDialogRadioButton.isChecked()) {
+									radioGroup.clearCheck();
+									leftDialogRadioButton.setChecked(true);
+								}
+								break;
+							case R.id.dialog_formula_editor_variable_name_radio_button_right:
+								if (!rightDialogRadioButton.isChecked()) {
+									radioGroup.clearCheck();
+									rightDialogRadioButton.setChecked(true);
+								}
+								break;
+						}
+
+					}
+				};
+				leftDialogRadioButton.setOnClickListener(radioButtonListener);
+				rightDialogRadioButton.setOnClickListener(radioButtonListener);
+
 			}
 		});
 

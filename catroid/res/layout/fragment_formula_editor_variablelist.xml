@@ -37,7 +37,7 @@
         android:fadingEdge="none" />
 
     <Button
-        android:id="@+id/formula_editor_variable_list_button"
+        android:id="@+id/formula_editor_variable_list_bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/ic_plus_black"
