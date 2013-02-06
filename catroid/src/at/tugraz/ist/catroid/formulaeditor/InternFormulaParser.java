@@ -25,6 +25,8 @@ package at.tugraz.ist.catroid.formulaeditor;
 import java.util.LinkedList;
 import java.util.List;
 
+import at.tugraz.ist.catroid.ProjectManager;
+
 public class InternFormulaParser {
 
 	private class InternFormulaParserException extends Exception {
@@ -245,11 +247,15 @@ public class InternFormulaParser {
 	private FormulaElement userVariable() throws InternFormulaParserException {
 		//TODO check if user-variable exists
 
+		UserVariables userVariables = ProjectManager.getInstance().getCurrentProject().getUserVariables();
+		if (userVariables.getUserVariableByName(currentToken.getTokenSringValue()) == null) {
+			throw new InternFormulaParserException("Parse Error");
+		}
+
 		FormulaElement lookTree = new FormulaElement(FormulaElement.ElementType.USER_VARIABLE,
 				currentToken.getTokenSringValue(), null);
 
 		getNextToken();
-
 		return lookTree;
 	}
 

@@ -124,12 +124,14 @@ public class InternToExternGenerator {
 				return ")";
 			case FUNCTION_PARAMETER_DELIMITER:
 				return ","; //TODO hardcoded delimiter value
+			case USER_VARIABLE:
+				return internToken.getTokenSringValue();
 
 			default:
 				return InternToExternLanguageConverter.getExternStringForInternTokenValue(
 						internToken.getTokenSringValue(), context);
 
-				//TODO handle all cases(UserVariables etc...)
+				//TODO handle all cases
 		}
 	}
 

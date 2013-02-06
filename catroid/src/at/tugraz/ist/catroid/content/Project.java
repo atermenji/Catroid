@@ -130,4 +130,8 @@ public class Project implements Serializable {
 			catroidVersionCode = Utils.getVersionCode(context);
 		}
 	}
+
+	public UserVariables getUserVariables() {
+		return userVariables;
+	}
 }
