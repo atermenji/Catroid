@@ -271,7 +271,7 @@ public class FormulaElement implements Serializable {
 			UserVariables userVariables = ProjectManager.getInstance().getCurrentProject().getUserVariables();
 			UserVariable userVariable = userVariables.getUserVariableByName(value);
 			if (userVariable == null) {
-				return 0;
+				return 0d;
 			}
 
 			return userVariable.getValue();
