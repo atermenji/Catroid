@@ -368,6 +368,9 @@
 	<string name="formula_editor_operator_divide">÷</string>
 	<string name="formula_editor_operator_modulus">%</string>
 	<string name="formula_editor_operator_power">^</string>
+	<string name="formula_editor_operator_power">^</string>
+	<string name="formula_editor_new_variable">make a new variable</string>
+	
 	
 
 </resources>
