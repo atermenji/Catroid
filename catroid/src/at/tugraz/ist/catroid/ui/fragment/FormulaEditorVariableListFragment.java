@@ -85,7 +85,7 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View fragmentView = inflater.inflate(R.layout.fragment_formula_editor_list, container, false);
+		View fragmentView = inflater.inflate(R.layout.fragment_formula_editor_variablelist, container, false);
 		return fragmentView;
 	}
 
