@@ -79,6 +79,10 @@ public class CatKeyEvent extends KeyEvent {
 	public static final int KEYCODE_REDO = 1900;
 	public static final int KEYCODE_COMPUTE = 2000;
 
+	/* USER VARIABLE */
+	public static final int KEYCODE_USER_VARIABLE = 2100;
+	private String userVariableName = null;
+
 	// Please update the functions of this class if you add new KEY_CODE constants ^_^
 
 	public CatKeyEvent(KeyEvent origEvent) {
@@ -87,6 +91,11 @@ public class CatKeyEvent extends KeyEvent {
 
 	public CatKeyEvent(int action, int code) {
 		super(action, code);
+	}
+
+	public CatKeyEvent(String userVariableName) {
+		super(KeyEvent.ACTION_DOWN, KEYCODE_USER_VARIABLE);
+		this.userVariableName = userVariableName;
 	}
 
 	public List<InternToken> createInternTokensByCatKeyEvent() {
@@ -187,10 +196,21 @@ public class CatKeyEvent extends KeyEvent {
 			case CatKeyEvent.KEYCODE_LOOK_LAYER:
 				return buildLook(Sensors.LOOK_LAYER_);
 
+				//USER VARIABLES
+
+			case CatKeyEvent.KEYCODE_USER_VARIABLE:
+				return buildUserVariable();
+
 		}
 
 		return null;
 
+	}
+
+	private List<InternToken> buildUserVariable() {
+		List<InternToken> returnList = new LinkedList<InternToken>();
+		returnList.add(new InternToken(InternTokenType.USER_VARIABLE, userVariableName));
+		return returnList;
 	}
 
 	private List<InternToken> buildPeriod() {
