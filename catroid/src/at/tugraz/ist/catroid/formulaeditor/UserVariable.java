@@ -82,6 +82,11 @@ public class UserVariable {
 
 	}
 
+	@Override
+	public String toString() {
+		return name;
+	}
+
 	public Double getValue() {
 		return value;
 	}

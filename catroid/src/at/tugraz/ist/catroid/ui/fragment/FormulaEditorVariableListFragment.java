@@ -52,8 +52,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import at.tugraz.ist.catroid.ProjectManager;
 import at.tugraz.ist.catroid.R;
+import at.tugraz.ist.catroid.content.Project;
+import at.tugraz.ist.catroid.content.Sprite;
+import at.tugraz.ist.catroid.formulaeditor.CatKeyEvent;
 import at.tugraz.ist.catroid.formulaeditor.FormulaEditorEditText;
+import at.tugraz.ist.catroid.formulaeditor.UserVariable;
+import at.tugraz.ist.catroid.formulaeditor.UserVariablesContainer;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -87,16 +93,25 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 		mDeleteIndex = -1;
 		mInContextMode = false;
 		mItems = new ArrayList<String>();
-		mItems.add("EASY");
-		mItems.add("gg2easy");
-		mItems.add("3rd");
-		mItems.add("easywin");
+		//		mItems.add("EASY");
+		//		mItems.add("gg2easy");
+		//		mItems.add("3rd");
+		//		mItems.add("easywin");
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+		Sprite curSpr = ProjectManager.getInstance().getCurrentSprite();
+		String cur = curSpr.getName();
+		Project currentProject = ProjectManager.getInstance().getCurrentProject();
+		UserVariablesContainer uvc = currentProject.getUserVariables();
+		List<UserVariable> userVariables = uvc.getUserVariables(cur);
+		for (UserVariable userVariable : userVariables) {
+			mItems.add(userVariable.toString());
+		}
+		setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mItems));
 
 	}
 
@@ -139,17 +154,18 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 		if (mInContextMode) {
 			String title = countCheckedListItems() + " items selected"; // TODO: r.string
 			mContextActionMode.setTitle(title);
+		} else {
+			mFormulaEditorEditText.handleKeyEvent(new CatKeyEvent(mItems.get(position)));
+			KeyEvent keyEvent = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK);
+			onKey(null, keyEvent.getKeyCode(), keyEvent);
 		}
-		//		mFormulaEditorEditText.handleKeyEvent(new CatKeyEvent(CatKeyEvent.ACTION_DOWN, mOffset + position));
-		//		KeyEvent keyEvent = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK);
-		//		onKey(null, keyEvent.getKeyCode(), keyEvent);
+
 	}
 
 	@Override
 	public void onStart() {
 
 		this.registerForContextMenu(getListView());
-		setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mItems));
 		getListView().setLongClickable(true);
 		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -197,6 +213,13 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 								EditText dialogEdittext = (EditText) dialogNewVariable
 										.findViewById(R.id.dialog_formula_editor_variable_name_edit_text);
 								String editTextString = dialogEdittext.getText().toString();
+								if (leftDialogRadioButton.isChecked()) {
+									ProjectManager.getInstance().getCurrentProject().getUserVariables()
+											.addProjectUserVariable(editTextString, 5.0);//TODO implement stuff
+								} else if (rightDialogRadioButton.isChecked()) {
+									ProjectManager.getInstance().getCurrentProject().getUserVariables()
+											.addSpriteUserVariable(editTextString, 5.0);//TODO implement stuff
+								}
 								mItems.add(editTextString);
 								setListAdapter(new ArrayAdapter<String>(getActivity(),
 										android.R.layout.simple_list_item_1, mItems));
@@ -259,7 +282,8 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 		switch (item.getItemId()) {
 			case R.id.menu_delete:
 				if (!mItems.isEmpty()) {
-					mItems.remove(mDeleteIndex);
+					ProjectManager.getInstance().getCurrentProject().getUserVariables()
+							.deleteUserVariableByName(mItems.remove(mDeleteIndex));
 					setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mItems));
 				}
 				return true;
@@ -344,9 +368,10 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 			SparseBooleanArray checkedItemPositions = getListView().getCheckedItemPositions();
 			Log.i("info", "checkedItemPositions.length(): " + checkedItemPositions.size());
 
-			for (int index = 0; index < getListView().getCount(); index++) {
+			for (int index = 0; index < mItems.size(); index++) {
 				if (checkedItemPositions.get(index) == true) {
-					mItems.remove(index);
+					ProjectManager.getInstance().getCurrentProject().getUserVariables()
+							.deleteUserVariableByName(mItems.remove(index--));
 				}
 			}
 			setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mItems));
