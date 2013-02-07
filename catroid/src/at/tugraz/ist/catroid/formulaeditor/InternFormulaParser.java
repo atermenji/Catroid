@@ -26,6 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import at.tugraz.ist.catroid.ProjectManager;
+import at.tugraz.ist.catroid.content.Sprite;
 
 public class InternFormulaParser {
 
@@ -247,7 +248,9 @@ public class InternFormulaParser {
 	private FormulaElement userVariable() throws InternFormulaParserException {
 		UserVariables userVariables = ProjectManager.getInstance().getCurrentProject().getUserVariables();
 
-		if (userVariables.getUserVariableByName(currentToken.getTokenSringValue()) == null) {
+		String spriteName = Thread.currentThread().getName().substring(Sprite.SCRIPT_THREAD_NAME_PREFIX.length());
+
+		if (userVariables.getUserVariableByNameAndSprite(currentToken.getTokenSringValue(), spriteName) == null) {
 			throw new InternFormulaParserException("Parse Error");
 		}
 
