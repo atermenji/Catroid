@@ -67,7 +67,6 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 	public static final String VARIABLE_TAG = "variableFragment";
 
 	private final String mTag;
-	//	private String[] mItems = { "EASY", "2easy", "3rd", "4th" };
 	List<String> mItems;
 	private FormulaEditorEditText mFormulaEditorEditText;
 	private String mActionBarTitle;
@@ -98,7 +97,7 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mItems));
+
 	}
 
 	@Override
@@ -149,7 +148,8 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 	@Override
 	public void onStart() {
 
-		registerForContextMenu(getView());
+		this.registerForContextMenu(getListView());
+		setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mItems));
 		getListView().setLongClickable(true);
 		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -260,6 +260,7 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 			case R.id.menu_delete:
 				if (!mItems.isEmpty()) {
 					mItems.remove(mDeleteIndex);
+					setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mItems));
 				}
 				return true;
 			default:
@@ -278,7 +279,7 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 		fragTransaction.hide(formulaEditorFragment);
 		//		fragTransaction.replace(R.id.fragment_formula_editor, this);
 		//		fragTransaction.remove(formulaEditorFragment);
-		fragTransaction.add(android.R.id.tabhost, this, mTag);
+		fragTransaction.add(android.R.id.tabhost, this, FormulaEditorVariableListFragment.VARIABLE_TAG);
 		fragTransaction.commit();
 
 	}

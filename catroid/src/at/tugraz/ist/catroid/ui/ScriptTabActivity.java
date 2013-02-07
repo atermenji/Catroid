@@ -118,8 +118,8 @@ public class ScriptTabActivity extends SherlockFragmentActivity implements Error
 	@Override
 	public boolean onContextItemSelected(android.view.MenuItem item) {
 		Log.i("info", "STA.onContextItemSelected");
-		//		getFragmentManager().findFragmentByTag(FormulaEditorVariableListFragment.VARIABLE_TAG).onContextItemSelected(
-		//				item);
+		getSupportFragmentManager().findFragmentByTag(FormulaEditorVariableListFragment.VARIABLE_TAG)
+				.onContextItemSelected(item);
 		return super.onContextItemSelected(item);
 	}
 
