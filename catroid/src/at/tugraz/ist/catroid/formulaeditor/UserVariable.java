@@ -87,7 +87,11 @@ public class UserVariable {
 		return name;
 	}
 
-	public Double getValue() {
+	public synchronized Double getValue() {
 		return value;
+	}
+
+	public synchronized void setValue(Double value) {
+		this.value = value;
 	}
 }
