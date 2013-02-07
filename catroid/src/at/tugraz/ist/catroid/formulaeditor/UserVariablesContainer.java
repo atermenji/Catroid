@@ -25,31 +25,41 @@ package at.tugraz.ist.catroid.formulaeditor;
 import java.util.LinkedList;
 import java.util.List;
 
+import at.tugraz.ist.catroid.ProjectManager;
 import at.tugraz.ist.catroid.formulaeditor.UserVariableScope.ScopeType;
 
-public class UserVariables {
+public class UserVariablesContainer {
 
 	private List<UserVariable> userVariables;
 
-	public UserVariables() {
+	public UserVariablesContainer() {
 		userVariables = new LinkedList<UserVariable>();
 	}
 
-	public UserVariable getUserVariableByNameAndSprite(String userVariableName, String spriteName) {
-		return UserVariable.getUserVariableByName(userVariableName, userVariables); //TODO goon heere
+	public UserVariable getUserVariable(String userVariableName, String spriteName) {
+		return UserVariable.getUserVariable(userVariableName, userVariables, spriteName);
 	}
 
-	public List<UserVariable> getUserVariablesByCurrentScope() {
-		return UserVariable.getUserVariablesByCurrentScope(userVariables);
+	public List<UserVariable> getUserVariables(String scopeName) {
+		return UserVariable.getUserVariables(userVariables, scopeName);
 	}
 
-	public void addUserVariable(String userVariableName, Double userVariableValue, ScopeType scopeType, String scopeName) {
-		UserVariableScope userVariableScope = new UserVariableScope(scopeName, scopeType);
+	public void addSpriteUserVariable(String userVariableName, Double userVariableValue) {
+		String spriteName = ProjectManager.getInstance().getCurrentSprite().getName();
+		UserVariableScope userVariableScope = new UserVariableScope(spriteName, ScopeType.SPRITE);
+		UserVariable userVariableToAdd = new UserVariable(userVariableName, userVariableValue, userVariableScope);
+		userVariables.add(userVariableToAdd);
+	}
+
+	public void addProjectUserVariable(String userVariableName, Double userVariableValue) {
+		String projectName = ProjectManager.getInstance().getCurrentProject().getName();
+		UserVariableScope userVariableScope = new UserVariableScope(projectName, ScopeType.PROJECT);
 		UserVariable userVariableToAdd = new UserVariable(userVariableName, userVariableValue, userVariableScope);
 		userVariables.add(userVariableToAdd);
 	}
 
 	public void deleteUserVariableByName(String userVariableName) {
-		UserVariable.deleteUserVariableByName(userVariableName, userVariables);
+		String spriteName = ProjectManager.getInstance().getCurrentSprite().getName();
+		UserVariable.deleteUserVariableByName(userVariableName, userVariables, spriteName);
 	}
 }

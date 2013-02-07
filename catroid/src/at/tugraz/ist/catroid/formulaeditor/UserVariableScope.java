@@ -7,7 +7,7 @@ public class UserVariableScope {
 	private ScopeType scopeType;
 
 	public static enum ScopeType {
-		SPRITE, PROJECT, UNIVERSE
+		SPRITE, PROJECT
 	}
 
 	public UserVariableScope(String name, ScopeType scopeType) {
@@ -15,11 +15,11 @@ public class UserVariableScope {
 		this.name = name;
 	}
 
-	public boolean checkScope() {
+	public boolean checkScope(String spriteName) {
 
 		switch (scopeType) {
 			case SPRITE:
-				if (ProjectManager.getInstance().getCurrentSprite().getName().equals(name)) {
+				if (spriteName.equals(name)) {
 					return true;
 				}
 				break;
@@ -33,4 +33,5 @@ public class UserVariableScope {
 		return false;
 
 	}
+
 }

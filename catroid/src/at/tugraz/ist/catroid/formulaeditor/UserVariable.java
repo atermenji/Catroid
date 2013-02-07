@@ -45,34 +45,32 @@ public class UserVariable {
 		this.name = name; //TODO encode Name
 	}
 
-	public boolean checkScope() {
-		return scope.checkScope();
-	}
-
-	public static UserVariable getUserVariableByName(String userVariableName, List<UserVariable> userVariables) {
+	public static UserVariable getUserVariable(String userVariableName, List<UserVariable> userVariables,
+			String spriteName) {
 		for (UserVariable userVariable : userVariables) {
-			if (userVariable.name.equals(userVariableName)) {
+			if (userVariable.name.equals(userVariableName) && userVariable.scope.checkScope(spriteName)) {
 				return userVariable;
 			}
 		}
 		return null;
 	}
 
-	public static List<UserVariable> getUserVariablesByCurrentScope(List<UserVariable> userVariables) {
+	public static List<UserVariable> getUserVariables(List<UserVariable> userVariables, String scopeName) {
 		List<UserVariable> returnList = new LinkedList<UserVariable>();
 		for (UserVariable userVariable : userVariables) {
-			if (userVariable.scope.checkScope()) {
+			if (userVariable.scope.checkScope(scopeName)) {
 				returnList.add(userVariable);
 			}
 		}
 		return returnList;
 	}
 
-	public static void deleteUserVariableByName(String userVariableName, List<UserVariable> userVariables) {
+	public static void deleteUserVariableByName(String userVariableName, List<UserVariable> userVariables,
+			String spriteName) {
 		UserVariable userVariableToDelete = null;
 		boolean deleteItem = false;
 		for (UserVariable userVariable : userVariables) {
-			if (userVariable.name.equals(userVariableName) && userVariable.scope.checkScope()) {
+			if (userVariable.name.equals(userVariableName) && userVariable.scope.checkScope(spriteName)) {
 				userVariableToDelete = userVariable;
 				deleteItem = true;
 				break;

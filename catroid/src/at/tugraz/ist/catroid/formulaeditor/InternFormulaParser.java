@@ -246,11 +246,11 @@ public class InternFormulaParser {
 	}
 
 	private FormulaElement userVariable() throws InternFormulaParserException {
-		UserVariables userVariables = ProjectManager.getInstance().getCurrentProject().getUserVariables();
+		UserVariablesContainer userVariables = ProjectManager.getInstance().getCurrentProject().getUserVariables();
 
 		String spriteName = Thread.currentThread().getName().substring(Sprite.SCRIPT_THREAD_NAME_PREFIX.length());
 
-		if (userVariables.getUserVariableByNameAndSprite(currentToken.getTokenSringValue(), spriteName) == null) {
+		if (userVariables.getUserVariable(currentToken.getTokenSringValue(), spriteName) == null) {
 			throw new InternFormulaParserException("Parse Error");
 		}
 
