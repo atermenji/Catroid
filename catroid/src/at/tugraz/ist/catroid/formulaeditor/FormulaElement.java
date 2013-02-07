@@ -27,6 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.util.Log;
+import at.tugraz.ist.catroid.ProjectManager;
 
 public class FormulaElement implements Serializable {
 
@@ -267,8 +268,13 @@ public class FormulaElement implements Serializable {
 		} else if (type == ElementType.SENSOR) {
 			returnValue = SensorHandler.getSensorValue(value);
 		} else if (type == ElementType.USER_VARIABLE) {
-			//			TODO handle UserVariables
-			return null;
+			UserVariables userVariables = ProjectManager.getInstance().getCurrentProject().getUserVariables();
+			UserVariable userVariable = userVariables.getUserVariableByName(value);
+			if (userVariable == null) {
+				return 0d;
+			}
+
+			return userVariable.getValue();
 		}
 
 		returnValue = checkDegeneratedDoubleValues(returnValue);

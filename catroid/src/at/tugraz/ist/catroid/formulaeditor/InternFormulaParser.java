@@ -245,9 +245,8 @@ public class InternFormulaParser {
 	}
 
 	private FormulaElement userVariable() throws InternFormulaParserException {
-		//TODO check if user-variable exists
-
 		UserVariables userVariables = ProjectManager.getInstance().getCurrentProject().getUserVariables();
+
 		if (userVariables.getUserVariableByName(currentToken.getTokenSringValue()) == null) {
 			throw new InternFormulaParserException("Parse Error");
 		}
