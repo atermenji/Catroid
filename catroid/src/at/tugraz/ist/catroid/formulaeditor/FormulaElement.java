@@ -269,7 +269,12 @@ public class FormulaElement implements Serializable {
 		} else if (type == ElementType.SENSOR) {
 			returnValue = SensorHandler.getSensorValue(value);
 		} else if (type == ElementType.USER_VARIABLE) {
-			String spriteName = Thread.currentThread().getName().substring(Sprite.SCRIPT_THREAD_NAME_PREFIX.length()); //TODO do not save in Thread
+			String spriteName = "";
+			if (Thread.currentThread().getName().startsWith(Sprite.SCRIPT_THREAD_NAME_PREFIX)) {
+				spriteName = Thread.currentThread().getName().substring(Sprite.SCRIPT_THREAD_NAME_PREFIX.length()); //TODO do not save in Thread
+			} else {
+				spriteName = ProjectManager.getInstance().getCurrentSprite().getName();
+			}
 
 			UserVariablesContainer userVariables = ProjectManager.getInstance().getCurrentProject().getUserVariables();
 			UserVariable userVariable = userVariables.getUserVariable(value, spriteName);

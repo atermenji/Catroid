@@ -248,7 +248,12 @@ public class InternFormulaParser {
 	private FormulaElement userVariable() throws InternFormulaParserException {
 		UserVariablesContainer userVariables = ProjectManager.getInstance().getCurrentProject().getUserVariables();
 
-		String spriteName = Thread.currentThread().getName().substring(Sprite.SCRIPT_THREAD_NAME_PREFIX.length());
+		String spriteName = "";
+		if (Thread.currentThread().getName().startsWith(Sprite.SCRIPT_THREAD_NAME_PREFIX)) {
+			spriteName = Thread.currentThread().getName().substring(Sprite.SCRIPT_THREAD_NAME_PREFIX.length()); //TODO do not save in Thread
+		} else {
+			spriteName = ProjectManager.getInstance().getCurrentSprite().getName();
+		}
 
 		if (userVariables.getUserVariable(currentToken.getTokenSringValue(), spriteName) == null) {
 			throw new InternFormulaParserException("Parse Error");
