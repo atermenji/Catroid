@@ -35,8 +35,8 @@ public class UserVariables {
 		userVariables = new LinkedList<UserVariable>();
 	}
 
-	public UserVariable getUserVariableByName(String userVariableName) {
-		return UserVariable.getUserVariableByName(userVariableName, userVariables);
+	public UserVariable getUserVariableByNameAndSprite(String userVariableName, String spriteName) {
+		return UserVariable.getUserVariableByName(userVariableName, userVariables); //TODO goon heere
 	}
 
 	public List<UserVariable> getUserVariablesByCurrentScope() {

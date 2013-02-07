@@ -28,6 +28,7 @@ import java.util.List;
 
 import android.util.Log;
 import at.tugraz.ist.catroid.ProjectManager;
+import at.tugraz.ist.catroid.content.Sprite;
 
 public class FormulaElement implements Serializable {
 
@@ -268,8 +269,10 @@ public class FormulaElement implements Serializable {
 		} else if (type == ElementType.SENSOR) {
 			returnValue = SensorHandler.getSensorValue(value);
 		} else if (type == ElementType.USER_VARIABLE) {
+			String spriteName = Thread.currentThread().getName().substring(Sprite.SCRIPT_THREAD_NAME_PREFIX.length());
+
 			UserVariables userVariables = ProjectManager.getInstance().getCurrentProject().getUserVariables();
-			UserVariable userVariable = userVariables.getUserVariableByName(value);
+			UserVariable userVariable = userVariables.getUserVariableByNameAndSprite(value, spriteName);
 			if (userVariable == null) {
 				return 0d;
 			}
