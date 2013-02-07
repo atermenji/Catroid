@@ -22,6 +22,9 @@
  */
 package at.tugraz.ist.catroid.ui.fragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -45,6 +48,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -63,7 +67,8 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 	public static final String VARIABLE_TAG = "variableFragment";
 
 	private final String mTag;
-	private String[] mItems = { "EASY", "2easy", "3rd", "4th" };
+	//	private String[] mItems = { "EASY", "2easy", "3rd", "4th" };
+	List<String> mItems;
 	private FormulaEditorEditText mFormulaEditorEditText;
 	private String mActionBarTitle;
 	private com.actionbarsherlock.view.ActionMode mContextActionMode;
@@ -82,6 +87,11 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 		mContextActionMode = null;
 		mDeleteIndex = -1;
 		mInContextMode = false;
+		mItems = new ArrayList<String>();
+		mItems.add("EASY");
+		mItems.add("gg2easy");
+		mItems.add("3rd");
+		mItems.add("easywin");
 	}
 
 	@Override
@@ -147,13 +157,9 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 			public boolean onItemLongClick(AdapterView<?> arg0, View view, int position, long id) {
 				Log.i("info", "onItemLongClick()");
 				if (!mInContextMode) {
-					mItems[position] = "itemLongClick";
 					mDeleteIndex = position;
 					//					arg0.setPressed(true);
 					//					arg0	.setBackgroundResource(R.color.backbrown);
-					ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
-							android.R.layout.simple_list_item_1, mItems);
-					setListAdapter(arrayAdapter);
 					getSherlockActivity().openContextMenu(getListView());
 					return true;
 				}
@@ -182,17 +188,22 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 						.setTitle("Variable name ?").setNegativeButton(R.string.cancel_button, new OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
-								// TODO Auto-generated method stub
-
+								dialogNewVariable.cancel();
 							}
 
 						}).setPositiveButton(R.string.ok, new OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
-								// TODO Auto-generated method stub
+								EditText dialogEdittext = (EditText) dialogNewVariable
+										.findViewById(R.id.dialog_formula_editor_variable_name_edit_text);
+								String editTextString = dialogEdittext.getText().toString();
+								mItems.add(editTextString);
+								setListAdapter(new ArrayAdapter<String>(getActivity(),
+										android.R.layout.simple_list_item_1, mItems));
 
 							}
 						}).create();
+				dialogNewVariable.setCanceledOnTouchOutside(true);
 				dialogNewVariable.show();
 				leftDialogRadioButton = (RadioButton) dialogNewVariable
 						.findViewById(R.id.dialog_formula_editor_variable_name_radio_button_left);
@@ -247,7 +258,9 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 		Log.i("info", "FEVLF.onContextItemSelected");
 		switch (item.getItemId()) {
 			case R.id.menu_delete:
-				mItems[mDeleteIndex] = "del";
+				if (!mItems.isEmpty()) {
+					mItems.remove(mDeleteIndex);
+				}
 				return true;
 			default:
 				return super.onContextItemSelected(item);
@@ -332,7 +345,7 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 
 			for (int index = 0; index < getListView().getCount(); index++) {
 				if (checkedItemPositions.get(index) == true) {
-					mItems[index] = "checked";
+					mItems.remove(index);
 				}
 			}
 			setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mItems));
