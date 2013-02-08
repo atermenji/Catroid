@@ -53,13 +53,13 @@ import at.tugraz.ist.catroid.ui.fragment.FormulaEditorVariableListFragment;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
-public class CatKeyboardView extends KeyboardView implements KeyboardView.OnKeyboardActionListener {
+public class CatKeyboard extends KeyboardView implements KeyboardView.OnKeyboardActionListener {
 
 	private FormulaEditorEditText mFormulaEditorEditText;
 	private Keyboard mFormulaEditorKeyboard;
 	private Context mContext;
 
-	public CatKeyboardView(Context context, AttributeSet attrs) {
+	public CatKeyboard(Context context, AttributeSet attrs) {
 
 		super(context, attrs);
 		mContext = context;

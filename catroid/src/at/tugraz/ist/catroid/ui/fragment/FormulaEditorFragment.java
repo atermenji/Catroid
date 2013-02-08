@@ -36,7 +36,6 @@ import android.widget.LinearLayout;
 import at.tugraz.ist.catroid.ProjectManager;
 import at.tugraz.ist.catroid.R;
 import at.tugraz.ist.catroid.content.bricks.Brick;
-import at.tugraz.ist.catroid.formulaeditor.CatKeyboardView;
 import at.tugraz.ist.catroid.formulaeditor.Formula;
 import at.tugraz.ist.catroid.formulaeditor.FormulaEditorEditText;
 import at.tugraz.ist.catroid.formulaeditor.FormulaElement;
@@ -65,7 +64,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 	private Brick currentBrick;
 	private Formula currentFormula;
 	private FormulaEditorEditText formulaEditorEditText;
-	private CatKeyboardView catKeyboardView;
+	private LinearLayout catKeyboardView;
 	private LinearLayout brickSpace;
 	private View brickView;
 	private long[] confirmBackTimeStamp = { 0, 0 };
@@ -153,15 +152,14 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		if (brickSpace != null) {
 			brickSpace.measure(0, 0);
 		}
-		catKeyboardView = (CatKeyboardView) dialogView.findViewById(R.id.keyboardcat);
-		catKeyboardView.setFormulaEditText(formulaEditorEditText);
+		catKeyboardView = (LinearLayout) dialogView.findViewById(R.id.formula_editor_keyboard);
+		//		catKeyboardView.setFormulaEditText(formulaEditorEditText);
 
 		if (brickSpace != null) {
 			formulaEditorEditText.init(this, brickSpace.getMeasuredHeight(), catKeyboardView);
 		} else {
 			formulaEditorEditText.init(this, 0, catKeyboardView);
 		}
-
 		setInputFormula(currentFormula, SET_FORMULA_ON_CREATE_VIEW);
 
 		return dialogView;

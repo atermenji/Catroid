@@ -51,7 +51,12 @@
         android:scrollbars="vertical"
         android:singleLine="false"
         android:textSize="@dimen/text_size_xxlarge" />
-
+    
+    <include
+        android:id="@+id/formula_editor_keyboard" 
+        android:layout_below="@+id/formula_editor_edit_field"
+        layout="@layout/formula_editor_keyboard"/>
+<!--  
     <at.tugraz.ist.catroid.formulaeditor.CatKeyboardView
         android:id="@+id/keyboardcat"
         android:layout_width="match_parent"
@@ -60,5 +65,5 @@
         android:keyPreviewHeight="0sp"
         android:keyTextColor="#ffffff"
         android:visibility="visible" />
-
+-->
 </RelativeLayout>
