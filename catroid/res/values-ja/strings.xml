@@ -269,7 +269,7 @@
     <string name="nxt_play_tone">"NXTの再生音"</string>
     <string name="tone_duration">"時間"</string>
     <string name="nxt_tone_frequency">"周波数"</string>
-    <string name="nxt_tone_hundred_hz">"x100Hz"</string>
+    <string name="nxt_tone_hz">"Hz"</string>
     <string name="number_to_small">"値が小さすぎる！"</string>
     <string name="number_to_big">"値が大きすぎる！"</string>
 </resources>

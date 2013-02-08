@@ -307,7 +307,7 @@
     <string name="nxt_play_tone">NXT play tone</string>
     <string name="tone_duration">Duration</string>
     <string name="nxt_tone_frequency">Frequency</string>
-    <string name="nxt_tone_hundred_hz">x100Hz</string>
+    <string name="nxt_tone_hz">Hz</string>
     <string name="select_image">Select image</string>
     <!-- Formula Editor Strings -->
     <string name="formula_editor_decimal_mark">.</string>

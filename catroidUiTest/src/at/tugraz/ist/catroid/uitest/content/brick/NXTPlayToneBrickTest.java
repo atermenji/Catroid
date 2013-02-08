@@ -44,7 +44,7 @@ import com.jayway.android.robotium.solo.Solo;
 public class NXTPlayToneBrickTest extends ActivityInstrumentationTestCase2<ScriptTabActivity> {
 	private static final double SET_DURATION = 3.0;
 	private static final int SET_FREQUENCY = 70;
-	private static final int SET_FREQUENCY_INITIALLY = 20;
+	private static final int SET_FREQUENCY_INITIALLY = 2000;
 
 	private Solo solo;
 	private Project project;
@@ -98,7 +98,7 @@ public class NXTPlayToneBrickTest extends ActivityInstrumentationTestCase2<Scrip
 		Script script = new StartScript(sprite);
 
 		int setDurationInitially = 1000;
-		playToneBrick = new NXTPlayToneBrick(sprite, SET_FREQUENCY_INITIALLY * 100, setDurationInitially);
+		playToneBrick = new NXTPlayToneBrick(sprite, SET_FREQUENCY_INITIALLY, setDurationInitially);
 
 		script.addBrick(playToneBrick);
 		sprite.addScript(script);

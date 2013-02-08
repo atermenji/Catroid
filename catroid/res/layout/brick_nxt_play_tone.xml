@@ -150,7 +150,7 @@
                     style="@style/brick_text_style"
                     android:layout_centerVertical="true"
                     android:paddingRight="10dip"
-                    android:text="@string/nxt_tone_hundred_hz" >
+                    android:text="@string/nxt_tone_hz" >
                 </TextView>
             </LinearLayout>
         </RelativeLayout>
