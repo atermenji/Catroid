@@ -53,15 +53,17 @@ public class CatKeyEvent extends KeyEvent {
 	public static final int KEYCODE_SENSOR7 = 1107;
 
 	/* LOOK + Backets */
-	public static final int KEYCODE_BRACKET = 1200;
-	public static final int KEYCODE_LOOK_BUTTON = 1201;
-	public static final int KEYCODE_LOOK_X = 1202;
-	public static final int KEYCODE_LOOK_Y = 1203;
-	public static final int KEYCODE_LOOK_GHOSTEFFECT = 1204;
-	public static final int KEYCODE_LOOK_BRIGHTNESS = 1205;
-	public static final int KEYCODE_LOOK_SIZE = 1206;
-	public static final int KEYCODE_LOOK_ROTATION = 1207;
-	public static final int KEYCODE_LOOK_LAYER = 1208;
+	public static final int KEYCODE_BRACKET_OPEN = 1200;
+	public static final int KEYCODE_BRACKET_CLOSE = 1201;
+
+	public static final int KEYCODE_LOOK_BUTTON = 1202;
+	public static final int KEYCODE_LOOK_X = 1203;
+	public static final int KEYCODE_LOOK_Y = 1204;
+	public static final int KEYCODE_LOOK_GHOSTEFFECT = 1205;
+	public static final int KEYCODE_LOOK_BRIGHTNESS = 1206;
+	public static final int KEYCODE_LOOK_SIZE = 1207;
+	public static final int KEYCODE_LOOK_ROTATION = 1208;
+	public static final int KEYCODE_LOOK_LAYER = 1209;
 
 	/* OPERATORS */
 	public static final int KEYCODE_NOT_EQUAL = 1300;
@@ -176,8 +178,10 @@ public class CatKeyEvent extends KeyEvent {
 
 				//BRACKET
 
-			case CatKeyEvent.KEYCODE_BRACKET:
-				return buildBracket("0");
+			case CatKeyEvent.KEYCODE_BRACKET_OPEN:
+				return buildBracketOpen();
+			case CatKeyEvent.KEYCODE_BRACKET_CLOSE:
+				return buildBracketClose();
 
 				//COSTUME
 
@@ -231,10 +235,14 @@ public class CatKeyEvent extends KeyEvent {
 		return returnList;
 	}
 
-	private List<InternToken> buildBracket(String bracketValue) {
+	private List<InternToken> buildBracketOpen() {
 		List<InternToken> returnList = new LinkedList<InternToken>();
 		returnList.add(new InternToken(InternTokenType.BRACKET_OPEN));
-		returnList.add(new InternToken(InternTokenType.NUMBER, bracketValue));
+		return returnList;
+	}
+
+	private List<InternToken> buildBracketClose() {
+		List<InternToken> returnList = new LinkedList<InternToken>();
 		returnList.add(new InternToken(InternTokenType.BRACKET_CLOSE));
 		return returnList;
 	}

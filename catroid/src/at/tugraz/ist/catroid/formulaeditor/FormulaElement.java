@@ -38,7 +38,7 @@ public class FormulaElement implements Serializable {
 		OPERATOR, FUNCTION, NUMBER, SENSOR, USER_VARIABLE, BRACKET
 	}
 
-	public boolean isFloat;
+	public transient boolean isFloat;
 	private ElementType type;
 	private String value;
 	private FormulaElement leftChild = null;

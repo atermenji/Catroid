@@ -88,7 +88,8 @@
 		
 	</Row>
 	    <Row  android:rowEdgeFlags="bottom">
-    	<Key android:codes="1200" android:keyLabel="( )" android:keyWidth="35%p" android:keyEdgeFlags="left"/>
+    	<Key android:codes="1200" android:keyLabel="("  android:keyEdgeFlags="left"/>
+    	<Key android:codes="1201" android:keyLabel=")"  />
 		<Key android:codes="1008" android:keyLabel="@string/formula_editor_function_rand" android:keyWidth="35%p"/>
         <Key android:codes="1700" android:keyLabel="@string/formula_editor_variables" android:keyWidth="30%p" android:keyEdgeFlags="right" />
 	</Row>
