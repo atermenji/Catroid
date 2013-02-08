@@ -106,7 +106,7 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 			updateTextAndCursorFromInternFormula();
 		}
 
-		formulaEditorDialog.refreshFormulaPreviewString(this.getText().toString());
+		formulaEditorDialog.refreshFormulaPreviewString();
 
 		return true;
 	}
@@ -176,7 +176,7 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 		history.push(internFormula.getInternFormulaState());
 		updateTextAndCursorFromInternFormula();
 		setSelection(absoluteCursorPosition);
-		formulaEditorDialog.refreshFormulaPreviewString(this.getText().toString());
+		formulaEditorDialog.refreshFormulaPreviewString();
 	}
 
 	public boolean hasChanges() {
@@ -208,7 +208,7 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 			updateTextAndCursorFromInternFormula();
 		}
 
-		formulaEditorDialog.refreshFormulaPreviewString(this.getText().toString());
+		formulaEditorDialog.refreshFormulaPreviewString();
 		return true;
 	}
 
@@ -223,7 +223,7 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 			internFormula.generateExternFormulaStringAndInternExternMapping(context);
 			updateTextAndCursorFromInternFormula();
 		}
-		formulaEditorDialog.refreshFormulaPreviewString(this.getText().toString());
+		formulaEditorDialog.refreshFormulaPreviewString();
 		return true;
 	}
 
@@ -332,6 +332,7 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 
 					history.updateCurrentSelection(internFormula.getSelection());
 				}
+				formulaEditorDialog.refreshFormulaPreviewString();
 			}
 			return true;
 
@@ -346,5 +347,9 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 
 	public InternFormulaParser getFormulaParser() {
 		return internFormula.getInternFormulaParser();
+	}
+
+	public int getAbsoluteCursorPosition() {
+		return absoluteCursorPosition;
 	}
 }
