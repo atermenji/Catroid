@@ -36,6 +36,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import at.tugraz.ist.catroid.formulaeditor.InternFormula.TokenSelectionType;
 import at.tugraz.ist.catroid.ui.fragment.FormulaEditorFragment;
 
@@ -50,7 +51,7 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 	private Spannable highlightSpan = null;
 	private float lineHeight = 0;
 
-	public CatKeyboardView catKeyboardView;
+	public LinearLayout catKeyboardView;
 	private static FormulaEditorHistory history = null;
 	private Context context;
 
@@ -71,7 +72,7 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 		this.context = context;
 	}
 
-	public void init(FormulaEditorFragment dialog, int brickHeight, CatKeyboardView ckv) {
+	public void init(FormulaEditorFragment dialog, int brickHeight, LinearLayout ckv) {
 		this.formulaEditorDialog = dialog;
 		this.setOnTouchListener(this);
 		this.setLongClickable(false);
@@ -170,9 +171,9 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 
 	}
 
-	public void handleKeyEvent(CatKeyEvent catKey) {
+	public void handleKeyEvent(int resource, String userVariableName) {
 
-		internFormula.handleKeyInput(catKey, context);
+		internFormula.handleKeyInput(resource, context, userVariableName);
 		history.push(internFormula.getInternFormulaState());
 		updateTextAndCursorFromInternFormula();
 		setSelection(absoluteCursorPosition);

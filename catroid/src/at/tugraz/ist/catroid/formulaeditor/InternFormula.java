@@ -27,7 +27,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.KeyEvent;
+import at.tugraz.ist.catroid.R;
 
 public class InternFormula {
 
@@ -135,14 +135,15 @@ public class InternFormula {
 		}
 	}
 
-	public synchronized void handleKeyInput(CatKeyEvent catKeyEvent, Context context) {
+	public synchronized void handleKeyInput(int resId, Context context, String userVariableName) {
 		Log.i("info", "handleKeyInput:enter");
 
-		List<InternToken> catKeyEventTokenList = catKeyEvent.createInternTokensByCatKeyEvent();
+		List<InternToken> catKeyEventTokenList = new InternFormulaHelper().createInternTokensByCatKeyEvent(resId,
+				userVariableName);
 
 		CursorTokenPropertiesAfterModification cursorTokenPropertiesAfterInput = CursorTokenPropertiesAfterModification.DO_NOT_MODIFY;
 
-		if (catKeyEvent.getKeyCode() == KeyEvent.KEYCODE_DEL) {
+		if (resId == R.id.formula_editor_keyboard_delete) {
 
 			cursorTokenPropertiesAfterInput = handleDeletion();
 
