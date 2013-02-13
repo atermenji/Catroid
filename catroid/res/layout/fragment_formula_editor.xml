@@ -49,7 +49,7 @@
         android:textSize="@dimen/text_size_xxlarge" />
 
     <include
-        android:id="@+id/formula_editor_keyboard"
+        android:id="@+id/formula_editor_keyboardview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
