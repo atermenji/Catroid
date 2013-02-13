@@ -33,6 +33,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import at.tugraz.ist.catroid.ProjectManager;
 import at.tugraz.ist.catroid.R;
@@ -168,12 +169,15 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 
 	@Override
 	public void onStart() {
-		catKeyboardView.setOnClickListener(new View.OnClickListener() {
+		catKeyboardView.setClickable(true);
+
+		View.OnClickListener clickListener = new View.OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
-				Log.i("info", "id: " + getView().getId());
-				switch (getView().getId()) {
+
+				Log.i("info", "viewId: " + view.getId());
+				switch (view.getId()) {
 				//					case KeyEvent.KEYCODE_MENU:
 				//						// TODO: Do we need this KeyEvent ? :O
 				//						break;
@@ -223,12 +227,22 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 								R.string.formula_editor_variables);
 						break;
 					default:
-						formulaEditorEditText.handleKeyEvent(getView().getId(), "");
+						formulaEditorEditText.handleKeyEvent(view.getId(), "");
 						break;
 				}
 
 			}
-		});
+		};
+
+		for (int index = 0; index < catKeyboardView.getChildCount(); index++) {
+			//			Log.i("info", "index: " + index);
+			LinearLayout child = (LinearLayout) catKeyboardView.getChildAt(index);
+			for (int nestedIndex = 0; nestedIndex < child.getChildCount(); nestedIndex++) {
+				//				Log.i("info", "nestedIndex: " + nestedIndex);
+				Button key = (Button) child.getChildAt(nestedIndex);
+				key.setOnClickListener(clickListener);
+			}
+		}
 		super.onStart();
 	}
 
