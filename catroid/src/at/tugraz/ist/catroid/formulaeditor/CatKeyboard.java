@@ -93,8 +93,6 @@ public class CatKeyboard extends KeyboardView implements KeyboardView.OnKeyboard
 	@Override
 	public void onKey(int primaryCode, int[] keyCodes) {
 
-		CatKeyEvent catKeyEvent = null;
-
 		switch (primaryCode) {
 			case KeyEvent.KEYCODE_MENU:
 				// TODO: Do we need this KeyEvent ? :O
@@ -102,7 +100,7 @@ public class CatKeyboard extends KeyboardView implements KeyboardView.OnKeyboard
 			case KeyEvent.KEYCODE_EQUALS:
 				//TODO implement 
 				break;
-			case CatKeyEvent.KEYCODE_COMPUTE:
+			case R.id.formula_editor_keyboard_compute:
 				//TODO implement functionality (interpret) and output dialog ( Issue 8.64c)
 
 				FormulaElement formulaElement = mFormulaEditorEditText.getFormulaParser().parseFormula();
@@ -118,35 +116,31 @@ public class CatKeyboard extends KeyboardView implements KeyboardView.OnKeyboard
 				computeDialog.show();
 
 				break;
-			case CatKeyEvent.KEYCODE_UNDO:
+			case R.id.formula_editor_keyboard_undo:
 				mFormulaEditorEditText.undo();
 				break;
-			case CatKeyEvent.KEYCODE_REDO:
+			case R.id.formula_editor_keyboard_redo:
 				mFormulaEditorEditText.redo();
 				break;
-			case CatKeyEvent.KEYCODE_MATH_BUTTON:
-				showFormulaEditorListFragment(FormulaEditorListFragment.MATH_TAG, R.string.formula_editor_math,
-						CatKeyEvent.KEYCODE_SIN);
+			case R.id.formula_editor_keyboard_math:
+				showFormulaEditorListFragment(FormulaEditorListFragment.MATH_TAG, R.string.formula_editor_math);
 				break;
-			case CatKeyEvent.KEYCODE_LOGIC_BUTTON:
-				showFormulaEditorListFragment(FormulaEditorListFragment.LOGIC_TAG, R.string.formula_editor_logic,
-						CatKeyEvent.KEYCODE_NOT_EQUAL);
+			case R.id.formula_editor_keyboard_logic:
+				showFormulaEditorListFragment(FormulaEditorListFragment.LOGIC_TAG, R.string.formula_editor_logic);
 				break;
-			case CatKeyEvent.KEYCODE_OBJECT_BUTTON:
+			case R.id.formula_editor_keyboard_object:
 				showFormulaEditorListFragment(FormulaEditorListFragment.OBJECT_TAG,
-						R.string.formula_editor_choose_look_variable, CatKeyEvent.KEYCODE_LOOK_X);
+						R.string.formula_editor_choose_look_variable);
 				break;
-			case CatKeyEvent.KEYCODE_SENSOR_BUTTON:
-				showFormulaEditorListFragment(FormulaEditorListFragment.SENSOR_TAG, R.string.formula_editor_sensors,
-						CatKeyEvent.KEYCODE_SENSOR1);
+			case R.id.formula_editor_keyboard_sensors:
+				showFormulaEditorListFragment(FormulaEditorListFragment.SENSOR_TAG, R.string.formula_editor_sensors);
 				break;
-			case CatKeyEvent.KEYCODE_VARIABLES_BUTTON:
+			case R.id.formula_editor_keyboard_variables:
 				showFormulaEditorVariableListFragment(FormulaEditorVariableListFragment.VARIABLE_TAG,
 						R.string.formula_editor_variables);
 				break;
 			default:
-				catKeyEvent = new CatKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, primaryCode));
-				mFormulaEditorEditText.handleKeyEvent(catKeyEvent);
+				mFormulaEditorEditText.handleKeyEvent(primaryCode, "");
 				break;
 		}
 
@@ -190,13 +184,12 @@ public class CatKeyboard extends KeyboardView implements KeyboardView.OnKeyboard
 		mFormulaEditorEditText = formulaEditorEditText;
 	}
 
-	private void showFormulaEditorListFragment(String tag, int actionbarResId, int keycodeOffset) {
+	private void showFormulaEditorListFragment(String tag, int actionbarResId) {
 		FragmentManager fragmentManager = ((SherlockFragmentActivity) mContext).getSupportFragmentManager();
 		Fragment fragment = fragmentManager.findFragmentByTag(tag);
 
 		if (fragment == null) {
-			fragment = new FormulaEditorListFragment(mFormulaEditorEditText, keycodeOffset,
-					mContext.getString(actionbarResId), tag);
+			fragment = new FormulaEditorListFragment(mFormulaEditorEditText, mContext.getString(actionbarResId), tag);
 		}
 		((FormulaEditorListFragment) fragment).showFragment(mContext);
 	}

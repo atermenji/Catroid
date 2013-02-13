@@ -56,7 +56,6 @@ import at.tugraz.ist.catroid.ProjectManager;
 import at.tugraz.ist.catroid.R;
 import at.tugraz.ist.catroid.content.Project;
 import at.tugraz.ist.catroid.content.Sprite;
-import at.tugraz.ist.catroid.formulaeditor.CatKeyEvent;
 import at.tugraz.ist.catroid.formulaeditor.FormulaEditorEditText;
 import at.tugraz.ist.catroid.formulaeditor.UserVariable;
 import at.tugraz.ist.catroid.formulaeditor.UserVariablesContainer;
@@ -70,9 +69,8 @@ import com.actionbarsherlock.view.MenuItem;
 
 public class FormulaEditorVariableListFragment extends SherlockListFragment implements Dialog.OnKeyListener {
 
+	String mTag;
 	public static final String VARIABLE_TAG = "variableFragment";
-
-	private final String mTag;
 	List<String> mItems;
 	private FormulaEditorEditText mFormulaEditorEditText;
 	private String mActionBarTitle;
@@ -93,10 +91,6 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 		mDeleteIndex = -1;
 		mInContextMode = false;
 		mItems = new ArrayList<String>();
-		//		mItems.add("EASY");
-		//		mItems.add("gg2easy");
-		//		mItems.add("3rd");
-		//		mItems.add("easywin");
 	}
 
 	@Override
@@ -155,7 +149,7 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 			String title = countCheckedListItems() + " items selected"; // TODO: r.string
 			mContextActionMode.setTitle(title);
 		} else {
-			mFormulaEditorEditText.handleKeyEvent(new CatKeyEvent(mItems.get(position)));
+			mFormulaEditorEditText.handleKeyEvent((int) getListAdapter().getItemId(position), "");
 			KeyEvent keyEvent = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK);
 			onKey(null, keyEvent.getKeyCode(), keyEvent);
 		}
@@ -382,7 +376,6 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 	//	public void clickCheckBox(View view) {
 	//		int position = getListView().getPositionForView(view);
 	//		getListView().setItemChecked(position, ((CheckBox) view.findViewById(R.id.checkbox)).isChecked());
-	//	}
 
 	private int countCheckedListItems() {
 		int count = 0;

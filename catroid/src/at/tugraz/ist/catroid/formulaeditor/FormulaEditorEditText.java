@@ -171,9 +171,9 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 
 	}
 
-	public void handleKeyEvent(CatKeyEvent catKey) {
+	public void handleKeyEvent(int resource, String userVariableName) {
 
-		internFormula.handleKeyInput(catKey, context);
+		internFormula.handleKeyInput(resource, context, userVariableName);
 		history.push(internFormula.getInternFormulaState());
 		updateTextAndCursorFromInternFormula();
 		setSelection(absoluteCursorPosition);

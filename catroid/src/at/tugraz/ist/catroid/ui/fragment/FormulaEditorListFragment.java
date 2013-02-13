@@ -38,7 +38,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import at.tugraz.ist.catroid.R;
-import at.tugraz.ist.catroid.formulaeditor.CatKeyEvent;
 import at.tugraz.ist.catroid.formulaeditor.FormulaEditorEditText;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -83,15 +82,14 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 
 	@Override
 	public void onListItemClick(ListView listView, View view, int position, long id) {
-		mFormulaEditorEditText.handleKeyEvent(new CatKeyEvent(CatKeyEvent.ACTION_DOWN, mOffset + position));
+		mFormulaEditorEditText.handleKeyEvent((int) getListAdapter().getItemId(position), "");
 		KeyEvent keyEvent = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK);
 		onKey(null, keyEvent.getKeyCode(), keyEvent);
 	}
 
-	public FormulaEditorListFragment(FormulaEditorEditText formulaEditorEditText, int offset, String actionBarTitle,
+	public FormulaEditorListFragment(FormulaEditorEditText formulaEditorEditText, String actionBarTitle,
 			String fragmentTag) {
 		mFormulaEditorEditText = formulaEditorEditText;
-		mOffset = offset;
 		mActionBarTitle = actionBarTitle;
 		mTag = fragmentTag;
 

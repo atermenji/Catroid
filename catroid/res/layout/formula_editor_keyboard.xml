@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:background="@color/solid_black"
-    android:gravity="bottom"
     android:orientation="vertical" >
  
 	<LinearLayout
@@ -21,7 +18,8 @@
  		android:layout_marginTop="@dimen/key_margin"
  		android:layout_marginLeft="@dimen/key_margin"
  		android:layout_marginRight="@dimen/key_margin"
- 		android:layout_marginBottom="@dimen/key_margin"/>
+ 		android:layout_marginBottom="@dimen/key_margin"
+ 		/>
 
 	<Button
  		android:id="@+id/formula_editor_keyboard_redo"

@@ -21,11 +21,11 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:orientation="vertical"
     android:theme="@android:style/Theme.Light"
     android:windowFullscreen="true" >
 
@@ -37,12 +37,8 @@
     <at.tugraz.ist.catroid.formulaeditor.FormulaEditorEditText
         android:id="@+id/formula_editor_edit_field"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/keyboardcat"
-        android:layout_below="@+id/formula_editor_brick_space"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:background="@color/white"
         android:gravity="top"
         android:hint="@string/formula_nothing_selected"
@@ -51,19 +47,12 @@
         android:scrollbars="vertical"
         android:singleLine="false"
         android:textSize="@dimen/text_size_xxlarge" />
-    
+
     <include
-        android:id="@+id/formula_editor_keyboard" 
-        android:layout_below="@+id/formula_editor_edit_field"
-        layout="@layout/formula_editor_keyboard"/>
-<!--  
-    <at.tugraz.ist.catroid.formulaeditor.CatKeyboardView
-        android:id="@+id/keyboardcat"
+        android:id="@+id/formula_editor_keyboard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:keyPreviewHeight="0sp"
-        android:keyTextColor="#ffffff"
-        android:visibility="visible" />
--->
-</RelativeLayout>
+        android:layout_gravity="bottom"
+        layout="@layout/formula_editor_keyboard" />
+
+</LinearLayout>
