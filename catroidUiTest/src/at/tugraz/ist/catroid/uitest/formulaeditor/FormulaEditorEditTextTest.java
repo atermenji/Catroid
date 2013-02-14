@@ -115,14 +115,22 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 
 	}
 
-	public void testSingleTapOnFunction() {
+	public void setAbsoluteCursorPosition(int position) {
+		((FormulaEditorEditText) solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID)).setDoNotMoveCursorOnTab(true);
+		UiTestUtils.setPrivateField("absoluteCursorPosition", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID), position,
+				false);
+	}
+
+	public void testSingleTapOnFunctionName() {
 
 		BackgroundColorSpan COLOR_HIGHLIGHT = (BackgroundColorSpan) UiTestUtils.getPrivateField("COLOR_HIGHLIGHT",
 				new FormulaEditorEditText(getActivity()));
 
-		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
-		catKeyboardClicker.clickOnKey("rand");
-		solo.clickOnScreen(oneCharacterWidthApproximation * 12, firstLineYCoordinate);
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_rand));
+
+		setAbsoluteCursorPosition(2);
+		solo.clickOnEditText(1);
 
 		assertEquals("Selection cursor not found in text, but should be", 0,
 				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().getSpanStart(COLOR_HIGHLIGHT));
