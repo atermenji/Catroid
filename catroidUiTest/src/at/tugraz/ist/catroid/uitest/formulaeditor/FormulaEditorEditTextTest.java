@@ -26,6 +26,7 @@ package at.tugraz.ist.catroid.uitest.formulaeditor;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.graphics.Rect;
 import android.test.suitebuilder.annotation.Smoke;
 import android.text.style.BackgroundColorSpan;
 import at.tugraz.ist.catroid.ProjectManager;
@@ -121,7 +122,23 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 				false);
 	}
 
+	//click on edit text
+	public void clickOnFormulaEditorEditText() {
+		Rect globalVisibleRect = new Rect();
+		solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getGlobalVisibleRect(globalVisibleRect);
+		solo.clickOnScreen(30, globalVisibleRect.top + 10);
+	}
+
+	public void doubleClickOnFormulaEditorEditText() {
+		Rect globalVisibleRect = new Rect();
+		solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getGlobalVisibleRect(globalVisibleRect);
+		solo.clickOnScreen(30, globalVisibleRect.top + 10);
+		solo.drag(30, 31, globalVisibleRect.top + 10, globalVisibleRect.top, 50);
+	}
+
 	public void testSingleTapOnFunctionName() {
+
+		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
 
 		BackgroundColorSpan COLOR_HIGHLIGHT = (BackgroundColorSpan) UiTestUtils.getPrivateField("COLOR_HIGHLIGHT",
 				new FormulaEditorEditText(getActivity()));
@@ -130,7 +147,7 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_rand));
 
 		setAbsoluteCursorPosition(2);
-		solo.clickOnEditText(FORMULA_EDITOR_EDIT_TEXT_ID);
+		//		solo.clickOnEditText(FORMULA_EDITOR_EDIT_TEXT_ID);
 
 		assertEquals("Selection cursor not found in text, but should be", 0,
 				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().getSpanStart(COLOR_HIGHLIGHT));
@@ -162,10 +179,11 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 				.getText().getSpanStart(COLOR_HIGHLIGHT) == -1);
 		//There is no doubleclick in robotium q.q, this is a workaround!
 		setAbsoluteCursorPosition(3);
-		solo.clickOnEditText(FORMULA_EDITOR_EDIT_TEXT_ID);
-		solo.clickOnScreen(threeCharactersWidthApproximation, firstLineYCoordinate);
-		solo.drag(threeCharactersWidthApproximation, threeCharactersWidthApproximation + 1, firstLineYCoordinate,
-				firstLineYCoordinate, 50);
+		//		solo.clickOnEditText(FORMULA_EDITOR_EDIT_TEXT_ID);
+		//		solo.clickOnScreen(threeCharactersWidthApproximation, firstLineYCoordinate);
+		//		solo.drag(threeCharactersWidthApproximation, threeCharactersWidthApproximation + 1, firstLineYCoordinate,
+		//				firstLineYCoordinate, 50);
+		doubleClickOnFormulaEditorEditText();
 		assertEquals("Selection cursor not found in text, but should be", 0,
 				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().getSpanStart(COLOR_HIGHLIGHT));
 		assertEquals("Selection cursor not found in text, but should be", 6,
@@ -180,9 +198,10 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		assertTrue("Text not found", solo.searchText(solo.getString(R.string.formula_editor_function_rand) + "("));
 		//There is no doubleclick in robotium q.q, this is a workaround!
 		setAbsoluteCursorPosition(3);
-		solo.clickOnScreen(threeCharactersWidthApproximation, firstLineYCoordinate);
-		solo.drag(threeCharactersWidthApproximation, threeCharactersWidthApproximation + 1, firstLineYCoordinate,
-				firstLineYCoordinate, 50);
+		doubleClickOnFormulaEditorEditText();
+		//		solo.clickOnScreen(threeCharactersWidthApproximation, firstLineYCoordinate);
+		//		solo.drag(threeCharactersWidthApproximation, threeCharactersWidthApproximation + 1, firstLineYCoordinate,
+		//				firstLineYCoordinate, 50);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
 
@@ -194,9 +213,10 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		assertTrue("Text not found", solo.searchText(solo.getString(R.string.formula_editor_sensor_y_acceleration)));
 		//There is no doubleclick in robotium q.q, this is a workaround!
 		setAbsoluteCursorPosition(3);
-		solo.clickOnScreen(threeCharactersWidthApproximation, firstLineYCoordinate);
-		solo.drag(threeCharactersWidthApproximation, threeCharactersWidthApproximation + 1, firstLineYCoordinate,
-				firstLineYCoordinate, 50);
+		doubleClickOnFormulaEditorEditText();
+		//		solo.clickOnScreen(threeCharactersWidthApproximation, firstLineYCoordinate);
+		//		solo.drag(threeCharactersWidthApproximation, threeCharactersWidthApproximation + 1, firstLineYCoordinate,
+		//				firstLineYCoordinate, 50);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
 
