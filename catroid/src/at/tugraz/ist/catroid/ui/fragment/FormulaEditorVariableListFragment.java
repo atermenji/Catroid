@@ -149,7 +149,7 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 			String title = countCheckedListItems() + " items selected"; // TODO: r.string
 			mContextActionMode.setTitle(title);
 		} else {
-			mFormulaEditorEditText.handleKeyEvent((int) getListAdapter().getItemId(position), "");
+			mFormulaEditorEditText.handleKeyEvent(0, "" + mItems.get(position));
 			KeyEvent keyEvent = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK);
 			onKey(null, keyEvent.getKeyCode(), keyEvent);
 		}

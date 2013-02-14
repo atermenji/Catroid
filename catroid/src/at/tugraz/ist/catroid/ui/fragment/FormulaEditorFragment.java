@@ -178,12 +178,6 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 
 				Log.i("info", "viewId: " + view.getId());
 				switch (view.getId()) {
-				//					case KeyEvent.KEYCODE_MENU:
-				//						// TODO: Do we need this KeyEvent ? :O
-				//						break;
-				//					case KeyEvent.KEYCODE_EQUALS:
-				//						//TODO implement 
-				//						break;
 					case R.id.formula_editor_keyboard_compute:
 						//TODO implement functionality (interpret) and output dialog ( Issue 8.64c)
 

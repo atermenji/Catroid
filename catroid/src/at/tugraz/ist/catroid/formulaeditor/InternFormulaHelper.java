@@ -15,7 +15,7 @@ public class InternFormulaHelper {
 
 		//USER VARIABLES
 
-		if (resource == R.id.formula_editor_keyboard_variables && !userVariableName.isEmpty()) {
+		if ((resource == 0) && (!(userVariableName.length() == 0))) {
 			return buildUserVariable(userVariableName);
 		}
 
@@ -31,7 +31,7 @@ public class InternFormulaHelper {
 			case R.id.formula_editor_keyboard_3:
 				return buildNumber("3");
 			case R.id.formula_editor_keyboard_4:
-				return buildNumber("5");
+				return buildNumber("4");
 			case R.id.formula_editor_keyboard_5:
 				return buildNumber("5");
 			case R.id.formula_editor_keyboard_6:
@@ -44,6 +44,8 @@ public class InternFormulaHelper {
 				return buildNumber("9");
 
 				//FUNCTIONS:
+			case R.id.formula_editor_keyboard_random:
+				return buildDoubleParameterFunction(Functions.RAND, "0", "1");
 			case R.string.formula_editor_function_sin:
 				return buildSingleParameterFunction(Functions.SIN, "0");
 			case R.string.formula_editor_function_cos:
@@ -83,7 +85,7 @@ public class InternFormulaHelper {
 				return buildSensor(Sensors.Y_ORIENTATION_);
 
 				//PERIOD
-			case R.string.formula_editor_decimal_mark:
+			case R.id.formula_editor_keyboard_decimal_mark:
 				return buildPeriod();
 
 				//OPERATOR

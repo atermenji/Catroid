@@ -79,10 +79,11 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 	private FormulaEditorEditText mFormulaEditorEditText;
 	private int mOffset;
 	private String mActionBarTitle;
+	private int[] itemsIds;
 
 	@Override
 	public void onListItemClick(ListView listView, View view, int position, long id) {
-		mFormulaEditorEditText.handleKeyEvent((int) getListAdapter().getItemId(position), "");
+		mFormulaEditorEditText.handleKeyEvent(itemsIds[position], "");
 		KeyEvent keyEvent = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK);
 		onKey(null, keyEvent.getKeyCode(), keyEvent);
 	}
@@ -100,21 +101,21 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 
-		int[] itemsId = {};
+		itemsIds = new int[] {};
 
 		if (mTag == OBJECT_TAG) {
-			itemsId = OBJECT_ITEMS;
+			itemsIds = OBJECT_ITEMS;
 		} else if (mTag == MATH_TAG) {
-			itemsId = MATH_ITEMS;
+			itemsIds = MATH_ITEMS;
 		} else if (mTag == LOGIC_TAG) {
-			itemsId = LOGIC_ITEMS;
+			itemsIds = LOGIC_ITEMS;
 		} else if (mTag == SENSOR_TAG) {
-			itemsId = SENSOR_ITEMS;
+			itemsIds = SENSOR_ITEMS;
 		}
 
-		mItems = new String[itemsId.length];
+		mItems = new String[itemsIds.length];
 		int index = 0;
-		for (Integer item : itemsId) {
+		for (Integer item : itemsIds) {
 			mItems[index] = getString(item);
 			index++;
 		}
