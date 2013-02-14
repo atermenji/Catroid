@@ -350,22 +350,4 @@ public class CatKeyboardClicker {
 		return false;
 	}
 
-	//	public void clickOnButton(int resId) {
-	//
-	//
-	////		LinearLayout formulaEditorKeyboard = (LinearLayout) UiTestUtils.getPrivateField("formulaEditorKeyboard",
-	////				activity.getFragmentManager().findFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG));
-	////
-	////		for (int index = 0; index < formulaEditorKeyboard.getChildCount(); index++) {
-	////			LinearLayout child = (LinearLayout) formulaEditorKeyboard.getChildAt(index);
-	////
-	////			for (int nestedIndex = 0; nestedIndex < child.getChildCount(); nestedIndex++) {
-	////				Button key = (Button) child.getChildAt(nestedIndex);
-	////				if (key.getId() == resId) {
-	////					solo.clickOnButton(key.toString());
-	////					return;
-	////				}
-	////			}
-	////		}
-	////	}
 }

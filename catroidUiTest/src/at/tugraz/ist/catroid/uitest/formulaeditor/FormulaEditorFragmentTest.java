@@ -59,7 +59,6 @@ public class FormulaEditorFragmentTest extends ActivityInstrumentationTestCase2<
 		super.setUp();
 		createProject();
 		solo = new Solo(getInstrumentation(), getActivity());
-		catKeyboardClicker = new CatKeyboardClicker(solo);
 	}
 
 	@Override

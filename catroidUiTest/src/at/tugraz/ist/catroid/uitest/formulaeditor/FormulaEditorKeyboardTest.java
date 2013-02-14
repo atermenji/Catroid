@@ -61,8 +61,6 @@ public class FormulaEditorKeyboardTest extends android.test.ActivityInstrumentat
 
 		createProject("testProjectCatKeyboard");
 		this.solo = new Solo(getInstrumentation(), getActivity());
-		catKeyboardClicker = new CatKeyboardClicker(solo);
-
 	}
 
 	@Override
