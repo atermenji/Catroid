@@ -57,6 +57,15 @@ public class Project implements Serializable {
 
 	private UserVariablesContainer userVariables = null;
 
+	private Project() {
+		ifLandscapeSwitchWidthAndHeight();
+		virtualScreenWidth = Values.SCREEN_WIDTH;
+		virtualScreenHeight = Values.SCREEN_HEIGHT;
+
+		userVariables = new UserVariablesContainer();
+
+	}
+
 	public Project(Context context, String name) {
 		this.projectName = name;
 

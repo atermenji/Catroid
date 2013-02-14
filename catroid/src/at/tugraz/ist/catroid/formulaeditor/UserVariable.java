@@ -22,10 +22,12 @@
  */
 package at.tugraz.ist.catroid.formulaeditor;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UserVariable {
+public class UserVariable implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private String name;
 	private Double value;
