@@ -130,7 +130,7 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_rand));
 
 		setAbsoluteCursorPosition(2);
-		solo.clickOnEditText(1);
+		solo.clickOnEditText(FORMULA_EDITOR_EDIT_TEXT_ID);
 
 		assertEquals("Selection cursor not found in text, but should be", 0,
 				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().getSpanStart(COLOR_HIGHLIGHT));
@@ -153,16 +153,16 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 				new FormulaEditorEditText(getActivity()));
 		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
 
-		catKeyboardClicker.clickOnKey("del");
-
 		for (int i = 0; i < 6; i++) {
-			catKeyboardClicker.clickOnKey("1");
+			solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_1));
 		}
 		assertTrue("Text not found", solo.searchText("11111"));
 
 		assertTrue("Selection cursor found in text, but should not be", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID)
 				.getText().getSpanStart(COLOR_HIGHLIGHT) == -1);
 		//There is no doubleclick in robotium q.q, this is a workaround!
+		setAbsoluteCursorPosition(3);
+		solo.clickOnEditText(FORMULA_EDITOR_EDIT_TEXT_ID);
 		solo.clickOnScreen(threeCharactersWidthApproximation, firstLineYCoordinate);
 		solo.drag(threeCharactersWidthApproximation, threeCharactersWidthApproximation + 1, firstLineYCoordinate,
 				firstLineYCoordinate, 50);
@@ -170,40 +170,43 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().getSpanStart(COLOR_HIGHLIGHT));
 		assertEquals("Selection cursor not found in text, but should be", 6,
 				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().getSpanEnd(COLOR_HIGHLIGHT));
-		catKeyboardClicker.clickOnKey("del");
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
 
 		assertFalse("Text found but shouldnt", solo.searchText("11111"));
 		assertTrue("Error cursor found in text, but should not be", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID)
 				.getText().getSpanStart(COLOR_HIGHLIGHT) == -1);
 
-		catKeyboardClicker.clickOnKey("rand");
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_random));
 		assertTrue("Text not found", solo.searchText(solo.getString(R.string.formula_editor_function_rand) + "("));
 		//There is no doubleclick in robotium q.q, this is a workaround!
+		setAbsoluteCursorPosition(3);
 		solo.clickOnScreen(threeCharactersWidthApproximation, firstLineYCoordinate);
 		solo.drag(threeCharactersWidthApproximation, threeCharactersWidthApproximation + 1, firstLineYCoordinate,
 				firstLineYCoordinate, 50);
 
-		catKeyboardClicker.clickOnKey("del");
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
 
 		assertFalse("Text found but shouldnt",
 				solo.searchText(solo.getString(R.string.formula_editor_function_rand) + "("));
 
-		catKeyboardClicker.switchToSensorKeyboard();
-		//catKeyboardClicker.clickOnKey("keyboardswitch");
-		catKeyboardClicker.clickOnKey("y-accel");
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_sensors));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_sensor_y_acceleration));
 		assertTrue("Text not found", solo.searchText(solo.getString(R.string.formula_editor_sensor_y_acceleration)));
 		//There is no doubleclick in robotium q.q, this is a workaround!
+		setAbsoluteCursorPosition(3);
 		solo.clickOnScreen(threeCharactersWidthApproximation, firstLineYCoordinate);
 		solo.drag(threeCharactersWidthApproximation, threeCharactersWidthApproximation + 1, firstLineYCoordinate,
 				firstLineYCoordinate, 50);
 
-		catKeyboardClicker.clickOnKey("del");
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
 
 		assertFalse("Text found but shouldnt",
 				solo.searchText(solo.getString(R.string.formula_editor_sensor_y_acceleration)));
 
-		catKeyboardClicker.clickOnKey("y-accel");
-		catKeyboardClicker.clickOnKey("x-accel");
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_sensors));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_sensor_y_acceleration));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_sensors));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_sensor_x_acceleration));
 		assertTrue(
 				"Text not found",
 				solo.searchText(solo.getString(R.string.formula_editor_sensor_y_acceleration) + " "
