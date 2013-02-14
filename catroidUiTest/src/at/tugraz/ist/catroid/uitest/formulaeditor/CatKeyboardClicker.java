@@ -31,6 +31,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import at.tugraz.ist.catroid.formulaeditor.Operators;
+import at.tugraz.ist.catroid.ui.ScriptTabActivity;
 
 import com.jayway.android.robotium.solo.Solo;
 
@@ -50,9 +51,11 @@ public class CatKeyboardClicker {
 	private static float buttonHeight;
 
 	private int totalKeyboardSwitches = 0;
+	private ScriptTabActivity activity;
 
 	public CatKeyboardClicker(Solo solo) {
 		this.solo = solo;
+		this.activity = (ScriptTabActivity) solo.getCurrentActivity();
 
 		if (keyString == null) {
 			keyString = new Vector<Vector<String>>();
@@ -347,4 +350,22 @@ public class CatKeyboardClicker {
 		return false;
 	}
 
+	//	public void clickOnButton(int resId) {
+	//
+	//
+	////		LinearLayout formulaEditorKeyboard = (LinearLayout) UiTestUtils.getPrivateField("formulaEditorKeyboard",
+	////				activity.getFragmentManager().findFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG));
+	////
+	////		for (int index = 0; index < formulaEditorKeyboard.getChildCount(); index++) {
+	////			LinearLayout child = (LinearLayout) formulaEditorKeyboard.getChildAt(index);
+	////
+	////			for (int nestedIndex = 0; nestedIndex < child.getChildCount(); nestedIndex++) {
+	////				Button key = (Button) child.getChildAt(nestedIndex);
+	////				if (key.getId() == resId) {
+	////					solo.clickOnButton(key.toString());
+	////					return;
+	////				}
+	////			}
+	////		}
+	////	}
 }

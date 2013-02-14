@@ -77,7 +77,6 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 	private final String mTag;
 	private String[] mItems;
 	private FormulaEditorEditText mFormulaEditorEditText;
-	private int mOffset;
 	private String mActionBarTitle;
 	private int[] itemsIds;
 

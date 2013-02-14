@@ -169,36 +169,38 @@ public class FormulaEditorFragmentTest extends ActivityInstrumentationTestCase2<
 	public void testUndo() {
 
 		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
-		catKeyboardClicker.clearEditTextWithCursorBehindLastCharacterOnlyQuickly(FORMULA_EDITOR_EDIT_TEXT_ID);
+		//		catKeyboardClicker.clearEditTextWithCursorBehindLastCharacterOnlyQuickly(FORMULA_EDITOR_EDIT_TEXT_ID);
 
-		catKeyboardClicker.clickOnKey("1");
-		catKeyboardClicker.clickOnKey("-");
-		catKeyboardClicker.clickOnKey("2");
-		catKeyboardClicker.clickOnKey("*");
-		catKeyboardClicker.switchToFunctionKeyboard();
-		catKeyboardClicker.clickOnKey("cos");
-		catKeyboardClicker.clickOnKey("sin");
-		catKeyboardClicker.clickOnKey("tan");
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_1));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_minus));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_2));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_mult));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_cos));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_sin));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_tan));
 
-		assertEquals("Wrong text in field", "1 - 2 * cos( sin( tan( 0 ) ) ) ",
+		assertEquals("Wrong text in field", "1 - 2 × cos( sin( tan( 0 ) ) ) ",
 				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
 
-		UiTestUtils.clickOnActionBar(solo, R.id.menu_undo);
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_undo));
 		solo.sleep(50);
-		assertEquals("Undo did something wrong", "1 - 2 * cos( sin( 0 ) ) ",
+		assertEquals("Undo did something wrong", "1 - 2 × cos( sin( 0 ) ) ",
 				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
 
-		UiTestUtils.clickOnActionBar(solo, R.id.menu_undo);
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_undo));
 		solo.sleep(50);
-		assertEquals("Undo did something wrong", "1 - 2 * cos( 0 ) ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID)
+		assertEquals("Undo did something wrong", "1 - 2 × cos( 0 ) ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID)
 				.getText().toString());
 
-		UiTestUtils.clickOnActionBar(solo, R.id.menu_undo);
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_undo));
 		solo.sleep(50);
-		assertEquals("Undo did something wrong", "1 - 2 * ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText()
+		assertEquals("Undo did something wrong", "1 - 2 × ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText()
 				.toString());
 
-		UiTestUtils.clickOnActionBar(solo, R.id.menu_undo);
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_undo));
 		solo.sleep(50);
 		assertEquals("Undo did something wrong", "1 - 2 ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText()
 				.toString());
@@ -231,20 +233,20 @@ public class FormulaEditorFragmentTest extends ActivityInstrumentationTestCase2<
 				.toString());
 
 		for (int i = 0; i < 7; i++) {
-			UiTestUtils.clickOnActionBar(solo, R.id.menu_undo);
+			solo.clickOnButton(R.id.formula_editor_keyboard_undo);
 		}
 
 		solo.sleep(50);
 		assertEquals("Undo did something wrong", INITIAL_X + " ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID)
 				.getText().toString());
 
-		UiTestUtils.clickOnActionBar(solo, R.id.menu_undo);
+		solo.clickOnButton(R.id.formula_editor_keyboard_undo);
 
 		assertEquals("Undo did something wrong", INITIAL_X + " ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID)
 				.getText().toString());
 
 		for (int i = 0; i < 7; i++) {
-			UiTestUtils.clickOnActionBar(solo, R.id.menu_redo);
+			solo.clickOnButton(R.id.formula_editor_keyboard_undo);
 		}
 
 		solo.sleep(50);
@@ -275,13 +277,13 @@ public class FormulaEditorFragmentTest extends ActivityInstrumentationTestCase2<
 				.getText().toString());
 
 		for (int i = 0; i < maxHistoryElements + 2; i++) {
-			UiTestUtils.clickOnActionBar(solo, R.id.menu_undo);
+			solo.clickOnButton(R.id.formula_editor_keyboard_undo);
 		}
 
 		assertEquals("Wrong text in field", "1 ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
 
 		for (int i = 0; i < maxHistoryElements + 2; i++) {
-			UiTestUtils.clickOnActionBar(solo, R.id.menu_redo);
+			solo.clickOnButton(R.id.formula_editor_keyboard_undo);
 		}
 
 		assertEquals("Wrong text in field", "1" + searchString + " ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID)
