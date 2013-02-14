@@ -249,41 +249,44 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 
 		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
 
-		catKeyboardClicker.switchToFunctionKeyboard();
-		catKeyboardClicker.clickOnKey("sin");
-		catKeyboardClicker.switchToNumberKeyboard();
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_sin));
 
-		catKeyboardClicker.clickOnKey("1");
-		catKeyboardClicker.clickOnKey("2");
-		catKeyboardClicker.clickOnKey(".");
-		catKeyboardClicker.clickOnKey("3");
-		catKeyboardClicker.clickOnKey("4");
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_1));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_2));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_decimal_mark));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_3));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_4));
 
 		assertEquals("Function parameter modification failed", solo.getString(R.string.formula_editor_function_sin)
 				+ "( 12" + getActivity().getString(R.string.formula_editor_decimal_mark) + "34 ) ",
 				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
 
-		solo.clickOnScreen(2.5f * oneCharacterWidthApproximation, firstLineYCoordinate);
-		catKeyboardClicker.clickOnKey("del");
+		setAbsoluteCursorPosition(2);
+		clickOnFormulaEditorEditText();
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
 
 		assertEquals("Text deletion was wrong!", " ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText()
 				.toString());
 
-		catKeyboardClicker.clickOnKey("rand");
-		catKeyboardClicker.switchToNumberKeyboard();
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_rand));
 
-		catKeyboardClicker.clickOnKey("1");
-		catKeyboardClicker.clickOnKey("2");
-		catKeyboardClicker.clickOnKey(".");
-		catKeyboardClicker.clickOnKey("3");
-		catKeyboardClicker.clickOnKey("4");
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_1));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_2));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_decimal_mark));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_3));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_4));
 
 		assertEquals("Function parameter modification failed", solo.getString(R.string.formula_editor_function_rand)
 				+ "( 12" + getActivity().getString(R.string.formula_editor_decimal_mark) + "34 , 1 ) ", solo
 				.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
 
-		solo.clickOnScreen(2.5f * oneCharacterWidthApproximation, firstLineYCoordinate);
-		catKeyboardClicker.clickOnKey("del");
+		setAbsoluteCursorPosition(2);
+		clickOnFormulaEditorEditText();
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
 
 		assertEquals("Text deletion was wrong!", " ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText()
 				.toString());
