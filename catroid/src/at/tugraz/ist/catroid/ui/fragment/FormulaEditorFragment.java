@@ -184,8 +184,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 						}
 						Formula formulaToCompute = new Formula(formulaElement);
 
-						FormulaEditorComputeDialog computeDialog = new FormulaEditorComputeDialog(getSherlockActivity()
-								.getApplicationContext());
+						FormulaEditorComputeDialog computeDialog = new FormulaEditorComputeDialog(context);
 
 						computeDialog.setFormula(formulaToCompute);
 						computeDialog.show();
