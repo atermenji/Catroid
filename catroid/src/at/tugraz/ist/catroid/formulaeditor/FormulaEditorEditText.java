@@ -56,6 +56,7 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 	private Context context;
 
 	FormulaEditorFragment formulaEditorDialog = null;
+	private boolean doNotMoveCursorOnTab = false;
 
 	public FormulaEditorEditText(Context context) {
 		super(context);
@@ -310,7 +311,9 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 					tempCursorPosition--;
 				}
 
-				absoluteCursorPosition = tempCursorPosition;
+				if (isDoNotMoveCursorOnTab() == false) {
+					absoluteCursorPosition = tempCursorPosition;
+				}
 				postInvalidate();
 
 				InternToken internToken = internFormula.getFirstLeftInternToken(absoluteCursorPosition);
@@ -345,5 +348,19 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 
 	public InternFormulaParser getFormulaParser() {
 		return internFormula.getInternFormulaParser();
+	}
+
+	/**
+	 * @return the doNotMoveCursorOnTab
+	 */
+	public boolean isDoNotMoveCursorOnTab() {
+		return doNotMoveCursorOnTab;
+	}
+
+	/**
+	 * @param doNotMoveCursorOnTab the doNotMoveCursorOnTab to set
+	 */
+	public void setDoNotMoveCursorOnTab(boolean doNotMoveCursorOnTab) {
+		this.doNotMoveCursorOnTab = doNotMoveCursorOnTab;
 	}
 }
