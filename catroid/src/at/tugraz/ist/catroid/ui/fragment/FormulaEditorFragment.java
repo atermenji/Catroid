@@ -67,8 +67,8 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 	private Brick currentBrick;
 	private Formula currentFormula;
 	private FormulaEditorEditText formulaEditorEditText;
-	private LinearLayout catKeyboardView;
-	private LinearLayout brickSpace;
+	private LinearLayout formulaEditorKeyboard;
+	private LinearLayout formulaEditorBrick;
 	private View brickView;
 	private long[] confirmBackTimeStamp = { 0, 0 };
 	private long[] confirmSwitchEditTextTimeStamp = { 0, 0 };
@@ -121,11 +121,9 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 
 	}
 
-	private void onUserDismiss() { //dont override onDismiss, this must not be called on orientation change
+	private void onUserDismiss() {
 		formulaEditorEditText.endEdit();
 		currentFormula.prepareToRemove();
-		//		currentFormula = null;
-		//		currentBrick = null;
 
 		SherlockFragmentActivity activity = getSherlockActivity();
 		FragmentManager fragmentManager = activity.getSupportFragmentManager();
@@ -145,22 +143,23 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		fragmentView.requestFocus();
 
 		context = getActivity();
-		brickSpace = (LinearLayout) fragmentView.findViewById(R.id.formula_editor_brick_space);
-		if (brickSpace != null) {
+		formulaEditorBrick = (LinearLayout) fragmentView.findViewById(R.id.formula_editor_brick_space);
+		if (formulaEditorBrick != null) {
 			brickView = currentBrick.getView(context, 0, null);
-			brickSpace.addView(brickView);
+			formulaEditorBrick.addView(brickView);
 		}
 
 		formulaEditorEditText = (FormulaEditorEditText) fragmentView.findViewById(R.id.formula_editor_edit_field);
-		if (brickSpace != null) {
-			brickSpace.measure(0, 0);
+		if (formulaEditorBrick != null) {
+			formulaEditorBrick.measure(0, 0);
 		}
-		catKeyboardView = (LinearLayout) fragmentView.findViewById(R.id.formula_editor_keyboardview);
 
-		if (brickSpace != null) {
-			formulaEditorEditText.init(this, brickSpace.getMeasuredHeight(), catKeyboardView);
+		formulaEditorKeyboard = (LinearLayout) fragmentView.findViewById(R.id.formula_editor_keyboardview);
+
+		if (formulaEditorBrick != null) {
+			formulaEditorEditText.init(this, formulaEditorBrick.getMeasuredHeight(), formulaEditorKeyboard);
 		} else {
-			formulaEditorEditText.init(this, 0, catKeyboardView);
+			formulaEditorEditText.init(this, 0, formulaEditorKeyboard);
 		}
 		setInputFormula(currentFormula, SET_FORMULA_ON_CREATE_VIEW);
 
@@ -169,18 +168,15 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 
 	@Override
 	public void onStart() {
-		catKeyboardView.setClickable(true);
-
+		formulaEditorKeyboard.setClickable(true);
 		View.OnClickListener clickListener = new View.OnClickListener() {
-
 			@Override
 			public void onClick(View view) {
-
 				Log.i("info", "viewId: " + view.getId());
+
 				switch (view.getId()) {
 					case R.id.formula_editor_keyboard_compute:
 						//TODO implement functionality (interpret) and output dialog ( Issue 8.64c)
-
 						FormulaElement formulaElement = formulaEditorEditText.getFormulaParser().parseFormula();
 						if (formulaElement == null) {
 							//TODO Error handling
@@ -193,7 +189,6 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 
 						computeDialog.setFormula(formulaToCompute);
 						computeDialog.show();
-
 						break;
 					case R.id.formula_editor_keyboard_undo:
 						formulaEditorEditText.undo();
@@ -224,13 +219,12 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 						formulaEditorEditText.handleKeyEvent(view.getId(), "");
 						break;
 				}
-
 			}
 		};
 
-		for (int index = 0; index < catKeyboardView.getChildCount(); index++) {
+		for (int index = 0; index < formulaEditorKeyboard.getChildCount(); index++) {
 			//			Log.i("info", "index: " + index);
-			LinearLayout child = (LinearLayout) catKeyboardView.getChildAt(index);
+			LinearLayout child = (LinearLayout) formulaEditorKeyboard.getChildAt(index);
 			for (int nestedIndex = 0; nestedIndex < child.getChildCount(); nestedIndex++) {
 				//				Log.i("info", "nestedIndex: " + nestedIndex);
 				Button key = (Button) child.getChildAt(nestedIndex);
@@ -243,10 +237,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
-
 		menu.clear();
-		// TODO delete artefacts from old FE actionbar.
-		//		getSherlockActivity().getSupportMenuInflater().inflate(R.menu.menu_formula_editor, menu);
 		getSherlockActivity().getSupportActionBar().setTitle(getString(R.string.formula_editor_title));
 
 	}
@@ -315,7 +306,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		switch (err) {
 			case PARSER_OK:
 				currentFormula.setRoot(formulaParseTree);
-				if (brickSpace != null) {
+				if (formulaEditorBrick != null) {
 					currentFormula.refreshTextField(brickView);
 				}
 				formulaEditorEditText.formulaSaved();

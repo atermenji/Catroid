@@ -146,7 +146,8 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 	public void onListItemClick(ListView listView, View view, int position, long id) {
 		Log.i("info", "FEVLF.onLISTItemClick()");
 		if (mInContextMode) {
-			String title = countCheckedListItems() + " items selected"; // TODO: r.string
+			String title = countCheckedListItems() + " "
+					+ getString(R.string.formula_editor_variable_context_action_item_selected);
 			mContextActionMode.setTitle(title);
 		} else {
 			mFormulaEditorEditText.handleKeyEvent(0, "" + mItems.get(position));
@@ -209,10 +210,10 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 								String editTextString = dialogEdittext.getText().toString();
 								if (leftDialogRadioButton.isChecked()) {
 									ProjectManager.getInstance().getCurrentProject().getUserVariables()
-											.addProjectUserVariable(editTextString, 5.0);//TODO implement stuff
+											.addProjectUserVariable(editTextString, 5.0);//TODO value
 								} else if (rightDialogRadioButton.isChecked()) {
 									ProjectManager.getInstance().getCurrentProject().getUserVariables()
-											.addSpriteUserVariable(editTextString, 5.0);//TODO implement stuff
+											.addSpriteUserVariable(editTextString, 5.0);//TODO value
 								}
 								mItems.add(editTextString);
 								setListAdapter(new ArrayAdapter<String>(getActivity(),
@@ -295,8 +296,6 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 		Fragment formulaEditorFragment = fragmentManager
 				.findFragmentByTag(FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG);
 		fragTransaction.hide(formulaEditorFragment);
-		//		fragTransaction.replace(R.id.fragment_formula_editor, this);
-		//		fragTransaction.remove(formulaEditorFragment);
 		fragTransaction.add(android.R.id.tabhost, this, FormulaEditorVariableListFragment.VARIABLE_TAG);
 		fragTransaction.commit();
 
@@ -326,7 +325,7 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			//			mode.getMenuInflater().inflate(R.menu.menu_formulaeditor_variablelist, menu);
-			mode.setTitle("0 items selected");// TODO: r.string
+			mode.setTitle("0 " + getString(R.string.formula_editor_variable_context_action_item_selected));
 			//			mode.setSubtitle("SubTitle");
 			menu.removeItem(R.id.menu_delete);
 			setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_multiple_choice,

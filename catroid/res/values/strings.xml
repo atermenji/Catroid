@@ -373,6 +373,7 @@
 	<string name="formula_editor_variable_dialog_for_all_sprites">For all sprites</string>
 	<string name="formula_editor_variable_dialog_for_this_sprite_only">For this sprite only</string>
 	<string name="formula_editor_variable_dialog_hint">Enter variable name</string>
+	<string name="formula_editor_variable_context_action_item_selected">items selected!</string>
 	
 	
 

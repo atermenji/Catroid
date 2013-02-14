@@ -9,18 +9,12 @@ public class InternFormulaHelper {
 
 	public List<InternToken> createInternTokensByCatKeyEvent(int resource, String userVariableName) {
 
-		//		if (this.getKeyCode() >= KeyEvent.KEYCODE_0 && this.getKeyCode() <= KeyEvent.KEYCODE_9) {
-		//			return buildNumber("" + super.getDisplayLabel());
-		//		}
-
 		//USER VARIABLES
-
 		if ((resource == 0) && (!(userVariableName.length() == 0))) {
 			return buildUserVariable(userVariableName);
 		}
 
 		switch (resource) {
-
 		// NUMBER:
 			case R.id.formula_editor_keyboard_0:
 				return buildNumber("0");
