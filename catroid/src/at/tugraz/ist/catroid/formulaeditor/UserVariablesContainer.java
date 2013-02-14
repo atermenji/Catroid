@@ -22,13 +22,15 @@
  */
 package at.tugraz.ist.catroid.formulaeditor;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
 import at.tugraz.ist.catroid.ProjectManager;
 import at.tugraz.ist.catroid.formulaeditor.UserVariableScope.ScopeType;
 
-public class UserVariablesContainer {
+public class UserVariablesContainer implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private List<UserVariable> userVariables;
 

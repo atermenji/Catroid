@@ -1,8 +1,11 @@
 package at.tugraz.ist.catroid.formulaeditor;
 
+import java.io.Serializable;
+
 import at.tugraz.ist.catroid.ProjectManager;
 
-public class UserVariableScope {
+public class UserVariableScope implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private ScopeType scopeType;
 
