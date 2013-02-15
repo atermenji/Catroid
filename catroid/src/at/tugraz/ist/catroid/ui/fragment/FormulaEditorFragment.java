@@ -30,6 +30,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
@@ -169,10 +170,18 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 	@Override
 	public void onStart() {
 		formulaEditorKeyboard.setClickable(true);
-		View.OnClickListener clickListener = new View.OnClickListener() {
+
+		View.OnTouchListener touchListener = new View.OnTouchListener() {
 			@Override
-			public void onClick(View view) {
+			public boolean onTouch(View view, MotionEvent event) {
 				Log.i("info", "viewId: " + view.getId());
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					view.setBackgroundResource(R.drawable.bg_dialog);
+					view.setPressed(false);
+					return true;
+				}
+				view.setBackgroundResource(R.drawable.ic_paintroid_logo);
+				view.setPressed(true);
 
 				switch (view.getId()) {
 					case R.id.formula_editor_keyboard_compute:
@@ -180,7 +189,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 						FormulaElement formulaElement = formulaEditorEditText.getFormulaParser().parseFormula();
 						if (formulaElement == null) {
 							//TODO Error handling
-							return;
+							return false;
 						}
 						Formula formulaToCompute = new Formula(formulaElement);
 
@@ -188,35 +197,35 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 
 						computeDialog.setFormula(formulaToCompute);
 						computeDialog.show();
-						break;
+						return true;
 					case R.id.formula_editor_keyboard_undo:
 						formulaEditorEditText.undo();
-						break;
+						return true;
 					case R.id.formula_editor_keyboard_redo:
 						formulaEditorEditText.redo();
-						break;
+						return true;
 					case R.id.formula_editor_keyboard_math:
 						showFormulaEditorListFragment(FormulaEditorListFragment.MATH_TAG, R.string.formula_editor_math);
-						break;
+						return true;
 					case R.id.formula_editor_keyboard_logic:
 						showFormulaEditorListFragment(FormulaEditorListFragment.LOGIC_TAG,
 								R.string.formula_editor_logic);
-						break;
+						return true;
 					case R.id.formula_editor_keyboard_object:
 						showFormulaEditorListFragment(FormulaEditorListFragment.OBJECT_TAG,
 								R.string.formula_editor_choose_look_variable);
-						break;
+						return true;
 					case R.id.formula_editor_keyboard_sensors:
 						showFormulaEditorListFragment(FormulaEditorListFragment.SENSOR_TAG,
 								R.string.formula_editor_sensors);
-						break;
+						return true;
 					case R.id.formula_editor_keyboard_variables:
 						showFormulaEditorVariableListFragment(FormulaEditorVariableListFragment.VARIABLE_TAG,
 								R.string.formula_editor_variables);
-						break;
+						return true;
 					default:
 						formulaEditorEditText.handleKeyEvent(view.getId(), "");
-						break;
+						return true;
 				}
 			}
 		};
@@ -227,7 +236,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 			for (int nestedIndex = 0; nestedIndex < child.getChildCount(); nestedIndex++) {
 				//				Log.i("info", "nestedIndex: " + nestedIndex);
 				Button key = (Button) child.getChildAt(nestedIndex);
-				key.setOnClickListener(clickListener);
+				key.setOnTouchListener(touchListener);
 			}
 		}
 		super.onStart();
