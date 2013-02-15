@@ -117,6 +117,9 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 
+		absoluteCursorPosition = absoluteCursorPosition > getText().length() ? getText().length()
+				: absoluteCursorPosition;
+
 		Layout layout = getLayout();
 		if (layout != null) {
 			lineHeight = getTextSize() + 5;
@@ -307,13 +310,16 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 
 				int tempCursorPosition = layout.getOffsetForHorizontal(cursorY + linesDown, cursorXOffset);
 
-				while (tempCursorPosition > getText().length()) {
-					tempCursorPosition--;
+				if (tempCursorPosition > getText().length()) {
+					tempCursorPosition = getText().length();
 				}
 
 				if (isDoNotMoveCursorOnTab() == false) {
 					absoluteCursorPosition = tempCursorPosition;
 				}
+				absoluteCursorPosition = absoluteCursorPosition > getText().length() ? getText().length()
+						: absoluteCursorPosition;
+				setSelection(absoluteCursorPosition);
 				postInvalidate();
 
 				InternToken internToken = internFormula.getFirstLeftInternToken(absoluteCursorPosition);
@@ -358,7 +364,8 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 	}
 
 	/**
-	 * @param doNotMoveCursorOnTab the doNotMoveCursorOnTab to set
+	 * @param doNotMoveCursorOnTab
+	 *            the doNotMoveCursorOnTab to set
 	 */
 	public void setDoNotMoveCursorOnTab(boolean doNotMoveCursorOnTab) {
 		this.doNotMoveCursorOnTab = doNotMoveCursorOnTab;

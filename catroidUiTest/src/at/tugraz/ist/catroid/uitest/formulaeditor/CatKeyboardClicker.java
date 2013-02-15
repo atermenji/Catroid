@@ -98,11 +98,6 @@ public class CatKeyboardClicker {
 		}
 	}
 
-	public void clearEditTextPortraitModeOnlyQuickly(int editTextIndex) {
-		solo.clickOnEditText(editTextIndex);
-		this.clickOnKey("del");
-	}
-
 	public void clearEditTextWithCursorBehindLastCharacterOnlyQuickly(int index) {
 		int lastEditTextLength = solo.getEditText(index).getText().length();
 		while (lastEditTextLength > 0) {
