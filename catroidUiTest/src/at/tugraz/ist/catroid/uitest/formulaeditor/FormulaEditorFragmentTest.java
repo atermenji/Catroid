@@ -42,7 +42,6 @@ public class FormulaEditorFragmentTest extends ActivityInstrumentationTestCase2<
 	private Solo solo;
 	private Project project;
 	private PlaceAtBrick placeAtBrick;
-	CatKeyboardClicker catKeyboardClicker = null;
 	private static final int INITIAL_X = 8;
 	private static final int INITIAL_Y = 7;
 

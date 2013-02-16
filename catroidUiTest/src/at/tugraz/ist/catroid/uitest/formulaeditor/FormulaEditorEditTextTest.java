@@ -61,7 +61,6 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 	//	private static final int Y_POS_EDIT_TEXT_ID = 2;
 	private static final int FORMULA_EDITOR_EDIT_TEXT_ID = 3;
 
-	private CatKeyboardClicker catKeyboardClicker;
 	private FormulaEditorEditTextHelper formulaEditorEditTextHelper;
 
 	private float oneCharacterWidthApproximation;
@@ -82,7 +81,6 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 
 		createProject("testProjectCatKeyboard");
 		this.solo = new Solo(getInstrumentation(), getActivity());
-		catKeyboardClicker = new CatKeyboardClicker(solo);
 		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
 		if (formulaEditorEditTextHelper == null) {
 			formulaEditorEditTextHelper = new FormulaEditorEditTextHelper(

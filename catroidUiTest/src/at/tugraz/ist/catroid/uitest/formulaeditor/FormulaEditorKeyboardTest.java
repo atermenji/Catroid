@@ -46,11 +46,11 @@ public class FormulaEditorKeyboardTest extends android.test.ActivityInstrumentat
 	private Solo solo;
 	private Sprite firstSprite;
 	private Brick changeBrick;
-	private CatKeyboardClicker catKeyboardClicker;
 
 	private static final int X_POS_EDIT_TEXT_ID = 0;
 	private static final int Y_POS_EDIT_TEXT_ID = 1;
 	private static final int FORMULA_EDITOR_EDIT_TEXT_ID = 2;
+	private static final int SCROLL_DOWN_INDEX = 2;
 
 	public FormulaEditorKeyboardTest() {
 		super(ScriptTabActivity.class);
@@ -289,7 +289,7 @@ public class FormulaEditorKeyboardTest extends android.test.ActivityInstrumentat
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
-		solo.scrollDown();
+		solo.scrollDownList(SCROLL_DOWN_INDEX);
 		itemString = solo.getString(R.string.formula_editor_function_pi);
 		solo.clickOnText(itemString);
 		solo.sleep(100);
@@ -298,7 +298,7 @@ public class FormulaEditorKeyboardTest extends android.test.ActivityInstrumentat
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
-		solo.scrollDown();
+		solo.scrollDownList(SCROLL_DOWN_INDEX);
 		itemString = solo.getString(R.string.formula_editor_function_sqrt);
 		solo.clickOnText(itemString);
 		solo.sleep(100);
@@ -315,7 +315,7 @@ public class FormulaEditorKeyboardTest extends android.test.ActivityInstrumentat
 		//		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
-		solo.scrollDown();
+		solo.scrollDownList(SCROLL_DOWN_INDEX);
 		itemString = solo.getString(R.string.formula_editor_function_rand);
 		solo.clickOnText(itemString);
 		solo.sleep(100);
@@ -324,7 +324,7 @@ public class FormulaEditorKeyboardTest extends android.test.ActivityInstrumentat
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
-		solo.scrollDown();
+		solo.scrollDownList(SCROLL_DOWN_INDEX);
 		itemString = solo.getString(R.string.formula_editor_function_abs);
 		solo.clickOnText(itemString);
 		solo.sleep(100);
@@ -333,7 +333,7 @@ public class FormulaEditorKeyboardTest extends android.test.ActivityInstrumentat
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
-		solo.scrollDown();//TODO doesnt work :S
+		solo.scrollDownList(SCROLL_DOWN_INDEX);
 		itemString = solo.getString(R.string.formula_editor_function_round);
 		solo.clickOnText(itemString);
 		solo.sleep(100);
@@ -458,10 +458,36 @@ public class FormulaEditorKeyboardTest extends android.test.ActivityInstrumentat
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
 	}
 
-	public void testVariableFragment() {
+	public void testCreateUserVariable() {
 
-		//TODO:
+		String itemString = "";
+
+		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
+
+		ArrayList<EditText> textList = solo.getCurrentEditTexts();
+		EditText text = textList.get(textList.size() - 1);
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_variables));
+		solo.clickOnView(solo.getView(R.id.formula_editor_variable_list_bottom_bar));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_variable_dialog_hint));
+		solo.clickOnText("z");
+		solo.clickOnText("z");
+		solo.clickOnText("z");
+		itemString = "zzz";
+		solo.clickLongOnText("Ok"); // TODO R reference
+		solo.clickOnText(itemString);
+		solo.sleep(100);// without sleep it crashes x.x
+		assertEquals("Wrong button clicked", itemString, text.getText().toString().substring(0, itemString.length()));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
+
 	}
+
+	//TODO: deleteUserVariableLongPress(), deleteUserVariableMultipleChoice(), testScopeOfUserVariable(), testInterpretationOfUservariable()
 
 	//	public void testOrientationChanges() {
 	//
