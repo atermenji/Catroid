@@ -96,16 +96,24 @@ public class InternFormulaHelper {
 				return buildOperator(Operators.POW);
 			case R.id.formula_editor_keyboard_equal:
 				return buildOperator(Operators.EQUAL);
+			case R.string.formula_editor_logic_equal:
+				return buildOperator(Operators.EQUAL);
 			case R.string.formula_editor_logic_notequal:
 				return buildOperator(Operators.NOT_EQUAL);
 			case R.string.formula_editor_logic_lesserthan:
 				return buildOperator(Operators.SMALLER_THAN);
+			case R.string.formula_editor_logic_leserequal:
+				return buildOperator(Operators.SMALLER_OR_EQUAL);
 			case R.string.formula_editor_logic_greaterthan:
 				return buildOperator(Operators.GREATER_THAN);
+			case R.string.formula_editor_logic_greaterequal:
+				return buildOperator(Operators.GREATER_OR_EQUAL);
 			case R.string.formula_editor_logic_and:
 				return buildOperator(Operators.LOGICAL_AND);
 			case R.string.formula_editor_logic_or:
 				return buildOperator(Operators.LOGICAL_OR);
+			case R.string.formula_editor_logic_not:
+				return buildOperator(Operators.NOT);
 
 				//BRACKET
 

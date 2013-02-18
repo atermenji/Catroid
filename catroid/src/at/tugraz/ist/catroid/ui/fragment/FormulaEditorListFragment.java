@@ -58,9 +58,11 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 			R.string.formula_editor_look_size, R.string.formula_editor_look_rotation,
 			R.string.formula_editor_look_layer };
 
-	private static final int[] LOGIC_ITEMS = { R.string.formula_editor_logic_notequal,
-			R.string.formula_editor_logic_lesserthan, R.string.formula_editor_logic_greaterthan,
-			R.string.formula_editor_logic_and, R.string.formula_editor_logic_or };
+	private static final int[] LOGIC_ITEMS = { R.string.formula_editor_logic_equal,
+			R.string.formula_editor_logic_notequal, R.string.formula_editor_logic_lesserthan,
+			R.string.formula_editor_logic_leserequal, R.string.formula_editor_logic_greaterthan,
+			R.string.formula_editor_logic_greaterequal, R.string.formula_editor_logic_and,
+			R.string.formula_editor_logic_or, R.string.formula_editor_logic_not };
 
 	private static final int[] MATH_ITEMS = { R.string.formula_editor_function_sin,
 			R.string.formula_editor_function_cos, R.string.formula_editor_function_tan,
@@ -149,7 +151,6 @@ public class FormulaEditorListFragment extends SherlockListFragment implements D
 		fragTransaction.hide(formulaEditorFragment);
 		fragTransaction.add(android.R.id.tabhost, this, mTag);
 		fragTransaction.commit();
-
 	}
 
 	@Override

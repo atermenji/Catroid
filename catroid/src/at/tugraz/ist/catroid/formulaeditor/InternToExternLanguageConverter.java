@@ -65,6 +65,21 @@ public class InternToExternLanguageConverter {
 		internExternLanguageConverterMap.put(Sensors.LOOK_SIZE_.sensorName, R.string.formula_editor_look_size);
 		internExternLanguageConverterMap.put(Sensors.LOOK_ROTATION_.sensorName, R.string.formula_editor_look_rotation);
 		internExternLanguageConverterMap.put(Sensors.LOOK_LAYER_.sensorName, R.string.formula_editor_look_layer);
+
+		internExternLanguageConverterMap.put(Operators.NOT.operatorName, R.string.formula_editor_logic_not);
+		internExternLanguageConverterMap.put(Operators.NOT_EQUAL.operatorName, R.string.formula_editor_logic_notequal);
+		internExternLanguageConverterMap.put(Operators.EQUAL.operatorName, R.string.formula_editor_logic_equal);
+		internExternLanguageConverterMap.put(Operators.GREATER_OR_EQUAL.operatorName,
+				R.string.formula_editor_logic_greaterequal);
+		internExternLanguageConverterMap.put(Operators.GREATER_THAN.operatorName,
+				R.string.formula_editor_logic_greaterthan);
+		internExternLanguageConverterMap.put(Operators.LOGICAL_AND.operatorName, R.string.formula_editor_logic_and);
+		internExternLanguageConverterMap.put(Operators.LOGICAL_OR.operatorName, R.string.formula_editor_logic_or);
+		internExternLanguageConverterMap.put(Operators.SMALLER_OR_EQUAL.operatorName,
+				R.string.formula_editor_logic_leserequal);
+		internExternLanguageConverterMap.put(Operators.SMALLER_THAN.operatorName,
+				R.string.formula_editor_logic_lesserthan);
+
 	}
 
 	public static String getExternStringForInternTokenValue(String internTokenValue, Context context) {

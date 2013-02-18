@@ -180,53 +180,58 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 					view.setPressed(false);
 					return true;
 				}
-				view.setBackgroundResource(R.drawable.ic_paintroid_logo);
-				view.setPressed(true);
 
-				switch (view.getId()) {
-					case R.id.formula_editor_keyboard_compute:
-						//TODO implement functionality (interpret) and output dialog ( Issue 8.64c)
-						FormulaElement formulaElement = formulaEditorEditText.getFormulaParser().parseFormula();
-						if (formulaElement == null) {
-							//TODO Error handling
-							return false;
-						}
-						Formula formulaToCompute = new Formula(formulaElement);
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
 
-						FormulaEditorComputeDialog computeDialog = new FormulaEditorComputeDialog(context);
+					view.setBackgroundResource(R.drawable.ic_paintroid_logo);
+					view.setPressed(true);
 
-						computeDialog.setFormula(formulaToCompute);
-						computeDialog.show();
-						return true;
-					case R.id.formula_editor_keyboard_undo:
-						formulaEditorEditText.undo();
-						return true;
-					case R.id.formula_editor_keyboard_redo:
-						formulaEditorEditText.redo();
-						return true;
-					case R.id.formula_editor_keyboard_math:
-						showFormulaEditorListFragment(FormulaEditorListFragment.MATH_TAG, R.string.formula_editor_math);
-						return true;
-					case R.id.formula_editor_keyboard_logic:
-						showFormulaEditorListFragment(FormulaEditorListFragment.LOGIC_TAG,
-								R.string.formula_editor_logic);
-						return true;
-					case R.id.formula_editor_keyboard_object:
-						showFormulaEditorListFragment(FormulaEditorListFragment.OBJECT_TAG,
-								R.string.formula_editor_choose_look_variable);
-						return true;
-					case R.id.formula_editor_keyboard_sensors:
-						showFormulaEditorListFragment(FormulaEditorListFragment.SENSOR_TAG,
-								R.string.formula_editor_sensors);
-						return true;
-					case R.id.formula_editor_keyboard_variables:
-						showFormulaEditorVariableListFragment(FormulaEditorVariableListFragment.VARIABLE_TAG,
-								R.string.formula_editor_variables);
-						return true;
-					default:
-						formulaEditorEditText.handleKeyEvent(view.getId(), "");
-						return true;
+					switch (view.getId()) {
+						case R.id.formula_editor_keyboard_compute:
+							//TODO implement functionality (interpret) and output dialog ( Issue 8.64c)
+							FormulaElement formulaElement = formulaEditorEditText.getFormulaParser().parseFormula();
+							if (formulaElement == null) {
+								//TODO Error handling
+								return false;
+							}
+							Formula formulaToCompute = new Formula(formulaElement);
+							FormulaEditorComputeDialog computeDialog = new FormulaEditorComputeDialog(context);
+							computeDialog.setFormula(formulaToCompute);
+							computeDialog.show();
+							return true;
+						case R.id.formula_editor_keyboard_undo:
+							formulaEditorEditText.undo();
+							return true;
+						case R.id.formula_editor_keyboard_redo:
+							formulaEditorEditText.redo();
+							return true;
+						case R.id.formula_editor_keyboard_math:
+							showFormulaEditorListFragment(FormulaEditorListFragment.MATH_TAG,
+									R.string.formula_editor_math);
+							return true;
+						case R.id.formula_editor_keyboard_logic:
+							showFormulaEditorListFragment(FormulaEditorListFragment.LOGIC_TAG,
+									R.string.formula_editor_logic);
+							return true;
+						case R.id.formula_editor_keyboard_object:
+							showFormulaEditorListFragment(FormulaEditorListFragment.OBJECT_TAG,
+									R.string.formula_editor_choose_look_variable);
+							return true;
+						case R.id.formula_editor_keyboard_sensors:
+							showFormulaEditorListFragment(FormulaEditorListFragment.SENSOR_TAG,
+									R.string.formula_editor_sensors);
+							return true;
+						case R.id.formula_editor_keyboard_variables:
+							showFormulaEditorVariableListFragment(FormulaEditorVariableListFragment.VARIABLE_TAG,
+									R.string.formula_editor_variables);
+							return true;
+						default:
+							formulaEditorEditText.handleKeyEvent(view.getId(), "");
+							return true;
+					}
+
 				}
+				return false;
 			}
 		};
 
