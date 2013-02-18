@@ -114,7 +114,12 @@ public class InternToExternGenerator {
 				return left + InternToExternLanguageConverter.getExternStringForInternTokenValue(".", context) + right;
 
 			case OPERATOR:
-				return internToken.getTokenSringValue();
+
+				String returnvalue = internToken.getTokenSringValue();
+				String mappingValue = InternToExternLanguageConverter.getExternStringForInternTokenValue(
+						internToken.getTokenSringValue(), context);
+
+				return mappingValue == null ? returnvalue : mappingValue;
 
 			case BRACKET_OPEN:
 			case FUNCTION_PARAMETERS_BRACKET_OPEN:
