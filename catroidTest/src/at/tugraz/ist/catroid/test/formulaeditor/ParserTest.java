@@ -45,62 +45,140 @@ public class ParserTest extends AndroidTestCase {
 		FormulaElement parseTree = internParser.parseFormula();
 
 		assertNotNull("Formula is not parsed correctly: - 42.42", parseTree);
-
 		assertEquals("Formula interpretation is not as expected", -42.42, parseTree.interpretRecursive());
 	}
 
-	//	public void testParserTreeGenerationFormulas() {
-	//		for (ParserFormulaTestData parserTest : EnumSet.allOf(ParserFormulaTestData.class)) {
+	public void testOperatorPriority() {
+		List<InternToken> internTokenList = new LinkedList<InternToken>();
+
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "-"));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "2"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "×"));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "2"));
+
+		InternFormulaParser internParser = new InternFormulaParser(internTokenList);
+		FormulaElement parseTree = internParser.parseFormula();
+
+		assertNotNull("Formula is not parsed correctly:  1 - 2 x 2", parseTree);
+		assertEquals("Formula interpretation is not as expected", -3.0, parseTree.interpretRecursive());
+
+	}
+
+	public void testOperatorLeftBinding() {
+		List<InternToken> internTokenList = new LinkedList<InternToken>();
+
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "5"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "-"));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "4"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "-"));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+
+		InternFormulaParser internParser = new InternFormulaParser(internTokenList);
+		FormulaElement parseTree = internParser.parseFormula();
+
+		assertNotNull("Formula is not parsed correctly:  5 - 4 - 1", parseTree);
+		assertEquals("Formula interpretation is not as expected", 0.0, parseTree.interpretRecursive());
+
+		internTokenList = new LinkedList<InternToken>();
+
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "100"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "÷"));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "10"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "÷"));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "10"));
+
+		internParser = new InternFormulaParser(internTokenList);
+		parseTree = internParser.parseFormula();
+
+		assertNotNull("Formula is not parsed correctly:  100 ÷ 10 ÷ 10", parseTree);
+		assertEquals("Formula interpretation is not as expected", 1.0, parseTree.interpretRecursive());
+
+	}
+
+	public void testOperatorChain() {
+		List<InternToken> internTokenList = new LinkedList<InternToken>();
+
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "+"));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "2"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "×"));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "3"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "^"));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "2"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "+"));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+
+		InternFormulaParser internParser = new InternFormulaParser(internTokenList);
+		FormulaElement parseTree = internParser.parseFormula();
+
+		assertNotNull("Formula is not parsed correctly:  1 + 2 × 3 ^ 2 + 1", parseTree);
+		assertEquals("Formula interpretation is not as expected", 20.0, parseTree.interpretRecursive());
+
+	}
+
+	public void testBracket() {
+
+		List<InternToken> internTokenList = new LinkedList<InternToken>();
+
+		internTokenList.add(new InternToken(InternTokenType.BRACKET_OPEN, "("));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "+"));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "2"));
+		internTokenList.add(new InternToken(InternTokenType.BRACKET_CLOSE, ")"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "×"));
+		internTokenList.add(new InternToken(InternTokenType.BRACKET_OPEN, "("));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "+"));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "2"));
+		internTokenList.add(new InternToken(InternTokenType.BRACKET_CLOSE, ")"));
+
+		InternFormulaParser internParser = new InternFormulaParser(internTokenList);
+		FormulaElement parseTree = internParser.parseFormula();
+
+		assertNotNull("Formula is not parsed correctly:  (1+2) x (1+2)", parseTree);
+		assertEquals("Formula interpretation is not as expected", 9.0, parseTree.interpretRecursive());
+
+		internTokenList = new LinkedList<InternToken>();
+
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "-"));
+		internTokenList.add(new InternToken(InternTokenType.BRACKET_OPEN, "("));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "^"));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "2"));
+		internTokenList.add(new InternToken(InternTokenType.BRACKET_CLOSE, ")"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "-"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "-"));
+		internTokenList.add(new InternToken(InternTokenType.BRACKET_OPEN, "("));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "-"));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "-"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "-"));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "2"));
+		internTokenList.add(new InternToken(InternTokenType.BRACKET_CLOSE, ")"));
+
+		internParser = new InternFormulaParser(internTokenList);
+		parseTree = internParser.parseFormula();
+
+		assertNotNull("Formula is not parsed correctly:  -(1^2)--(-1--2)", parseTree);
+		assertEquals("Formula interpretation is not as expected", 0.0, parseTree.interpretRecursive());
+
+	}
+
+	//	public void testLogic() {
 	//
-	//			List<InternToken> internTokensToParse = InternFormulaToInternTokenGenerator
-	//					.generateInternRepresentationByString(parserTest.getInput());
-	//			InternFormulaParser parser = new InternFormulaParser(internTokensToParse);
+	//		List<InternToken> internTokenList = new LinkedList<InternToken>();
 	//
-	//			FormulaElement parserFormulaElement = parser.parseFormula();
+	//		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+	//		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "+"));
+	//		internTokenList.add(new InternToken(InternTokenType.NUMBER, "2"));
 	//
-	//			assertNotNull(
-	//					"Formula is not parsed correctly: Testname: " + parserTest.name() + ": " + parserTest.getInput()
-	//							+ "=", parserFormulaElement);
+	//		InternFormulaParser internParser = new InternFormulaParser(internTokenList);
+	//		FormulaElement parseTree = internParser.parseFormula();
 	//
-	//			assertEquals("Formula interpretation is not as expected: Testname: " + parserTest.name() + ": "
-	//					+ parserTest.getInput() + "=", parserTest.getOutput(), parserFormulaElement.interpretRecursive());
-	//		}
-	//	}
+	//		assertNotNull("Formula is not parsed correctly:  (1+2) x (1+2)", parseTree);
+	//		assertEquals("Formula interpretation is not as expected", 9.0, parseTree.interpretRecursive());
 	//
-	//	public void testParserFunctionInterpretation() {
-	//		for (ParserFormulaFunctionsTestData parserTest : EnumSet.allOf(ParserFormulaFunctionsTestData.class)) {
-	//			List<InternToken> internTokensToParse = InternFormulaToInternTokenGenerator
-	//					.generateInternRepresentationByString(parserTest.getInput());
-	//			InternFormulaParser parser = new InternFormulaParser(internTokensToParse);
-	//
-	//			FormulaElement parserFormulaElement = parser.parseFormula();
-	//
-	//			assertNotNull(
-	//					"Formula is not parsed correctly: Testname: " + parserTest.name() + ": " + parserTest.getInput()
-	//							+ "=", parserFormulaElement);
-	//
-	//			assertEquals("Formula interpretation is not as expected: Testname: " + parserTest.name() + ": "
-	//					+ parserTest.getInput() + "=", parserTest.getOutput(), parserFormulaElement.interpretRecursive(),
-	//					DELTA);
-	//		}
-	//
-	//	}
-	//
-	//	public void testParserTreeGenerationInvalidFormulas() {
-	//		for (InvalidParserFormulaTestData parserTest : EnumSet.allOf(InvalidParserFormulaTestData.class)) {
-	//			List<InternToken> internTokensToParse = InternFormulaToInternTokenGenerator
-	//					.generateInternRepresentationByString(parserTest.getInput());
-	//			InternFormulaParser parser = new InternFormulaParser(internTokensToParse);
-	//
-	//			FormulaElement parserFormulaElement = parser.parseFormula();
-	//
-	//			assertNull("Invalid formula parsed: Testname: " + parserTest.name() + ": " + parserTest.getInput() + "=",
-	//					parserFormulaElement);
-	//			assertEquals("First error character position is not as expected: Testname: " + parserTest.name() + ": "
-	//					+ parserTest.getInput() + "=", parserTest.getFirstErrorPosition(),
-	//					Integer.valueOf(parser.getErrorCharacterPosition()));
-	//
-	//		}
 	//	}
 
 }

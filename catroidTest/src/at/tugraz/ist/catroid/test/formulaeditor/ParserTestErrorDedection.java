@@ -111,58 +111,30 @@ public class ParserTestErrorDedection extends AndroidTestCase {
 		assertEquals("Error Token Index is not as expected", 0, errorTokenIndex);
 	}
 
-	//	public void testParserTreeGenerationFormulas() {
-	//		for (ParserFormulaTestData parserTest : EnumSet.allOf(ParserFormulaTestData.class)) {
-	//
-	//			List<InternToken> internTokensToParse = InternFormulaToInternTokenGenerator
-	//					.generateInternRepresentationByString(parserTest.getInput());
-	//			InternFormulaParser parser = new InternFormulaParser(internTokensToParse);
-	//
-	//			FormulaElement parserFormulaElement = parser.parseFormula();
-	//
-	//			assertNotNull(
-	//					"Formula is not parsed correctly: Testname: " + parserTest.name() + ": " + parserTest.getInput()
-	//							+ "=", parserFormulaElement);
-	//
-	//			assertEquals("Formula interpretation is not as expected: Testname: " + parserTest.name() + ": "
-	//					+ parserTest.getInput() + "=", parserTest.getOutput(), parserFormulaElement.interpretRecursive());
-	//		}
-	//	}
-	//
-	//	public void testParserFunctionInterpretation() {
-	//		for (ParserFormulaFunctionsTestData parserTest : EnumSet.allOf(ParserFormulaFunctionsTestData.class)) {
-	//			List<InternToken> internTokensToParse = InternFormulaToInternTokenGenerator
-	//					.generateInternRepresentationByString(parserTest.getInput());
-	//			InternFormulaParser parser = new InternFormulaParser(internTokensToParse);
-	//
-	//			FormulaElement parserFormulaElement = parser.parseFormula();
-	//
-	//			assertNotNull(
-	//					"Formula is not parsed correctly: Testname: " + parserTest.name() + ": " + parserTest.getInput()
-	//							+ "=", parserFormulaElement);
-	//
-	//			assertEquals("Formula interpretation is not as expected: Testname: " + parserTest.name() + ": "
-	//					+ parserTest.getInput() + "=", parserTest.getOutput(), parserFormulaElement.interpretRecursive(),
-	//					DELTA);
-	//		}
-	//
-	//	}
-	//
-	//	public void testParserTreeGenerationInvalidFormulas() {
-	//		for (InvalidParserFormulaTestData parserTest : EnumSet.allOf(InvalidParserFormulaTestData.class)) {
-	//			List<InternToken> internTokensToParse = InternFormulaToInternTokenGenerator
-	//					.generateInternRepresentationByString(parserTest.getInput());
-	//			InternFormulaParser parser = new InternFormulaParser(internTokensToParse);
-	//
-	//			FormulaElement parserFormulaElement = parser.parseFormula();
-	//
-	//			assertNull("Invalid formula parsed: Testname: " + parserTest.name() + ": " + parserTest.getInput() + "=",
-	//					parserFormulaElement);
-	//			assertEquals("First error character position is not as expected: Testname: " + parserTest.name() + ": "
-	//					+ parserTest.getInput() + "=", parserTest.getFirstErrorPosition(),
-	//					Integer.valueOf(parser.getErrorCharacterPosition()));
-	//
-	//		}
-	//	}
+	public void testRightBracketMissing() {
+		List<InternToken> internTokenList = new LinkedList<InternToken>();
+
+		internTokenList.add(new InternToken(InternTokenType.BRACKET_OPEN, "("));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "42.53"));
+
+		InternFormulaParser internParser = new InternFormulaParser(internTokenList);
+		FormulaElement parseTree = internParser.parseFormula();
+		assertNull("Invalid formula parsed:   (42.53", parseTree);
+		int errorTokenIndex = internParser.getErrorTokenIndex();
+		assertEquals("Error Token Index is not as expected", 2, errorTokenIndex);
+	}
+
+	public void testLefttBracketMissing() {
+		List<InternToken> internTokenList = new LinkedList<InternToken>();
+
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "42.53"));
+		internTokenList.add(new InternToken(InternTokenType.BRACKET_CLOSE, ")"));
+
+		InternFormulaParser internParser = new InternFormulaParser(internTokenList);
+		FormulaElement parseTree = internParser.parseFormula();
+		assertNull("Invalid formula parsed:   42.53)", parseTree);
+		int errorTokenIndex = internParser.getErrorTokenIndex();
+		assertEquals("Error Token Index is not as expected", 1, errorTokenIndex);
+	}
 
 }
