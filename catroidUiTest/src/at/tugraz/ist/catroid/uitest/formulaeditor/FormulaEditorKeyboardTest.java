@@ -26,6 +26,7 @@ package at.tugraz.ist.catroid.uitest.formulaeditor;
 import java.util.ArrayList;
 
 import android.test.suitebuilder.annotation.Smoke;
+import android.view.KeyEvent;
 import android.widget.EditText;
 import at.tugraz.ist.catroid.ProjectManager;
 import at.tugraz.ist.catroid.R;
@@ -398,6 +399,9 @@ public class FormulaEditorKeyboardTest extends android.test.ActivityInstrumentat
 
 		//TODO: add other logic operators
 
+		solo.goBack();
+		solo.goBack();
+
 	}
 
 	public void testSensorsFragment() {
@@ -456,6 +460,9 @@ public class FormulaEditorKeyboardTest extends android.test.ActivityInstrumentat
 		solo.sleep(100);
 		assertEquals("Wrong button clicked", itemString, text.getText().toString().substring(0, itemString.length()));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
+
+		solo.goBack();
+		solo.goBack();
 	}
 
 	public void testCreateUserVariable() {
@@ -475,15 +482,19 @@ public class FormulaEditorKeyboardTest extends android.test.ActivityInstrumentat
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_variables));
 		solo.clickOnView(solo.getView(R.id.formula_editor_variable_list_bottom_bar));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_variable_dialog_hint));
-		solo.clickOnText("z");
-		solo.clickOnText("z");
-		solo.clickOnText("z");
+		solo.sendKey(KeyEvent.KEYCODE_Z);
+		solo.sendKey(KeyEvent.KEYCODE_Z);
+		solo.sendKey(KeyEvent.KEYCODE_Z);
 		itemString = "zzz";
-		solo.clickLongOnText("Ok"); // TODO R reference
+		solo.sendKey(KeyEvent.KEYCODE_BACK);
+		solo.clickOnButton(solo.getString(R.string.ok));
 		solo.clickOnText(itemString);
-		solo.sleep(100);// without sleep it crashes x.x
+		solo.sleep(100);
 		assertEquals("Wrong button clicked", itemString, text.getText().toString().substring(0, itemString.length()));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
+
+		solo.goBack();
+		solo.goBack();
 
 	}
 
