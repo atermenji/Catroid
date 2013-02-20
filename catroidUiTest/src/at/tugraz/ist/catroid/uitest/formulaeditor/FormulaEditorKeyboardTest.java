@@ -498,7 +498,47 @@ public class FormulaEditorKeyboardTest extends android.test.ActivityInstrumentat
 
 	}
 
+	public void testDeleteUserVariableWithLongPress() {
+
+		String itemString = "";
+
+		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
+
+		ArrayList<EditText> textList = solo.getCurrentEditTexts();
+		EditText text = textList.get(textList.size() - 1);
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_variables));
+		solo.clickOnView(solo.getView(R.id.formula_editor_variable_list_bottom_bar));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_variable_dialog_hint));
+		solo.sendKey(KeyEvent.KEYCODE_D);
+		solo.sendKey(KeyEvent.KEYCODE_E);
+		solo.sendKey(KeyEvent.KEYCODE_L);
+		itemString = "del";
+		solo.sendKey(KeyEvent.KEYCODE_BACK);
+		solo.clickOnButton(solo.getString(R.string.ok));
+		solo.clickOnText(itemString);
+		solo.sleep(100);
+		assertEquals("Wrong button clicked", itemString, text.getText().toString().substring(0, itemString.length()));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_variables));
+		solo.clickLongOnText(itemString);
+		//		solo.clickOnMenuItem(solo.getString(R.id.menu_delete), true);
+		solo.clickOnText(solo.getString(R.string.delete));
+		assertFalse(solo.searchText(itemString, true));
+
+		solo.goBack();
+		solo.goBack();
+		solo.goBack();
+	}
+
 	//TODO: deleteUserVariableLongPress(), deleteUserVariableMultipleChoice(), testScopeOfUserVariable(), testInterpretationOfUservariable()
+	// 
 
 	//	public void testOrientationChanges() {
 	//
