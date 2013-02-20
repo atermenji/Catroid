@@ -23,12 +23,14 @@
 
 package at.tugraz.ist.catroid.uitest.formulaeditor;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import android.graphics.Rect;
 import android.test.suitebuilder.annotation.Smoke;
 import android.text.style.BackgroundColorSpan;
+import android.view.View;
 import at.tugraz.ist.catroid.ProjectManager;
 import at.tugraz.ist.catroid.R;
 import at.tugraz.ist.catroid.content.Project;
@@ -546,7 +548,23 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		solo.goBack();
 	}
 
-	//TODO CHECK TEST: Solo clicks strange behaviour
+	// TODO SOLO searchText + clickOnText NOT working!!
+	//
+	public void testListScroll() throws InterruptedException {
+		solo.clickOnEditText(0);
+		boolean isFound = solo.searchText(solo.getString(R.string.formula_editor_function_round));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
+		isFound = solo.searchText(solo.getString(R.string.formula_editor_function_round));
+		solo.scrollDownList(2);
+		isFound = solo.searchText(solo.getString(R.string.formula_editor_function_round));
+		solo.clickOnText(solo.getString(R.string.formula_editor_function_round));
+		ArrayList<View> views = solo.getViews();
+		isFound = solo.searchText(solo.getString(R.string.formula_editor_function_round));
+		assertTrue("String: " + getActivity().getString(R.string.formula_editor_function_round) + "not found!", isFound);
+	}
+
+	// TODO SOLO searchText + clickOnText NOT working!!
+	//
 	public void testStrings() {
 
 		solo.clickOnEditText(0);
