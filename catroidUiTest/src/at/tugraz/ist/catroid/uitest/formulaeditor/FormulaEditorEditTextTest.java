@@ -61,12 +61,9 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 	private static final int FORMULA_EDITOR_EDIT_TEXT_ID = 3;
 
 	private float oneCharacterWidthApproximation;
-	private float threeCharactersWidthApproximation;
 	private int lineHeight;
-	private int visibleLinesInEditTextfield;
 	private int totalLinesForTheInput;
 	private float firstLineYCoordinate;
-	private float firstCharacterInEditTextFieldOffset;
 
 	public FormulaEditorEditTextTest() {
 		super(ScriptTabActivity.class);
@@ -475,32 +472,6 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 
 		solo.goBack();
 		solo.goBack();
-	}
-
-	@Smoke
-	public void testSimpleParseTest() {
-		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_8));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_plus));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_random));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_random));
-		String editTextString = "8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( ";
-		editTextString += getActivity().getString(R.string.formula_editor_function_rand) + "( 0 , 1 ) ,";
-		solo.clickOnScreen(oneCharacterWidthApproximation * editTextString.length(), firstLineYCoordinate + lineHeight);
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_plus));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_3));
-		editTextString = "8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( ";
-		editTextString += getActivity().getString(R.string.formula_editor_function_rand) + "( 0 ";
-		solo.clickOnScreen(oneCharacterWidthApproximation * editTextString.length(), firstLineYCoordinate);
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_plus));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_2));
-		solo.goBack();
-		solo.sleep(500);
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
-		assertEquals("Text not deleted correctly",
-				"8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( 2 , 1 ) + 3 ", solo
-						.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
 	}
 
 	@Smoke
