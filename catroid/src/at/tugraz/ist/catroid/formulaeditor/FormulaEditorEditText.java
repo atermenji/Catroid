@@ -36,6 +36,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import at.tugraz.ist.catroid.formulaeditor.InternFormula.TokenSelectionType;
 import at.tugraz.ist.catroid.ui.fragment.FormulaEditorFragment;
 
@@ -50,11 +51,12 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 	private Spannable highlightSpan = null;
 	private float lineHeight = 0;
 
-	public CatKeyboardView catKeyboardView;
+	public LinearLayout catKeyboardView;
 	private static FormulaEditorHistory history = null;
 	private Context context;
 
 	FormulaEditorFragment formulaEditorDialog = null;
+	private boolean doNotMoveCursorOnTab = false;
 
 	public FormulaEditorEditText(Context context) {
 		super(context);
@@ -71,7 +73,7 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 		this.context = context;
 	}
 
-	public void init(FormulaEditorFragment dialog, int brickHeight, CatKeyboardView ckv) {
+	public void init(FormulaEditorFragment dialog, int brickHeight, LinearLayout ckv) {
 		this.formulaEditorDialog = dialog;
 		this.setOnTouchListener(this);
 		this.setLongClickable(false);
@@ -114,6 +116,9 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
+
+		absoluteCursorPosition = absoluteCursorPosition > getText().length() ? getText().length()
+				: absoluteCursorPosition;
 
 		Layout layout = getLayout();
 		if (layout != null) {
@@ -170,9 +175,9 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 
 	}
 
-	public void handleKeyEvent(CatKeyEvent catKey) {
+	public void handleKeyEvent(int resource, String userVariableName) {
 
-		internFormula.handleKeyInput(catKey, context);
+		internFormula.handleKeyInput(resource, context, userVariableName);
 		history.push(internFormula.getInternFormulaState());
 		updateTextAndCursorFromInternFormula();
 		setSelection(absoluteCursorPosition);
@@ -305,24 +310,27 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 
 				int tempCursorPosition = layout.getOffsetForHorizontal(cursorY + linesDown, cursorXOffset);
 
-				while (tempCursorPosition > getText().length()) {
-					tempCursorPosition--;
+				if (tempCursorPosition > getText().length()) {
+					tempCursorPosition = getText().length();
 				}
 
-				absoluteCursorPosition = tempCursorPosition;
+				if (isDoNotMoveCursorOnTab() == false) {
+					absoluteCursorPosition = tempCursorPosition;
+				}
+				absoluteCursorPosition = absoluteCursorPosition > getText().length() ? getText().length()
+						: absoluteCursorPosition;
+				setSelection(absoluteCursorPosition);
 				postInvalidate();
 
 				InternToken internToken = internFormula.getFirstLeftInternToken(absoluteCursorPosition);
+
 				if (internToken != null) {
 					InternTokenType internTokenType = internToken.getInternTokenType();
 
-					if ((internTokenType == InternTokenType.FUNCTION_NAME)
-							|| (internTokenType == InternTokenType.FUNCTION_PARAMETER_DELIMITER)
-							|| (internTokenType == InternTokenType.FUNCTION_PARAMETERS_BRACKET_CLOSE)
-							|| (internTokenType == InternTokenType.FUNCTION_PARAMETERS_BRACKET_OPEN)
-							|| (internTokenType == InternTokenType.SENSOR)
-							|| (internTokenType == InternTokenType.USER_VARIABLE)
-							|| (internTokenType == InternTokenType.LOOK)) {
+					if ((internFormula.getFirstLeftInternToken(absoluteCursorPosition - 1) == internToken)
+							&& ((internTokenType == InternTokenType.FUNCTION_NAME)
+									|| (internTokenType == InternTokenType.SENSOR)
+									|| (internTokenType == InternTokenType.USER_VARIABLE) || (internTokenType == InternTokenType.LOOK))) {
 						internFormula.setCursorAndSelection(absoluteCursorPosition, true);
 					} else {
 						internFormula.setCursorAndSelection(absoluteCursorPosition, false);
@@ -346,5 +354,20 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 
 	public InternFormulaParser getFormulaParser() {
 		return internFormula.getInternFormulaParser();
+	}
+
+	/**
+	 * @return the doNotMoveCursorOnTab
+	 */
+	public boolean isDoNotMoveCursorOnTab() {
+		return doNotMoveCursorOnTab;
+	}
+
+	/**
+	 * @param doNotMoveCursorOnTab
+	 *            the doNotMoveCursorOnTab to set
+	 */
+	public void setDoNotMoveCursorOnTab(boolean doNotMoveCursorOnTab) {
+		this.doNotMoveCursorOnTab = doNotMoveCursorOnTab;
 	}
 }

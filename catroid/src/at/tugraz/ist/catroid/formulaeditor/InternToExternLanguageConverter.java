@@ -50,12 +50,12 @@ public class InternToExternLanguageConverter {
 				R.string.formula_editor_sensor_y_acceleration);
 		internExternLanguageConverterMap.put(Sensors.Z_ACCELERATION_.sensorName,
 				R.string.formula_editor_sensor_z_acceleration);
-		internExternLanguageConverterMap.put(Sensors.AZIMUTH_ORIENTATION_.sensorName,
-				R.string.formula_editor_sensor_azimuth_orientation);
-		internExternLanguageConverterMap.put(Sensors.PITCH_ORIENTATION_.sensorName,
-				R.string.formula_editor_sensor_pitch_orientation);
-		internExternLanguageConverterMap.put(Sensors.ROLL_ORIENTATION_.sensorName,
-				R.string.formula_editor_sensor_roll_orientation);
+		internExternLanguageConverterMap.put(Sensors.Z_ORIENTATION_.sensorName,
+				R.string.formula_editor_sensor_z_orientation);
+		internExternLanguageConverterMap.put(Sensors.X_ORIENTATION_.sensorName,
+				R.string.formula_editor_sensor_x_orientation);
+		internExternLanguageConverterMap.put(Sensors.Y_ORIENTATION_.sensorName,
+				R.string.formula_editor_sensor_y_orientation);
 		internExternLanguageConverterMap.put(Sensors.LOOK_X_.sensorName, R.string.formula_editor_look_x);
 		internExternLanguageConverterMap.put(Sensors.LOOK_Y_.sensorName, R.string.formula_editor_look_y);
 		internExternLanguageConverterMap.put(Sensors.LOOK_GHOSTEFFECT_.sensorName,
@@ -65,6 +65,21 @@ public class InternToExternLanguageConverter {
 		internExternLanguageConverterMap.put(Sensors.LOOK_SIZE_.sensorName, R.string.formula_editor_look_size);
 		internExternLanguageConverterMap.put(Sensors.LOOK_ROTATION_.sensorName, R.string.formula_editor_look_rotation);
 		internExternLanguageConverterMap.put(Sensors.LOOK_LAYER_.sensorName, R.string.formula_editor_look_layer);
+
+		internExternLanguageConverterMap.put(Operators.NOT.operatorName, R.string.formula_editor_logic_not);
+		internExternLanguageConverterMap.put(Operators.NOT_EQUAL.operatorName, R.string.formula_editor_logic_notequal);
+		internExternLanguageConverterMap.put(Operators.EQUAL.operatorName, R.string.formula_editor_logic_equal);
+		internExternLanguageConverterMap.put(Operators.GREATER_OR_EQUAL.operatorName,
+				R.string.formula_editor_logic_greaterequal);
+		internExternLanguageConverterMap.put(Operators.GREATER_THAN.operatorName,
+				R.string.formula_editor_logic_greaterthan);
+		internExternLanguageConverterMap.put(Operators.LOGICAL_AND.operatorName, R.string.formula_editor_logic_and);
+		internExternLanguageConverterMap.put(Operators.LOGICAL_OR.operatorName, R.string.formula_editor_logic_or);
+		internExternLanguageConverterMap.put(Operators.SMALLER_OR_EQUAL.operatorName,
+				R.string.formula_editor_logic_leserequal);
+		internExternLanguageConverterMap.put(Operators.SMALLER_THAN.operatorName,
+				R.string.formula_editor_logic_lesserthan);
+
 	}
 
 	public static String getExternStringForInternTokenValue(String internTokenValue, Context context) {

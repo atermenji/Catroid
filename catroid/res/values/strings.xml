@@ -334,9 +334,9 @@
     <string name="formula_editor_sensor_x_acceleration">x_acceleration</string>
     <string name="formula_editor_sensor_y_acceleration">y_acceleration</string>
     <string name="formula_editor_sensor_z_acceleration">z_acceleration</string>
-    <string name="formula_editor_sensor_azimuth_orientation">azimuth_orientation</string>
-    <string name="formula_editor_sensor_pitch_orientation">pitch_orientation</string>
-    <string name="formula_editor_sensor_roll_orientation">roll_orientation</string>
+    <string name="formula_editor_sensor_z_orientation">z_orientation</string>
+    <string name="formula_editor_sensor_x_orientation">x_orientation</string>
+    <string name="formula_editor_sensor_y_orientation">y_orientation</string>
     <string name="formula_editor_look_x">look_x</string>
     <string name="formula_editor_look_y">look_y</string>
     <string name="formula_editor_look_ghosteffect">look_ghosteffect</string>
@@ -344,5 +344,36 @@
     <string name="formula_editor_look_size">look_size</string>
     <string name="formula_editor_look_rotation">look_rotation</string>
     <string name="formula_editor_look_layer">look_layer</string>
+	<string name="formula_editor_undo">Undo</string>
+	<string name="formula_editor_redo">Redo</string>
+	<string name="formula_editor_compute">Compute</string>	
+	<string name="formula_editor_delete">Delete</string>
+	<string name="formula_editor_object">Object</string>
+	<string name="formula_editor_math">Math</string>
+	<string name="formula_editor_logic">Logic</string>
+	<string name="formula_editor_sensors">Sensors</string>
+	<string name="formula_editor_variables">Variables</string>
+	<string name="formula_editor_logic_notequal">&#x2260;</string>	
+	<string name="formula_editor_logic_lesserthan">&lt;</string>
+	<string name="formula_editor_logic_greaterthan">&gt;</string>
+	<string name="formula_editor_logic_and">AND</string>
+	<string name="formula_editor_logic_or">OR</string>
+	<string name="formula_editor_logic_not">NOT</string>	
+	<string name="formula_editor_logic_greaterequal">&#x2265;</string>
+	<string name="formula_editor_logic_leserequal">&#x2264;</string>
+	<string name="formula_editor_logic_equal">=</string>
+	<string name="formula_editor_operator_mult">×</string>
+	<string name="formula_editor_operator_plus">+</string>
+	<string name="formula_editor_operator_minus">-</string>
+	<string name="formula_editor_operator_divide">÷</string>
+	<string name="formula_editor_operator_modulus">%</string>
+	<string name="formula_editor_operator_power">^</string>
+	<string name="formula_editor_new_variable">make a new variable</string>
+	<string name="formula_editor_variable_dialog_for_all_sprites">For all sprites</string>
+	<string name="formula_editor_variable_dialog_for_this_sprite_only">For this sprite only</string>
+	<string name="formula_editor_variable_dialog_hint">Enter variable name</string>
+	<string name="formula_editor_variable_context_action_item_selected">items selected!</string>
+	
+	
 
 </resources>

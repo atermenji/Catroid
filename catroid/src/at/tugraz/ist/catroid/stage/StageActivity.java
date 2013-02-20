@@ -27,6 +27,7 @@ import android.os.Bundle;
 import at.tugraz.ist.catroid.ProjectManager;
 import at.tugraz.ist.catroid.R;
 import at.tugraz.ist.catroid.common.Values;
+import at.tugraz.ist.catroid.formulaeditor.SensorHandler;
 import at.tugraz.ist.catroid.ui.dialogs.StageDialog;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -44,11 +45,13 @@ public class StageActivity extends AndroidApplication {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		SensorHandler.startSensorListener(this);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		stageListener = new StageListener();
 		stageDialog = new StageDialog(this, stageListener, R.style.stage_dialog);
 		this.calculateScreenSizes();
 		initialize(stageListener, true);
+
 	}
 
 	@Override
@@ -62,6 +65,7 @@ public class StageActivity extends AndroidApplication {
 		if (stagePlaying) {
 			this.manageLoadAndFinish();
 		}
+		SensorHandler.stopSensorListeners();
 		super.onDestroy();
 	}
 
@@ -87,7 +91,9 @@ public class StageActivity extends AndroidApplication {
 		if (stagePlaying) {
 			stageListener.menuPause();
 			stagePlaying = false;
+			SensorHandler.stopSensorListeners();
 		} else {
+			SensorHandler.startSensorListener(this);
 			stageListener.menuResume();
 			stagePlaying = true;
 		}
