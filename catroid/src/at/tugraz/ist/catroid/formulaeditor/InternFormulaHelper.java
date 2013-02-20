@@ -115,10 +115,12 @@ public class InternFormulaHelper {
 			case R.string.formula_editor_logic_not:
 				return buildOperator(Operators.NOT);
 
-				//BRACKET
+				//BRACKETS
 
-			case R.id.formula_editor_keyboard_decimal_brackets:
-				return buildBracket("0");
+			case R.id.formula_editor_keyboard_bracket_open:
+				return buildBracketOpen();
+			case R.id.formula_editor_keyboard_bracket_close:
+				return buildBracketClose();
 
 				//COSTUME
 
@@ -143,6 +145,18 @@ public class InternFormulaHelper {
 
 	}
 
+	private List<InternToken> buildBracketOpen() {
+		List<InternToken> returnList = new LinkedList<InternToken>();
+		returnList.add(new InternToken(InternTokenType.BRACKET_OPEN));
+		return returnList;
+	}
+
+	private List<InternToken> buildBracketClose() {
+		List<InternToken> returnList = new LinkedList<InternToken>();
+		returnList.add(new InternToken(InternTokenType.BRACKET_CLOSE));
+		return returnList;
+	}
+
 	private List<InternToken> buildUserVariable(String userVariableName) {
 		List<InternToken> returnList = new LinkedList<InternToken>();
 		returnList.add(new InternToken(InternTokenType.USER_VARIABLE, userVariableName));
@@ -164,14 +178,6 @@ public class InternFormulaHelper {
 	private List<InternToken> buildLook(Sensors sensors) {
 		List<InternToken> returnList = new LinkedList<InternToken>();
 		returnList.add(new InternToken(InternTokenType.LOOK, sensors.sensorName));
-		return returnList;
-	}
-
-	private List<InternToken> buildBracket(String bracketValue) {
-		List<InternToken> returnList = new LinkedList<InternToken>();
-		returnList.add(new InternToken(InternTokenType.BRACKET_OPEN));
-		returnList.add(new InternToken(InternTokenType.NUMBER, bracketValue));
-		returnList.add(new InternToken(InternTokenType.BRACKET_CLOSE));
 		return returnList;
 	}
 
