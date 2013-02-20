@@ -73,6 +73,7 @@ public class Project implements Serializable {
 		virtualScreenWidth = Values.SCREEN_WIDTH;
 		virtualScreenHeight = Values.SCREEN_HEIGHT;
 		setDeviceData(context);
+		userVariables = new UserVariablesContainer();
 
 		if (context == null) {
 			return;
@@ -81,7 +82,7 @@ public class Project implements Serializable {
 		Sprite background = new Sprite(context.getString(R.string.background));
 		background.costume.zPosition = Integer.MIN_VALUE;
 		addSprite(background);
-		userVariables = new UserVariablesContainer();
+
 	}
 
 	private void ifLandscapeSwitchWidthAndHeight() {
