@@ -356,17 +356,10 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 		return internFormula.getInternFormulaParser();
 	}
 
-	/**
-	 * @return the doNotMoveCursorOnTab
-	 */
 	public boolean isDoNotMoveCursorOnTab() {
 		return doNotMoveCursorOnTab;
 	}
 
-	/**
-	 * @param doNotMoveCursorOnTab
-	 *            the doNotMoveCursorOnTab to set
-	 */
 	public void setDoNotMoveCursorOnTab(boolean doNotMoveCursorOnTab) {
 		this.doNotMoveCursorOnTab = doNotMoveCursorOnTab;
 	}

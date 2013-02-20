@@ -23,12 +23,14 @@
 
 package at.tugraz.ist.catroid.uitest.formulaeditor;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import android.graphics.Rect;
 import android.test.suitebuilder.annotation.Smoke;
 import android.text.style.BackgroundColorSpan;
+import android.view.View;
 import at.tugraz.ist.catroid.ProjectManager;
 import at.tugraz.ist.catroid.R;
 import at.tugraz.ist.catroid.content.Project;
@@ -58,18 +60,12 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 	Script startScript1;
 
 	private static final int X_POS_EDIT_TEXT_ID = 0;
-	//	private static final int Y_POS_EDIT_TEXT_ID = 2;
 	private static final int FORMULA_EDITOR_EDIT_TEXT_ID = 3;
 
-	private FormulaEditorEditTextHelper formulaEditorEditTextHelper;
-
 	private float oneCharacterWidthApproximation;
-	private float threeCharactersWidthApproximation;
 	private int lineHeight;
-	private int visibleLinesInEditTextfield;
 	private int totalLinesForTheInput;
 	private float firstLineYCoordinate;
-	private float firstCharacterInEditTextFieldOffset;
 
 	public FormulaEditorEditTextTest() {
 		super(ScriptTabActivity.class);
@@ -81,21 +77,6 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 
 		createProject("testProjectCatKeyboard");
 		this.solo = new Solo(getInstrumentation(), getActivity());
-		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
-		if (formulaEditorEditTextHelper == null) {
-			formulaEditorEditTextHelper = new FormulaEditorEditTextHelper(
-					solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID), solo);
-
-			oneCharacterWidthApproximation = formulaEditorEditTextHelper.getOneCharacterWidthApproximation();
-			threeCharactersWidthApproximation = formulaEditorEditTextHelper.getThreeCharactersWidthApproximation();
-			lineHeight = formulaEditorEditTextHelper.getLineHeight();
-			visibleLinesInEditTextfield = formulaEditorEditTextHelper.getVisibleLinesInEditTextfield();
-			totalLinesForTheInput = formulaEditorEditTextHelper.getTotalLinesForTheInput();
-			firstLineYCoordinate = formulaEditorEditTextHelper.getFirstLineYCoordinate();
-			firstCharacterInEditTextFieldOffset = formulaEditorEditTextHelper.getFirstCharacterInEditTextFieldOffset();
-
-			solo.goBack();
-		}
 	}
 
 	@Override
@@ -121,18 +102,18 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		clickOnFormulaEditorEditText();
 	}
 
-	//click on edit text
-	public void clickOnFormulaEditorEditText() {
-		Rect globalVisibleRect = new Rect();
-		solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getGlobalVisibleRect(globalVisibleRect);
-		solo.clickOnScreen(30, globalVisibleRect.top + 10);
-	}
-
 	public void doubleClickOnFormulaEditorEditText() {
 		Rect globalVisibleRect = new Rect();
 		solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getGlobalVisibleRect(globalVisibleRect);
 		solo.clickOnScreen(30, globalVisibleRect.top + 10);
 		solo.drag(30, 31, globalVisibleRect.top + 10, globalVisibleRect.top, 50);
+	}
+
+	//click on edit text
+	public void clickOnFormulaEditorEditText() {
+		Rect globalVisibleRect = new Rect();
+		solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getGlobalVisibleRect(globalVisibleRect);
+		solo.clickOnScreen(30, globalVisibleRect.top + 10);
 	}
 
 	public void testSingleTapOnFunctionName() {
@@ -146,7 +127,6 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_rand));
 
 		setAbsoluteCursorPosition(2);
-		//		solo.clickOnEditText(FORMULA_EDITOR_EDIT_TEXT_ID);
 
 		assertEquals("Selection cursor not found in text, but should be", 0,
 				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().getSpanStart(COLOR_HIGHLIGHT));
@@ -154,17 +134,13 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 				solo.getString(R.string.formula_editor_function_rand).length() + "( 0 , 1 )".length(), solo
 						.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().getSpanEnd(COLOR_HIGHLIGHT));
 
-		assertEquals("Cursor not found in text, but should be", 9, solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID)
+		assertEquals("Cursor not found in text, but should be", 2, solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID)
 				.getSelectionEnd());
 
 	}
 
 	@Smoke
 	public void testDoubleTapSelection() {
-		//		float xCoordinate = 60;
-		//		float brickOffset = 99;
-		//		float greenBarOffset = 5;
-		//		float yCoordinate = brickOffset + greenBarOffset + 5;
 		BackgroundColorSpan COLOR_HIGHLIGHT = (BackgroundColorSpan) UiTestUtils.getPrivateField("COLOR_HIGHLIGHT",
 				new FormulaEditorEditText(getActivity()));
 		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
@@ -176,12 +152,7 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 
 		assertTrue("Selection cursor found in text, but should not be", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID)
 				.getText().getSpanStart(COLOR_HIGHLIGHT) == -1);
-		//There is no doubleclick in robotium q.q, this is a workaround!
 		setAbsoluteCursorPosition(3);
-		//		solo.clickOnEditText(FORMULA_EDITOR_EDIT_TEXT_ID);
-		//		solo.clickOnScreen(threeCharactersWidthApproximation, firstLineYCoordinate);
-		//		solo.drag(threeCharactersWidthApproximation, threeCharactersWidthApproximation + 1, firstLineYCoordinate,
-		//				firstLineYCoordinate, 50);
 		doubleClickOnFormulaEditorEditText();
 		assertEquals("Selection cursor not found in text, but should be", 0,
 				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().getSpanStart(COLOR_HIGHLIGHT));
@@ -195,12 +166,8 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_random));
 		assertTrue("Text not found", solo.searchText(solo.getString(R.string.formula_editor_function_rand) + "("));
-		//There is no doubleclick in robotium q.q, this is a workaround!
 		setAbsoluteCursorPosition(3);
 		doubleClickOnFormulaEditorEditText();
-		//		solo.clickOnScreen(threeCharactersWidthApproximation, firstLineYCoordinate);
-		//		solo.drag(threeCharactersWidthApproximation, threeCharactersWidthApproximation + 1, firstLineYCoordinate,
-		//				firstLineYCoordinate, 50);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
 
@@ -210,12 +177,8 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_sensors));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_sensor_y_acceleration));
 		assertTrue("Text not found", solo.searchText(solo.getString(R.string.formula_editor_sensor_y_acceleration)));
-		//There is no doubleclick in robotium q.q, this is a workaround!
 		setAbsoluteCursorPosition(3);
 		doubleClickOnFormulaEditorEditText();
-		//		solo.clickOnScreen(threeCharactersWidthApproximation, firstLineYCoordinate);
-		//		solo.drag(threeCharactersWidthApproximation, threeCharactersWidthApproximation + 1, firstLineYCoordinate,
-		//				firstLineYCoordinate, 50);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
 
@@ -230,14 +193,6 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 				"Text not found",
 				solo.searchText(solo.getString(R.string.formula_editor_sensor_y_acceleration) + " "
 						+ solo.getString(R.string.formula_editor_sensor_x_acceleration)));
-		//There is no doubleclick in robotium q.q, this is a workaround!
-		//		solo.clickOnScreen(threeCharactersWidthApproximation, firstLineYCoordinate);
-		//		solo.drag(threeCharactersWidthApproximation, threeCharactersWidthApproximation + 1, firstLineYCoordinate,
-		//				firstLineYCoordinate, 50);
-		//
-		//		catKeyboardClicker.clickOnKey("del");
-		//
-		//		assertTrue("Text not found", solo.searchText(solo.getString(R.string.formula_editor_sensor_x_acceleration)));
 
 		solo.goBack();
 		solo.goBack();
@@ -522,32 +477,6 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 	}
 
 	@Smoke
-	public void testSimpleParseTest() {
-		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_8));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_plus));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_random));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_random));
-		String editTextString = "8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( ";
-		editTextString += getActivity().getString(R.string.formula_editor_function_rand) + "( 0 , 1 ) ,";
-		solo.clickOnScreen(oneCharacterWidthApproximation * editTextString.length(), firstLineYCoordinate + lineHeight);
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_plus));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_3));
-		editTextString = "8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( ";
-		editTextString += getActivity().getString(R.string.formula_editor_function_rand) + "( 0 ";
-		solo.clickOnScreen(oneCharacterWidthApproximation * editTextString.length(), firstLineYCoordinate);
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_plus));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_2));
-		solo.goBack();
-		solo.sleep(500);
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
-		assertEquals("Text not deleted correctly",
-				"8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( 2 , 1 ) + 3 ", solo
-						.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
-	}
-
-	@Smoke
 	public void testParseErrorsAndDeletion() {
 
 		String editTextString = "";
@@ -619,7 +548,23 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		solo.goBack();
 	}
 
-	//TODO CHECK TEST: Solo clicks strange behaviour
+	// TODO SOLO searchText + clickOnText NOT working!!
+	//
+	public void testListScroll() throws InterruptedException {
+		solo.clickOnEditText(0);
+		boolean isFound = solo.searchText(solo.getString(R.string.formula_editor_function_round));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
+		isFound = solo.searchText(solo.getString(R.string.formula_editor_function_round));
+		solo.scrollDownList(2);
+		isFound = solo.searchText(solo.getString(R.string.formula_editor_function_round));
+		solo.clickOnText(solo.getString(R.string.formula_editor_function_round));
+		ArrayList<View> views = solo.getViews();
+		isFound = solo.searchText(solo.getString(R.string.formula_editor_function_round));
+		assertTrue("String: " + getActivity().getString(R.string.formula_editor_function_round) + "not found!", isFound);
+	}
+
+	// TODO SOLO searchText + clickOnText NOT working!!
+	//
 	public void testStrings() {
 
 		solo.clickOnEditText(0);
