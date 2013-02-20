@@ -287,24 +287,32 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 
 		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
 
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_decimal_brackets));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_bracket_open));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_1));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_decimal_mark));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_3));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_bracket_close));
 
 		assertEquals("Bracket value modification failed",
 				"( 1" + getActivity().getString(R.string.formula_editor_decimal_mark) + "3 ) ",
 				solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
 		setAbsoluteCursorPosition(1);
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
-		assertEquals("Text deletion was wrong!", " ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText()
-				.toString());
+		String editTextString = "1" + getActivity().getString(R.string.formula_editor_decimal_mark) + "3 "
+				+ getActivity().getString(R.string.formula_editor_bracket_close) + " ";
+		assertEquals("Text deletion was wrong!", editTextString, solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID)
+				.getText().toString());
 
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_decimal_brackets));
+		setAbsoluteCursorPosition(0);
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_bracket_open));
+		setAbsoluteCursorPosition(100);
+
+		editTextString = getActivity().getString(R.string.formula_editor_bracket_open) + " 1"
+				+ getActivity().getString(R.string.formula_editor_decimal_mark) + "3 ";
+
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
-		assertEquals("Text deletion was wrong!", " ", solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText()
-				.toString());
+		assertEquals("Text deletion was wrong!", editTextString, solo.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID)
+				.getText().toString());
 
 		solo.goBack();
 		solo.goBack();
