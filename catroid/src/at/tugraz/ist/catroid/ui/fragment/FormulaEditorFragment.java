@@ -283,7 +283,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 				currentFormula.removeTextFieldHighlighting(brickView, orientation);
 				formulaEditorEditText.enterNewFormula(currentFormula.getInternFormulaState());
 				currentFormula.highlightTextField(brickView, orientation);
-				refreshFormulaPreviewString(formulaEditorEditText.getText().toString());
+				refreshFormulaPreviewString();
 				break;
 			case SET_FORMULA_ON_SWITCH_EDIT_TEXT:
 
@@ -396,8 +396,8 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		}
 	}
 
-	public void refreshFormulaPreviewString(String formulaString) {
-		currentFormula.refreshTextField(brickView, formulaEditorEditText.getText().toString());
+	public void refreshFormulaPreviewString() {
+		currentFormula.refreshTextField(brickView, formulaEditorEditText.getText().toString(), formulaEditorEditText.getAbsoluteCursorPosition());
 
 	}
 
