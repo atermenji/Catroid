@@ -29,13 +29,12 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import at.tugraz.ist.catroid.R;
-import at.tugraz.ist.catroid.formulaeditor.CatKeyEvent;
-import at.tugraz.ist.catroid.formulaeditor.CatKeyboardView;
 
 public class ChooseLookVariableFragment extends DialogFragment implements DialogInterface.OnClickListener {
 
-	private CatKeyboardView catKeyboardView;
+	private LinearLayout catKeyboardView;
 	private final Integer[] lookResourceIds = { R.string.formula_editor_look_x, R.string.formula_editor_look_y,
 			R.string.formula_editor_look_ghosteffect, R.string.formula_editor_look_brightness,
 			R.string.formula_editor_look_size, R.string.formula_editor_look_rotation,
@@ -54,7 +53,7 @@ public class ChooseLookVariableFragment extends DialogFragment implements Dialog
 		int[] keyCode = new int[1];
 		keyCode[0] = 0;
 
-		catKeyboardView.onKey(CatKeyEvent.KEYCODE_LOOK_X + index, keyCode);
+		//		catKeyboardView.onKey(CatKeyEvent.KEYCODE_LOOK_X + index, keyCode);
 
 	}
 
@@ -93,7 +92,7 @@ public class ChooseLookVariableFragment extends DialogFragment implements Dialog
 
 	}
 
-	public void setCatKeyboardView(CatKeyboardView catKeyboardView) {
+	public void setCatKeyboardView(LinearLayout catKeyboardView) {
 		this.catKeyboardView = catKeyboardView;
 
 	}

@@ -30,6 +30,7 @@ import android.content.Context;
 import android.os.Build;
 import at.tugraz.ist.catroid.R;
 import at.tugraz.ist.catroid.common.Values;
+import at.tugraz.ist.catroid.formulaeditor.UserVariablesContainer;
 import at.tugraz.ist.catroid.utils.Utils;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -54,6 +55,17 @@ public class Project implements Serializable {
 	@XStreamAlias("screenHeight")
 	public int virtualScreenHeight = 0;
 
+	private UserVariablesContainer userVariables = null;
+
+	private Project() {
+		ifLandscapeSwitchWidthAndHeight();
+		virtualScreenWidth = Values.SCREEN_WIDTH;
+		virtualScreenHeight = Values.SCREEN_HEIGHT;
+
+		userVariables = new UserVariablesContainer();
+
+	}
+
 	public Project(Context context, String name) {
 		this.projectName = name;
 
@@ -69,6 +81,7 @@ public class Project implements Serializable {
 		Sprite background = new Sprite(context.getString(R.string.background));
 		background.costume.zPosition = Integer.MIN_VALUE;
 		addSprite(background);
+		userVariables = new UserVariablesContainer();
 	}
 
 	private void ifLandscapeSwitchWidthAndHeight() {
@@ -125,5 +138,9 @@ public class Project implements Serializable {
 			catroidVersionName = Utils.getVersionName(context);
 			catroidVersionCode = Utils.getVersionCode(context);
 		}
+	}
+
+	public UserVariablesContainer getUserVariables() {
+		return userVariables;
 	}
 }

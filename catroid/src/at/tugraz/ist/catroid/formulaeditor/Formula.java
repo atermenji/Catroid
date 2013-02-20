@@ -244,4 +244,12 @@ public class Formula implements Serializable {
 		return internFormula.getInternFormulaState();
 	}
 
+	public boolean containsElement(FormulaElement.ElementType elementType) {
+		if (formulaTree.containsElement(elementType)) {
+			return true;
+		}
+
+		return false;
+
+	}
 }

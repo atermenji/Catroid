@@ -27,7 +27,6 @@ import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -44,7 +43,7 @@ import at.tugraz.ist.catroid.formulaeditor.FormulaElement;
 import at.tugraz.ist.catroid.formulaeditor.InternFormulaParser;
 import at.tugraz.ist.catroid.formulaeditor.InternToken;
 import at.tugraz.ist.catroid.formulaeditor.InternTokenType;
-import at.tugraz.ist.catroid.formulaeditor.SensorManager;
+import at.tugraz.ist.catroid.formulaeditor.SensorHandler;
 import at.tugraz.ist.catroid.formulaeditor.Sensors;
 import at.tugraz.ist.catroid.ui.MainMenuActivity;
 import at.tugraz.ist.catroid.ui.ScriptTabActivity;
@@ -83,14 +82,15 @@ public class SensorTest extends ActivityInstrumentationTestCase2<MainMenuActivit
 	}
 
 	@Test
-	public void testSensors() {
+	public void testSensors() throws SecurityException, IllegalArgumentException, NoSuchFieldException,
+			IllegalAccessException {
 		solo.waitForActivity(ScriptTabActivity.class.getSimpleName());
 		int expectedX = 995;
 		int expectedY = 990;
 		int expectedZ = 985;
-		int expectedRoll = 980;
-		int expectedPitch = 975;
-		int expectedAzimuth = 970;
+		int expectedOrientationZ = 2;
+		int expectedOrientationX = 1;
+		int expectedOrientationY = -2;
 
 		createProject();
 
@@ -106,45 +106,55 @@ public class SensorTest extends ActivityInstrumentationTestCase2<MainMenuActivit
 		ChangeSizeByNBrick zBrick = new ChangeSizeByNBrick(firstSprite, formula2);
 		startScript1.addBrick(zBrick);
 
-		Formula formula3 = createFormulaWithSensor(Sensors.AZIMUTH_ORIENTATION_);
+		Formula formula3 = createFormulaWithSensor(Sensors.Z_ORIENTATION_);
 		ChangeSizeByNBrick azimuthBrick = new ChangeSizeByNBrick(firstSprite, formula3);
 		startScript1.addBrick(azimuthBrick);
 
-		Formula formula4 = createFormulaWithSensor(Sensors.PITCH_ORIENTATION_);
+		Formula formula4 = createFormulaWithSensor(Sensors.X_ORIENTATION_);
 		ChangeSizeByNBrick pitchBrick = new ChangeSizeByNBrick(firstSprite, formula4);
 		startScript1.addBrick(pitchBrick);
 
-		Formula formula5 = createFormulaWithSensor(Sensors.ROLL_ORIENTATION_);
+		Formula formula5 = createFormulaWithSensor(Sensors.Y_ORIENTATION_);
 		ChangeSizeByNBrick rollBrick = new ChangeSizeByNBrick(firstSprite, formula5);
 		startScript1.addBrick(rollBrick);
 
 		ProjectManager.getInstance().setProject(project);
 		ProjectManager.getInstance().setCurrentSprite(firstSprite);
 
-		assertEquals("Sensor value is wrong", tryMock("getAccelerometerX", formula, expectedX), expectedX);
-		assertEquals("Sensor value is wrong", tryMock("getAccelerometerY", formula1, expectedY), -expectedY);
-		assertEquals("Sensor value is wrong", tryMock("getAccelerometerZ", formula2, expectedZ), -expectedZ);
-		assertEquals("Sensor value is wrong", tryMock("getAzimuth", formula3, expectedAzimuth), expectedAzimuth);
-		assertEquals("Sensor value is wrong", tryMock("getPitch", formula4, expectedPitch), expectedPitch);
-		assertEquals("Sensor value is wrong", tryMock("getRoll", formula5, expectedRoll), -expectedRoll);
+		//start and stop for initialization
+		SensorHandler.startSensorListener(getActivity());
+		SensorHandler.stopSensorListeners();
+
+		UiTestUtils.setPrivateField2(SensorHandler.class, null, "linearAcceleartionX", expectedX);
+		UiTestUtils.setPrivateField2(SensorHandler.class, null, "linearAcceleartionY", expectedY);
+		UiTestUtils.setPrivateField2(SensorHandler.class, null, "linearAcceleartionZ", expectedZ);
+		UiTestUtils.setPrivateField2(SensorHandler.class, null, "rotationVector", new float[] { 1f, 1f, 1f });
+
+		assertEquals("Sensor value is wrong", expectedX, formula.interpretInteger());
+		assertEquals("Sensor value is wrong", expectedY, formula1.interpretInteger());
+		assertEquals("Sensor value is wrong", expectedZ, formula2.interpretInteger());
+
+		assertEquals("Sensor value is wrong", expectedOrientationZ, formula3.interpretInteger());
+		assertEquals("Sensor value is wrong", expectedOrientationX, formula4.interpretInteger());
+		assertEquals("Sensor value is wrong", expectedOrientationY, formula5.interpretInteger());
 
 	}
 
-	private int tryMock(String method, Formula formula, int expectedResult) {
-		Input mock = PowerMock.createPartialMock(Input.class, method);
-		SensorManager.setSensorSourceForNextCall(mock);
-
-		try {
-			PowerMock.expectPrivate(mock, method).andReturn(expectedResult);
-			PowerMock.replayAll();
-			return formula.interpretInteger();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return -1;
-
-	}
+	//	private int tryMock(String method, Formula formula, int expectedResult) {
+	//		Input mock = PowerMock.createPartialMock(Input.class, method);
+	//		//		SensorHandler.setSensorSourceForNextCall(mock); TODO
+	//
+	//		try {
+	//			PowerMock.expectPrivate(mock, method).andReturn(expectedResult);
+	//			PowerMock.replayAll();
+	//			return formula.interpretInteger();
+	//
+	//		} catch (Exception e) {
+	//			e.printStackTrace();
+	//		}
+	//		return -1;
+	//
+	//	}
 
 	private Formula createFormulaWithSensor(Sensors sensor) {
 

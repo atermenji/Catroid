@@ -355,4 +355,16 @@ public class InternTokenGroups {
 		return functionParameterInternTokenList;
 	}
 
+	public static boolean isFunction(List<InternToken> internTokenList) {
+
+		List<InternToken> functionList = getFunctionByName(internTokenList, 0);
+		if (functionList == null) {
+			return false;
+		}
+		if (functionList.size() != internTokenList.size()) {
+			return false;
+		}
+
+		return true;
+	}
 }

@@ -27,7 +27,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.KeyEvent;
+import at.tugraz.ist.catroid.R;
 
 public class InternFormula {
 
@@ -135,14 +135,15 @@ public class InternFormula {
 		}
 	}
 
-	public synchronized void handleKeyInput(CatKeyEvent catKeyEvent, Context context) {
+	public synchronized void handleKeyInput(int resId, Context context, String userVariableName) {
 		Log.i("info", "handleKeyInput:enter");
 
-		List<InternToken> catKeyEventTokenList = catKeyEvent.createInternTokensByCatKeyEvent();
+		List<InternToken> catKeyEventTokenList = new InternFormulaHelper().createInternTokensByCatKeyEvent(resId,
+				userVariableName);
 
 		CursorTokenPropertiesAfterModification cursorTokenPropertiesAfterInput = CursorTokenPropertiesAfterModification.DO_NOT_MODIFY;
 
-		if (catKeyEvent.getKeyCode() == KeyEvent.KEYCODE_DEL) {
+		if (resId == R.id.formula_editor_keyboard_delete) {
 
 			cursorTokenPropertiesAfterInput = handleDeletion();
 
@@ -252,11 +253,30 @@ public class InternFormula {
 		int internTokenSelectionStart = internFormulaTokenSelection.getStartIndex();
 		int internTokenSelectionEnd = internFormulaTokenSelection.getEndIndex();
 
-		replaceInternTokens(tokenListToInsert, internTokenSelectionStart, internTokenSelectionEnd);
+		if (internTokenSelectionStart > internTokenSelectionEnd || internTokenSelectionStart < 0
+				|| internTokenSelectionEnd < 0) {
+			internFormulaTokenSelection = null;
 
-		internFormulaTokenSelection = null;
+			return setCursorPositionAndSelectionAfterInput(internTokenSelectionStart);
+		}
 
-		return setCursorPositionAndSelectionAfterInput(internTokenSelectionStart);
+		List<InternToken> tokenListToRemove = new LinkedList<InternToken>();
+		for (int tokensToRemove = 0; tokensToRemove <= internTokenSelectionEnd - internTokenSelectionStart; tokensToRemove++) {
+			tokenListToRemove.add(internTokenFormulaList.get(internTokenSelectionStart + tokensToRemove));
+		}
+
+		if (InternTokenGroups.isFunction(tokenListToRemove)) {
+			cursorPositionInternToken = tokenListToRemove.get(0);
+			cursorPositionInternTokenIndex = internTokenSelectionStart;
+			return replaceCursorPositionInternTokenByTokenList(tokenListToInsert);
+
+		} else {
+			replaceInternTokens(tokenListToInsert, internTokenSelectionStart, internTokenSelectionEnd);
+
+			internFormulaTokenSelection = null;
+
+			return setCursorPositionAndSelectionAfterInput(internTokenSelectionStart);
+		}
 
 	}
 
@@ -270,11 +290,13 @@ public class InternFormula {
 			return;
 		}
 
+		List<InternToken> tokenListToRemove = new LinkedList<InternToken>();
 		for (int tokensToRemove = replaceIndexEnd - replaceIndexStart; tokensToRemove >= 0; tokensToRemove--) {
-			internTokenFormulaList.remove(replaceIndexStart);
+			tokenListToRemove.add(internTokenFormulaList.remove(replaceIndexStart));
 		}
 
 		internTokenFormulaList.addAll(replaceIndexStart, tokenListToInsert);
+
 	}
 
 	private CursorTokenPropertiesAfterModification handleDeletion() {

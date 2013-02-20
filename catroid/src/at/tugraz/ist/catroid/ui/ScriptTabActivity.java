@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -44,7 +45,8 @@ import at.tugraz.ist.catroid.ui.adapter.TabsPagerAdapter;
 import at.tugraz.ist.catroid.ui.dragndrop.DragAndDropListView;
 import at.tugraz.ist.catroid.ui.fragment.CostumeFragment;
 import at.tugraz.ist.catroid.ui.fragment.FormulaEditorFragment;
-import at.tugraz.ist.catroid.ui.fragment.LookFragment;
+import at.tugraz.ist.catroid.ui.fragment.FormulaEditorListFragment;
+import at.tugraz.ist.catroid.ui.fragment.FormulaEditorVariableListFragment;
 import at.tugraz.ist.catroid.ui.fragment.ScriptFragment;
 import at.tugraz.ist.catroid.ui.fragment.SoundFragment;
 import at.tugraz.ist.catroid.utils.ErrorListenerInterface;
@@ -89,12 +91,6 @@ public class ScriptTabActivity extends SherlockFragmentActivity implements Error
 		setUpActionBar();
 		Log.i("info", "ScriptTabActivity.onCreate()");
 
-		//		if ((FormulaEditorFragment) getSupportFragmentManager().findFragmentByTag(
-		//				FormulaEditorFragment.FORMULA_EDITOR_FRAGMENT_TAG) != null) {
-		//			return;
-		//		}
-		//findViewById(R.id.fragment_formula_editor).setVisibility(View.GONE); //TODO why on earth is this fragment even visible here?
-
 		setupTabHost();
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		tabHost.getTabWidget().setDividerDrawable(R.drawable.tab_divider);
@@ -117,6 +113,14 @@ public class ScriptTabActivity extends SherlockFragmentActivity implements Error
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getSupportMenuInflater().inflate(R.menu.menu_scripttab, menu);
 		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onContextItemSelected(android.view.MenuItem item) {
+		Log.i("info", "STA.onContextItemSelected");
+		getSupportFragmentManager().findFragmentByTag(FormulaEditorVariableListFragment.VARIABLE_TAG)
+				.onContextItemSelected(item);
+		return super.onContextItemSelected(item);
 	}
 
 	@Override
@@ -174,11 +178,20 @@ public class ScriptTabActivity extends SherlockFragmentActivity implements Error
 
 		Log.i("info", "onKeyDown() ScriptTabActivity.... keyCode: " + keyCode);
 
-		LookFragment lookFragment = (LookFragment) getSupportFragmentManager().findFragmentByTag(
-				LookFragment.LOOK_FRAGMENT_TAG);
+		FragmentManager fragmentManager = getSupportFragmentManager();
 
-		if (lookFragment != null) {
-			return lookFragment.onKey(null, keyCode, event);
+		for (String tag : FormulaEditorListFragment.TAGS) {
+			FormulaEditorListFragment fragment = (FormulaEditorListFragment) fragmentManager.findFragmentByTag(tag);
+			if (fragment != null) {
+				return fragment.onKey(null, keyCode, event);
+			}
+		}
+
+		FormulaEditorVariableListFragment formulaEditorVariableListFragment = (FormulaEditorVariableListFragment) getSupportFragmentManager()
+				.findFragmentByTag(FormulaEditorVariableListFragment.VARIABLE_TAG);
+
+		if (formulaEditorVariableListFragment != null) {
+			return formulaEditorVariableListFragment.onKey(null, keyCode, event);
 		}
 
 		FormulaEditorFragment formulaEditor = (FormulaEditorFragment) getSupportFragmentManager().findFragmentByTag(
@@ -186,7 +199,6 @@ public class ScriptTabActivity extends SherlockFragmentActivity implements Error
 
 		if (formulaEditor != null) {
 			tabsAdapter.onTabChanged(ACTION_BRICK_LIST_CHANGED);
-
 			return formulaEditor.onKey(null, keyCode, event);
 		}
 

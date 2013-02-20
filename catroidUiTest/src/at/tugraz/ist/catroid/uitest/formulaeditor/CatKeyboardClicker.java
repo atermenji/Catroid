@@ -31,6 +31,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import at.tugraz.ist.catroid.formulaeditor.Operators;
+import at.tugraz.ist.catroid.ui.ScriptTabActivity;
 
 import com.jayway.android.robotium.solo.Solo;
 
@@ -50,9 +51,11 @@ public class CatKeyboardClicker {
 	private static float buttonHeight;
 
 	private int totalKeyboardSwitches = 0;
+	private ScriptTabActivity activity;
 
 	public CatKeyboardClicker(Solo solo) {
 		this.solo = solo;
+		this.activity = (ScriptTabActivity) solo.getCurrentActivity();
 
 		if (keyString == null) {
 			keyString = new Vector<Vector<String>>();
@@ -93,11 +96,6 @@ public class CatKeyboardClicker {
 			lastEditTextLength = solo.getEditText(index).getText().length();
 			this.clickOnKey("del");
 		}
-	}
-
-	public void clearEditTextPortraitModeOnlyQuickly(int editTextIndex) {
-		solo.clickOnEditText(editTextIndex);
-		this.clickOnKey("del");
 	}
 
 	public void clearEditTextWithCursorBehindLastCharacterOnlyQuickly(int index) {

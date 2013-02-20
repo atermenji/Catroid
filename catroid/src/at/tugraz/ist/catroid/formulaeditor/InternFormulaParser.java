@@ -25,6 +25,9 @@ package at.tugraz.ist.catroid.formulaeditor;
 import java.util.LinkedList;
 import java.util.List;
 
+import at.tugraz.ist.catroid.ProjectManager;
+import at.tugraz.ist.catroid.content.Sprite;
+
 public class InternFormulaParser {
 
 	private class InternFormulaParserException extends Exception {
@@ -94,11 +97,9 @@ public class InternFormulaParser {
 	}
 
 	public void handleOperator(String operator, FormulaElement curElem, FormulaElement newElem) {
-		//        System.out.println("handleOperator: operator="+operator + " curElem="+curElem.getValue() + " newElem="+newElem.getValue());
 
 		if (curElem.getParent() == null) {
 			new FormulaElement(FormulaElement.ElementType.OPERATOR, operator, null, curElem, newElem);
-			//            System.out.println("handleOperator-after: " + curElem.getRoot().getTreeString());
 			return;
 		}
 
@@ -109,7 +110,6 @@ public class InternFormulaParser {
 
 		if (compareOp >= 0) {
 			FormulaElement newLeftChild = findLowerPriorityOperatorElement(currentOp, curElem);
-			//            System.out.println("findLowerPriorityOperatorElement: " + newLeftChild.getValue());
 			FormulaElement newParent = newLeftChild.getParent();
 
 			if (newParent != null) {
@@ -121,7 +121,6 @@ public class InternFormulaParser {
 			curElem.replaceWithSubElement(operator, newElem);
 		}
 
-		//        System.out.println("handleOperator-after: " + curElem.getRoot().getTreeString());
 	}
 
 	private void addEndOfFileToken() {
@@ -180,7 +179,7 @@ public class InternFormulaParser {
 
 		FormulaElement loopTermTree;
 		String operatorStringValue;
-		while (currentToken.isOperator()) {
+		while (currentToken.isOperator() && !currentToken.getTokenSringValue().equals(Operators.NOT.operatorName)) {
 
 			operatorStringValue = currentToken.getTokenSringValue();
 			getNextToken();
@@ -198,10 +197,15 @@ public class InternFormulaParser {
 		FormulaElement termTree = new FormulaElement(FormulaElement.ElementType.NUMBER, null, null);
 		FormulaElement curElem = termTree;
 
-		if (currentToken.isOperator() && currentToken.getTokenSringValue().equals("-")) {
+		if (currentToken.isOperator() && currentToken.getTokenSringValue().equals(Operators.MINUS.operatorName)) {
 
 			curElem = new FormulaElement(FormulaElement.ElementType.NUMBER, null, termTree, null, null);
-			termTree.replaceElement(FormulaElement.ElementType.OPERATOR, "-", null, curElem);
+			termTree.replaceElement(FormulaElement.ElementType.OPERATOR, Operators.MINUS.operatorName, null, curElem);
+
+			getNextToken();
+		} else if (currentToken.isOperator() && currentToken.getTokenSringValue().equals(Operators.NOT.operatorName)) {
+			curElem = new FormulaElement(FormulaElement.ElementType.NUMBER, null, termTree, null, null);
+			termTree.replaceElement(FormulaElement.ElementType.OPERATOR, Operators.NOT.operatorName, null, curElem);
 
 			getNextToken();
 		}
@@ -243,13 +247,18 @@ public class InternFormulaParser {
 	}
 
 	private FormulaElement userVariable() throws InternFormulaParserException {
-		//TODO check if user-variable exists
+		UserVariablesContainer userVariables = ProjectManager.getInstance().getCurrentProject().getUserVariables();
+
+		String spriteName = Thread.currentThread().getName().substring(Sprite.SCRIPT_THREAD_NAME_PREFIX.length());
+
+		if (userVariables.getUserVariable(currentToken.getTokenSringValue(), spriteName) == null) {
+			throw new InternFormulaParserException("Parse Error");
+		}
 
 		FormulaElement lookTree = new FormulaElement(FormulaElement.ElementType.USER_VARIABLE,
 				currentToken.getTokenSringValue(), null);
 
 		getNextToken();
-
 		return lookTree;
 	}
 

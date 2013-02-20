@@ -114,7 +114,12 @@ public class InternToExternGenerator {
 				return left + InternToExternLanguageConverter.getExternStringForInternTokenValue(".", context) + right;
 
 			case OPERATOR:
-				return internToken.getTokenSringValue();
+
+				String returnvalue = internToken.getTokenSringValue();
+				String mappingValue = InternToExternLanguageConverter.getExternStringForInternTokenValue(
+						internToken.getTokenSringValue(), context);
+
+				return mappingValue == null ? returnvalue : mappingValue;
 
 			case BRACKET_OPEN:
 			case FUNCTION_PARAMETERS_BRACKET_OPEN:
@@ -124,12 +129,14 @@ public class InternToExternGenerator {
 				return ")";
 			case FUNCTION_PARAMETER_DELIMITER:
 				return ","; //TODO hardcoded delimiter value
+			case USER_VARIABLE:
+				return internToken.getTokenSringValue();
 
 			default:
 				return InternToExternLanguageConverter.getExternStringForInternTokenValue(
 						internToken.getTokenSringValue(), context);
 
-				//TODO handle all cases(UserVariables etc...)
+				//TODO handle all cases
 		}
 	}
 

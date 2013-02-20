@@ -27,6 +27,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.util.Log;
+import at.tugraz.ist.catroid.ProjectManager;
+import at.tugraz.ist.catroid.content.Sprite;
 
 public class FormulaElement implements Serializable {
 
@@ -179,8 +181,14 @@ public class FormulaElement implements Serializable {
 				if (value.equals(Operators.GREATER_THAN.operatorName)) {
 					returnValue = left.compareTo(right) > 0 ? 1d : 0d;
 				}
+				if (value.equals(Operators.GREATER_OR_EQUAL)) {
+					returnValue = left.compareTo(right) >= 0 ? 1d : 0d;
+				}
 				if (value.equals(Operators.SMALLER_THAN.operatorName)) {
 					returnValue = left.compareTo(right) < 0 ? 1d : 0d;
+				}
+				if (value.equals(Operators.SMALLER_OR_EQUAL)) {
+					returnValue = left.compareTo(right) <= 0 ? 1d : 0d;
 				}
 				if (value.equals(Operators.LOGICAL_AND.operatorName)) {
 					returnValue = (left * right) != 0d ? 1d : 0d;
@@ -195,6 +203,9 @@ public class FormulaElement implements Serializable {
 				//				}
 				if (value.equals(Operators.MINUS.operatorName)) {
 					returnValue = -right;
+				}
+				if (value.equals(Operators.NOT)) {
+					returnValue = right == 0d ? 1d : 0d;
 				}
 
 			}
@@ -265,10 +276,17 @@ public class FormulaElement implements Serializable {
 				returnValue = java.lang.Math.E;
 			}
 		} else if (type == ElementType.SENSOR) {
-			returnValue = SensorManager.getSensorValue(value);
+			returnValue = SensorHandler.getSensorValue(value);
 		} else if (type == ElementType.USER_VARIABLE) {
-			//			TODO handle UserVariables
-			return null;
+			String spriteName = Thread.currentThread().getName().substring(Sprite.SCRIPT_THREAD_NAME_PREFIX.length()); //TODO do not save in Thread
+
+			UserVariablesContainer userVariables = ProjectManager.getInstance().getCurrentProject().getUserVariables();
+			UserVariable userVariable = userVariables.getUserVariable(value, spriteName);
+			if (userVariable == null) {
+				return 0d; //TODO handle case, when user-variable does not exist
+			}
+
+			return userVariable.getValue();
 		}
 
 		returnValue = checkDegeneratedDoubleValues(returnValue);
@@ -383,6 +401,21 @@ public class FormulaElement implements Serializable {
 			return true;
 		}
 
+		return false;
+	}
+
+	public boolean containsElement(ElementType elementType) {
+		if (type.equals(elementType)) {
+			return true;
+		}
+
+		if (leftChild != null && leftChild.containsElement(elementType)) {
+			return true;
+		}
+
+		if (rightChild != null && rightChild.containsElement(elementType)) {
+			return true;
+		}
 		return false;
 	}
 
