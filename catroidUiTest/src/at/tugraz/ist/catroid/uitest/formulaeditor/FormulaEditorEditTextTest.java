@@ -29,6 +29,9 @@ import java.util.List;
 import android.graphics.Rect;
 import android.test.suitebuilder.annotation.Smoke;
 import android.text.style.BackgroundColorSpan;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import at.tugraz.ist.catroid.ProjectManager;
 import at.tugraz.ist.catroid.R;
 import at.tugraz.ist.catroid.content.Project;
@@ -60,6 +63,7 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 	private static final int X_POS_EDIT_TEXT_ID = 0;
 	//	private static final int Y_POS_EDIT_TEXT_ID = 2;
 	private static final int FORMULA_EDITOR_EDIT_TEXT_ID = 3;
+	private static final int FORMULA_EDITOR_EDIT_TEXT_RID = R.id.formula_editor_edit_field;
 
 	private FormulaEditorEditTextHelper formulaEditorEditTextHelper;
 
@@ -522,6 +526,23 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 	}
 
 	@Smoke
+	public void testTextPreviewWithCursorPositions() {
+		solo.clickOnEditText(1);
+
+		EditText preview = (EditText) getViewInFormulaEditorById(R.id.brick_wait_edit_text);
+		FormulaEditorEditText formulaEditorEditText = (FormulaEditorEditText) solo.getView(FORMULA_EDITOR_EDIT_TEXT_RID);
+
+		setAbsoluteCursorPosition(0);
+		assertTrue("Start not visible in preview after cursor change", preview.getText().toString().contains("9"));
+
+		setAbsoluteCursorPosition(formulaEditorEditText.getText().toString().indexOf("2 + 1")+2);
+		assertTrue("Middle not visible in preview after cursor change", preview.getText().toString().contains("2 + 1"));
+
+		setAbsoluteCursorPosition(formulaEditorEditText.getText().length());
+		assertTrue("End not visible in preview after cursor change", preview.getText().toString().contains("64"));
+	}
+
+	@Smoke
 	public void testSimpleParseTest() {
 		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_8));
@@ -544,7 +565,7 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
 		assertEquals("Text not deleted correctly",
 				"8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( 2 , 1 ) + 3 ", solo
-						.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
+				.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
 	}
 
 	@Smoke
@@ -786,6 +807,7 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "+"));
 		internTokenList.add(new InternToken(InternTokenType.NUMBER, "333333333333333333"));
 		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "+"));
+
 		internTokenList.add(new InternToken(InternTokenType.NUMBER, "222222222222222222"));
 		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "+"));
 		internTokenList.add(new InternToken(InternTokenType.NUMBER, "111111111111111111"));
@@ -823,6 +845,16 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		ProjectManager.getInstance().setProject(project);
 		ProjectManager.getInstance().setCurrentSprite(firstSprite);
 
+	}
+
+	private View getViewInFormulaEditorById(int id){
+		View parent = solo.getView(R.id.formula_editor_brick_space);
+		List<View> views = solo.getViews(parent);
+		for(View view : views) {
+			if(view.getId() == id)
+				return view;
+		}
+		return null;
 	}
 
 }
