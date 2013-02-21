@@ -699,7 +699,10 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_1));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_1));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_1));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_minus));
 
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
 		computeTextView = (TextView) solo.getView(R.id.formula_editor_compute_dialog_textview);
 		assertEquals("-8.11", computeTextView.getText().toString());
