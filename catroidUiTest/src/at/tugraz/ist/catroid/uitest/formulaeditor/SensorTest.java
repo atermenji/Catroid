@@ -88,9 +88,9 @@ public class SensorTest extends ActivityInstrumentationTestCase2<MainMenuActivit
 		int expectedX = 995;
 		int expectedY = 990;
 		int expectedZ = 985;
-		int expectedOrientationZ = 2;
+		int expectedOrientationZ = 146;
 		int expectedOrientationX = 1;
-		int expectedOrientationY = -2;
+		int expectedOrientationY = -146;
 
 		createProject();
 
@@ -123,6 +123,8 @@ public class SensorTest extends ActivityInstrumentationTestCase2<MainMenuActivit
 
 		//start and stop for initialization
 		SensorHandler.startSensorListener(getActivity());
+		assertNotNull("SensorManager not started",
+				UiTestUtils.getPrivateField("mySensorManager", SensorHandler.class, null));
 		SensorHandler.stopSensorListeners();
 
 		UiTestUtils.setPrivateField2(SensorHandler.class, null, "linearAcceleartionX", expectedX);

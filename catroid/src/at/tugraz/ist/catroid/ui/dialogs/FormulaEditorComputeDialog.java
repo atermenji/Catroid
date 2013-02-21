@@ -94,7 +94,6 @@ public class FormulaEditorComputeDialog extends AlertDialog implements SensorEve
 
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
-		// TODO Auto-generated method stub
 
 	}
 

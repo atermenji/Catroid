@@ -31,6 +31,7 @@ import android.test.suitebuilder.annotation.Smoke;
 import android.text.style.BackgroundColorSpan;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import at.tugraz.ist.catroid.ProjectManager;
 import at.tugraz.ist.catroid.R;
 import at.tugraz.ist.catroid.content.Project;
@@ -675,6 +676,62 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		solo.goBack();
 		solo.goBack();
 
+	}
+
+	public void testComputeDialog() {
+
+		solo.clickOnEditText(0);
+
+		View preview = UiTestUtils.getViewContainerByIds(solo, R.id.brick_change_size_by_edit_text,
+				R.id.formula_editor_brick_space);
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_minus));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_2));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+		TextView computeTextView = (TextView) solo.getView(R.id.formula_editor_compute_dialog_textview);
+		assertEquals("-2.0", computeTextView.getText().toString());
+
+		solo.goBack();
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_minus));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_6));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_decimal_mark));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_1));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_1));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_1));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+		computeTextView = (TextView) solo.getView(R.id.formula_editor_compute_dialog_textview);
+		assertEquals("-8.11", computeTextView.getText().toString());
+
+		solo.goBack();
+
+		solo.clickOnView(preview);
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_sensors));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_sensor_x_acceleration));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_plus));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_random));
+
+		String formulaString = getActivity().getString(R.string.formula_editor_sensor_x_acceleration) + " + "
+				+ solo.getString(R.string.formula_editor_function_rand) + "( 0 , 1";
+		setAbsoluteCursorPosition(formulaString.length());
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_0));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_0));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_0));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_0));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_compute));
+		computeTextView = (TextView) solo.getView(R.id.formula_editor_compute_dialog_textview);
+		int maxLoops = 10;
+		String lastComputeString = computeTextView.getText().toString();
+		while (maxLoops-- > 0) {
+			solo.sleep(1000);
+			if (!computeTextView.getText().toString().equals(lastComputeString)) {
+				break;
+			}
+		}
+
+		assertTrue("Sensor interpretation error", maxLoops > 0);
 	}
 
 	private Formula createVeryLongFormula() {
