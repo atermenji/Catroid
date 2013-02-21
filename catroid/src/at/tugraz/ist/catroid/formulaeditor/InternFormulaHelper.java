@@ -113,7 +113,7 @@ public class InternFormulaHelper {
 			case R.string.formula_editor_logic_or:
 				return buildOperator(Operators.LOGICAL_OR);
 			case R.string.formula_editor_logic_not:
-				return buildOperator(Operators.NOT);
+				return buildOperator(Operators.LOGICAL_NOT);
 
 				//BRACKETS
 

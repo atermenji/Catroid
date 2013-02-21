@@ -179,7 +179,7 @@ public class InternFormulaParser {
 
 		FormulaElement loopTermTree;
 		String operatorStringValue;
-		while (currentToken.isOperator() && !currentToken.getTokenSringValue().equals(Operators.NOT.operatorName)) {
+		while (currentToken.isOperator() && !currentToken.getTokenSringValue().equals(Operators.LOGICAL_NOT.operatorName)) {
 
 			operatorStringValue = currentToken.getTokenSringValue();
 			getNextToken();
@@ -203,9 +203,9 @@ public class InternFormulaParser {
 			termTree.replaceElement(FormulaElement.ElementType.OPERATOR, Operators.MINUS.operatorName, null, curElem);
 
 			getNextToken();
-		} else if (currentToken.isOperator() && currentToken.getTokenSringValue().equals(Operators.NOT.operatorName)) {
+		} else if (currentToken.isOperator() && currentToken.getTokenSringValue().equals(Operators.LOGICAL_NOT.operatorName)) {
 			curElem = new FormulaElement(FormulaElement.ElementType.NUMBER, null, termTree, null, null);
-			termTree.replaceElement(FormulaElement.ElementType.OPERATOR, Operators.NOT.operatorName, null, curElem);
+			termTree.replaceElement(FormulaElement.ElementType.OPERATOR, Operators.LOGICAL_NOT.operatorName, null, curElem);
 
 			getNextToken();
 		}

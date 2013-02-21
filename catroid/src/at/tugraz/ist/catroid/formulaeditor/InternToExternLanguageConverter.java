@@ -66,7 +66,7 @@ public class InternToExternLanguageConverter {
 		internExternLanguageConverterMap.put(Sensors.LOOK_ROTATION_.sensorName, R.string.formula_editor_look_rotation);
 		internExternLanguageConverterMap.put(Sensors.LOOK_LAYER_.sensorName, R.string.formula_editor_look_layer);
 
-		internExternLanguageConverterMap.put(Operators.NOT.operatorName, R.string.formula_editor_logic_not);
+		internExternLanguageConverterMap.put(Operators.LOGICAL_NOT.operatorName, R.string.formula_editor_logic_not);
 		internExternLanguageConverterMap.put(Operators.NOT_EQUAL.operatorName, R.string.formula_editor_logic_notequal);
 		internExternLanguageConverterMap.put(Operators.EQUAL.operatorName, R.string.formula_editor_logic_equal);
 		internExternLanguageConverterMap.put(Operators.GREATER_OR_EQUAL.operatorName,

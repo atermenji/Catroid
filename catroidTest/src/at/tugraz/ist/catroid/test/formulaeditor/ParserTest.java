@@ -30,10 +30,195 @@ import at.tugraz.ist.catroid.formulaeditor.FormulaElement;
 import at.tugraz.ist.catroid.formulaeditor.InternFormulaParser;
 import at.tugraz.ist.catroid.formulaeditor.InternToken;
 import at.tugraz.ist.catroid.formulaeditor.InternTokenType;
+import at.tugraz.ist.catroid.formulaeditor.Operators;
 
 public class ParserTest extends AndroidTestCase {
 
 	private static final double DELTA = 0.01;
+
+	public void testLogicalOperators() {
+		List<InternToken> internTokenList = new LinkedList<InternToken>();
+
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "2"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, ">"));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+
+		InternFormulaParser internParser = new InternFormulaParser(internTokenList);
+		FormulaElement parseTree = internParser.parseFormula();
+
+		assertNotNull("Formula is not parsed correctly: 2 > 1", parseTree);
+		assertEquals("Formula interpretation is not as expected", 1d, parseTree.interpretRecursive());
+		internTokenList.clear();
+
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, ">"));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+
+		internParser = new InternFormulaParser(internTokenList);
+		parseTree = internParser.parseFormula();
+
+		assertNotNull("Formula is not parsed correctly: 1 > 1", parseTree);
+		assertEquals("Formula interpretation is not as expected", 0d, parseTree.interpretRecursive());
+		internTokenList.clear();
+
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, Operators.GREATER_OR_EQUAL.operatorName));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+
+		internParser = new InternFormulaParser(internTokenList);
+		parseTree = internParser.parseFormula();
+
+		assertNotNull("Formula is not parsed correctly: 1 >= 1", parseTree);
+		assertEquals("Formula interpretation is not as expected", 1d, parseTree.interpretRecursive());
+		internTokenList.clear();
+
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, Operators.GREATER_OR_EQUAL.operatorName));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "2"));
+
+		internParser = new InternFormulaParser(internTokenList);
+		parseTree = internParser.parseFormula();
+
+		assertNotNull("Formula is not parsed correctly: 1 >= 2", parseTree);
+		assertEquals("Formula interpretation is not as expected", 0d, parseTree.interpretRecursive());
+		internTokenList.clear();
+
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "<"));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "2"));
+
+		internParser = new InternFormulaParser(internTokenList);
+		parseTree = internParser.parseFormula();
+
+		assertNotNull("Formula is not parsed correctly: 1 < 2", parseTree);
+		assertEquals("Formula interpretation is not as expected", 1d, parseTree.interpretRecursive());
+		internTokenList.clear();
+
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "<"));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+
+		internParser = new InternFormulaParser(internTokenList);
+		parseTree = internParser.parseFormula();
+
+		assertNotNull("Formula is not parsed correctly: 1 < 1", parseTree);
+		assertEquals("Formula interpretation is not as expected", 0d, parseTree.interpretRecursive());
+		internTokenList.clear();
+
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "<="));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+
+		internParser = new InternFormulaParser(internTokenList);
+		parseTree = internParser.parseFormula();
+
+		assertNotNull("Formula is not parsed correctly: 1 <= 1", parseTree);
+		assertEquals("Formula interpretation is not as expected", 1d, parseTree.interpretRecursive());
+		internTokenList.clear();
+
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "2"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "<="));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+
+		internParser = new InternFormulaParser(internTokenList);
+		parseTree = internParser.parseFormula();
+
+		assertNotNull("Formula is not parsed correctly: 2 <= 1", parseTree);
+		assertEquals("Formula interpretation is not as expected", 0d, parseTree.interpretRecursive());
+		internTokenList.clear();
+
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "="));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+
+		internParser = new InternFormulaParser(internTokenList);
+		parseTree = internParser.parseFormula();
+
+		assertNotNull("Formula is not parsed correctly: 1 = 1", parseTree);
+		assertEquals("Formula interpretation is not as expected", 1d, parseTree.interpretRecursive());
+		internTokenList.clear();
+
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "2"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "="));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+
+		internParser = new InternFormulaParser(internTokenList);
+		parseTree = internParser.parseFormula();
+
+		assertNotNull("Formula is not parsed correctly: 2 = 1", parseTree);
+		assertEquals("Formula interpretation is not as expected", 0d, parseTree.interpretRecursive());
+		internTokenList.clear();
+
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "2"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "!="));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+
+		internParser = new InternFormulaParser(internTokenList);
+		parseTree = internParser.parseFormula();
+
+		assertNotNull("Formula is not parsed correctly: 2 != 1", parseTree);
+		assertEquals("Formula interpretation is not as expected", 1d, parseTree.interpretRecursive());
+		internTokenList.clear();
+
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, "!="));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+
+		internParser = new InternFormulaParser(internTokenList);
+		parseTree = internParser.parseFormula();
+
+		assertNotNull("Formula is not parsed correctly: 1 != 1", parseTree);
+		assertEquals("Formula interpretation is not as expected", 0d, parseTree.interpretRecursive());
+		internTokenList.clear();
+
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, Operators.LOGICAL_NOT.operatorName));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "0"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, Operators.LOGICAL_AND.operatorName));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+
+		internParser = new InternFormulaParser(internTokenList);
+		parseTree = internParser.parseFormula();
+
+		assertNotNull("Formula is not parsed correctly: NOT 0 AND 1", parseTree);
+		assertEquals("Formula interpretation is not as expected", 1d, parseTree.interpretRecursive());
+		internTokenList.clear();
+
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, Operators.LOGICAL_NOT.operatorName));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "1"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, Operators.LOGICAL_OR.operatorName));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "0"));
+
+		internParser = new InternFormulaParser(internTokenList);
+		parseTree = internParser.parseFormula();
+
+		assertNotNull("Formula is not parsed correctly: NOT 1 OR 0", parseTree);
+		assertEquals("Formula interpretation is not as expected", 0d, parseTree.interpretRecursive());
+		internTokenList.clear();
+
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, Operators.LOGICAL_NOT.operatorName));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "0"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, Operators.LOGICAL_OR.operatorName));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "0"));
+
+		internParser = new InternFormulaParser(internTokenList);
+		parseTree = internParser.parseFormula();
+
+		assertNotNull("Formula is not parsed correctly: NOT 0 OR 0", parseTree);
+		assertEquals("Formula interpretation is not as expected", 1d, parseTree.interpretRecursive());
+		internTokenList.clear();
+
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, Operators.LOGICAL_NOT.operatorName));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "0"));
+		internTokenList.add(new InternToken(InternTokenType.OPERATOR, Operators.LOGICAL_AND.operatorName));
+		internTokenList.add(new InternToken(InternTokenType.NUMBER, "0"));
+
+		internParser = new InternFormulaParser(internTokenList);
+		parseTree = internParser.parseFormula();
+
+		assertNotNull("Formula is not parsed correctly: NOT 0 AND 0", parseTree);
+		assertEquals("Formula interpretation is not as expected", 0d, parseTree.interpretRecursive());
+		internTokenList.clear();
+	}
 
 	public void testUnaryMinus() {
 		List<InternToken> internTokenList = new LinkedList<InternToken>();

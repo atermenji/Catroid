@@ -477,6 +477,17 @@ public class UiTestUtils {
 		return null;
 	}
 
+	public static Object getPrivateField(String fieldName, Class classOfObject, Object object) {
+		try {
+			Field field = classOfObject.getDeclaredField(fieldName);
+			field.setAccessible(true);
+			return field.get(object);
+		} catch (Exception e) {
+			Assert.fail(e.getClass().getName() + " when accessing " + fieldName);
+		}
+		return null;
+	}
+
 	public static void setPrivateField(String fieldName, Object object, Object value, boolean ofSuperclass) {
 
 		Field field = null;

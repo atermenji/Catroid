@@ -181,13 +181,13 @@ public class FormulaElement implements Serializable {
 				if (value.equals(Operators.GREATER_THAN.operatorName)) {
 					returnValue = left.compareTo(right) > 0 ? 1d : 0d;
 				}
-				if (value.equals(Operators.GREATER_OR_EQUAL)) {
+				if (value.equals(Operators.GREATER_OR_EQUAL.operatorName)) {
 					returnValue = left.compareTo(right) >= 0 ? 1d : 0d;
 				}
 				if (value.equals(Operators.SMALLER_THAN.operatorName)) {
 					returnValue = left.compareTo(right) < 0 ? 1d : 0d;
 				}
-				if (value.equals(Operators.SMALLER_OR_EQUAL)) {
+				if (value.equals(Operators.SMALLER_OR_EQUAL.operatorName)) {
 					returnValue = left.compareTo(right) <= 0 ? 1d : 0d;
 				}
 				if (value.equals(Operators.LOGICAL_AND.operatorName)) {
@@ -204,7 +204,7 @@ public class FormulaElement implements Serializable {
 				if (value.equals(Operators.MINUS.operatorName)) {
 					returnValue = -right;
 				}
-				if (value.equals(Operators.NOT)) {
+				if (value.equals(Operators.LOGICAL_NOT.operatorName)) {
 					returnValue = right == 0d ? 1d : 0d;
 				}
 
