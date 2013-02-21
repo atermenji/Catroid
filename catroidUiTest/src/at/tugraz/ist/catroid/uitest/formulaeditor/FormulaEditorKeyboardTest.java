@@ -457,11 +457,8 @@ public class FormulaEditorKeyboardTest extends android.test.ActivityInstrumentat
 		assertEquals("Wrong button clicked", itemString, text.getText().toString().substring(0, itemString.length()));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
 
-		//TODO: add other logic operators
-
 		solo.goBack();
 		solo.goBack();
-
 	}
 
 	public void testSensorsFragment() {
