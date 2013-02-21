@@ -170,7 +170,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 	@Override
 	public void onStart() {
 		formulaEditorKeyboard.setClickable(true);
-
+		getView().requestFocus();
 		View.OnTouchListener touchListener = new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View view, MotionEvent event) {
@@ -397,7 +397,8 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 	}
 
 	public void refreshFormulaPreviewString() {
-		currentFormula.refreshTextField(brickView, formulaEditorEditText.getText().toString(), formulaEditorEditText.getAbsoluteCursorPosition());
+		currentFormula.refreshTextField(brickView, formulaEditorEditText.getText().toString(),
+				formulaEditorEditText.getAbsoluteCursorPosition());
 
 	}
 

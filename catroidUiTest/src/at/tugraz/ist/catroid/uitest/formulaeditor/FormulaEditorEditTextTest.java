@@ -23,7 +23,6 @@
 
 package at.tugraz.ist.catroid.uitest.formulaeditor;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -490,7 +489,8 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 	public void testTextPreviewWithCursorPositions() {
 		solo.clickOnEditText(1);
 
-		EditText preview = (EditText) getViewInFormulaEditorById(R.id.brick_wait_edit_text);
+		EditText preview = (EditText) UiTestUtils.getViewContainerByIds(solo, R.id.brick_wait_edit_text,
+				R.id.formula_editor_brick_space);
 		FormulaEditorEditText formulaEditorEditText = (FormulaEditorEditText) solo
 				.getView(FORMULA_EDITOR_EDIT_TEXT_RID);
 
@@ -502,32 +502,6 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 
 		setAbsoluteCursorPosition(formulaEditorEditText.getText().length());
 		assertTrue("End not visible in preview after cursor change", preview.getText().toString().contains("64"));
-	}
-
-	@Smoke
-	public void testSimpleParseTest() {
-		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_8));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_plus));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_random));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_random));
-		String editTextString = "8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( ";
-		editTextString += getActivity().getString(R.string.formula_editor_function_rand) + "( 0 , 1 ) ,";
-		solo.clickOnScreen(oneCharacterWidthApproximation * editTextString.length(), firstLineYCoordinate + lineHeight);
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_plus));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_3));
-		editTextString = "8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( ";
-		editTextString += getActivity().getString(R.string.formula_editor_function_rand) + "( 0 ";
-		solo.clickOnScreen(oneCharacterWidthApproximation * editTextString.length(), firstLineYCoordinate);
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_plus));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_2));
-		solo.goBack();
-		solo.sleep(500);
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
-		assertEquals("Text not deleted correctly",
-				"8 + " + getActivity().getString(R.string.formula_editor_function_rand) + "( 2 , 1 ) + 3 ", solo
-						.getEditText(FORMULA_EDITOR_EDIT_TEXT_ID).getText().toString());
 	}
 
 	@Smoke
@@ -602,163 +576,99 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		solo.goBack();
 	}
 
-	// TODO SOLO searchText + clickOnText NOT working!!
-	//
-	public void testListScroll() throws InterruptedException {
-		solo.clickOnEditText(0);
-		boolean isFound = solo.searchText(solo.getString(R.string.formula_editor_function_round));
-		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_function_round));
-		solo.scrollDownList(2);
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_function_round));
-		solo.clickOnText(solo.getString(R.string.formula_editor_function_round));
-		ArrayList<View> views = solo.getViews();
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_function_round));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_function_round) + "not found!", isFound);
-	}
-
-	// TODO SOLO searchText + clickOnText NOT working!!
-	//
 	public void testStrings() {
 
 		solo.clickOnEditText(0);
+
+		FormulaEditorEditText formulaEditorEditText = (FormulaEditorEditText) solo
+				.getView(FORMULA_EDITOR_EDIT_TEXT_RID);
+
 		String hyphen = "-";
 		String costume = "costume";
 		String sprite = "sprite";
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_random));
-		boolean isFound = solo.searchText(solo.getString(R.string.formula_editor_function_rand));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_function_rand) + "not found!", isFound);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
-
 		solo.scrollDownList(2);
-
+		View view = UiTestUtils.getViewContainerByString(solo, solo.getString(R.string.formula_editor_function_abs),
+				R.layout.fragment_formula_editor_variablelist);
+		solo.clickOnView(view);
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_abs));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_function_abs));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_function_abs) + "not found!", isFound);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_sin));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_function_sin));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_function_sin) + "not found!", isFound);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_cos));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_function_cos));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_function_cos) + "not found!", isFound);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_tan));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_function_tan));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_function_tan) + "not found!", isFound);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_ln));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_function_ln));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_function_ln) + "not found!", isFound);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_log));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_function_log));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_function_log) + "not found!", isFound);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_sqrt));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_function_sqrt));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_function_sqrt) + "not found!", isFound);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
 		solo.scrollDownList(2);
-		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_round));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_function_round));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_function_round) + "not found!", isFound);
+		view = UiTestUtils.getViewContainerByString(solo, solo.getString(R.string.formula_editor_function_round),
+				R.layout.fragment_formula_editor_variablelist);
+		solo.clickOnView(view);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_e));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_function_e));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_function_e) + "not found!", isFound);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_math));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_function_pi));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_function_pi));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_function_pi) + "not found!", isFound);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_sensors));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_sensor_x_acceleration));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_sensor_x_acceleration));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_sensor_x_acceleration) + "not found!",
-				isFound);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_sensors));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_sensor_y_acceleration));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_sensor_y_acceleration));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_sensor_y_acceleration) + "not found!",
-				isFound);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_sensors));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_sensor_z_acceleration));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_sensor_z_acceleration));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_sensor_z_acceleration) + "not found!",
-				isFound);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_sensors));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_sensor_z_orientation));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_sensor_z_orientation));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_sensor_z_orientation) + "not found!",
-				isFound);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_sensors));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_sensor_y_orientation));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_sensor_y_orientation));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_sensor_y_orientation) + "not found!",
-				isFound);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_sensors));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_sensor_x_orientation));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_sensor_x_orientation));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_sensor_x_orientation) + "not found!",
-				isFound);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_object));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_look_x));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_look_x));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_look_x) + "not found!", isFound);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_object));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_look_y));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_look_y));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_look_y) + "not found!", isFound);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_object));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_look_ghosteffect));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_look_ghosteffect));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_look_ghosteffect) + "not found!",
-				isFound);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_object));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_look_brightness));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_look_brightness));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_look_brightness) + "not found!",
-				isFound);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_object));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_look_size));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_look_size));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_look_size) + "not found!", isFound);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_object));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_look_rotation));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_look_rotation));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_look_rotation) + "not found!", isFound);
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_object));
 		solo.clickOnText(getActivity().getString(R.string.formula_editor_look_layer));
-		isFound = solo.searchText(solo.getString(R.string.formula_editor_look_layer));
-		assertTrue("String: " + getActivity().getString(R.string.formula_editor_look_layer) + "not found!", isFound);
 
-		boolean hyphenOrCostumephraseOrSpritephraseFound = solo.searchText(hyphen) || solo.searchText(costume)
-				|| solo.searchText(sprite);
+		String editTextString = formulaEditorEditText.getText().toString();
+		boolean hyphenOrCostumephraseOrSpritephraseFound = editTextString.contains(hyphen)
+				|| editTextString.contains(costume) || editTextString.contains(sprite);
+
 		assertFalse("Unallowed char or string found (hyphen, costumephrase, spritephrase).",
 				hyphenOrCostumephraseOrSpritephraseFound);
 
@@ -823,17 +733,6 @@ public class FormulaEditorEditTextTest extends android.test.ActivityInstrumentat
 		ProjectManager.getInstance().setProject(project);
 		ProjectManager.getInstance().setCurrentSprite(firstSprite);
 
-	}
-
-	private View getViewInFormulaEditorById(int id) {
-		View parent = solo.getView(R.id.formula_editor_brick_space);
-		List<View> views = solo.getViews(parent);
-		for (View view : views) {
-			if (view.getId() == id) {
-				return view;
-			}
-		}
-		return null;
 	}
 
 }
