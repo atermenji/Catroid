@@ -26,7 +26,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import at.tugraz.ist.catroid.ProjectManager;
-import at.tugraz.ist.catroid.content.Sprite;
 
 public class InternFormulaParser {
 
@@ -179,7 +178,8 @@ public class InternFormulaParser {
 
 		FormulaElement loopTermTree;
 		String operatorStringValue;
-		while (currentToken.isOperator() && !currentToken.getTokenSringValue().equals(Operators.LOGICAL_NOT.operatorName)) {
+		while (currentToken.isOperator()
+				&& !currentToken.getTokenSringValue().equals(Operators.LOGICAL_NOT.operatorName)) {
 
 			operatorStringValue = currentToken.getTokenSringValue();
 			getNextToken();
@@ -203,9 +203,11 @@ public class InternFormulaParser {
 			termTree.replaceElement(FormulaElement.ElementType.OPERATOR, Operators.MINUS.operatorName, null, curElem);
 
 			getNextToken();
-		} else if (currentToken.isOperator() && currentToken.getTokenSringValue().equals(Operators.LOGICAL_NOT.operatorName)) {
+		} else if (currentToken.isOperator()
+				&& currentToken.getTokenSringValue().equals(Operators.LOGICAL_NOT.operatorName)) {
 			curElem = new FormulaElement(FormulaElement.ElementType.NUMBER, null, termTree, null, null);
-			termTree.replaceElement(FormulaElement.ElementType.OPERATOR, Operators.LOGICAL_NOT.operatorName, null, curElem);
+			termTree.replaceElement(FormulaElement.ElementType.OPERATOR, Operators.LOGICAL_NOT.operatorName, null,
+					curElem);
 
 			getNextToken();
 		}
@@ -249,7 +251,7 @@ public class InternFormulaParser {
 	private FormulaElement userVariable() throws InternFormulaParserException {
 		UserVariablesContainer userVariables = ProjectManager.getInstance().getCurrentProject().getUserVariables();
 
-		String spriteName = Thread.currentThread().getName().substring(Sprite.SCRIPT_THREAD_NAME_PREFIX.length());
+		String spriteName = ProjectManager.getInstance().getCurrentSprite().getName();
 
 		if (userVariables.getUserVariable(currentToken.getTokenSringValue(), spriteName) == null) {
 			throw new InternFormulaParserException("Parse Error");
