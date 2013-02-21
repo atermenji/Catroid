@@ -7,7 +7,7 @@
  
 	<LinearLayout
  	android:layout_width="fill_parent"
- 	android:layout_height="wrap_content">
+ 	android:layout_height="wrap_content" >
 
 	<Button
  		android:id="@+id/formula_editor_keyboard_undo"
@@ -15,13 +15,11 @@
  		android:layout_height="@dimen/key_height"
  		android:text="@string/formula_editor_button_undo" 
  		android:layout_weight="0.175"
- 		android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginTop="@dimen/key_margin"
  		android:layout_marginLeft="@dimen/key_margin"
  		android:layout_marginRight="@dimen/key_margin"
  		android:layout_marginBottom="@dimen/key_margin"
- 		/>
+ 		android:textColor="@color/white" />
 
 	<Button
  		android:id="@+id/formula_editor_keyboard_redo"
@@ -29,11 +27,10 @@
  		android:layout_height="@dimen/key_height"
  		android:text="@string/formula_editor_button_redo"
  		android:layout_weight="0.175" 
- 		android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginTop="@dimen/key_margin"
  		android:layout_marginRight="@dimen/key_margin"
- 		android:layout_marginBottom="@dimen/key_margin"/>
+ 		android:layout_marginBottom="@dimen/key_margin"
+ 		android:textColor="@color/white"  />
 
 	<Button
 	    android:id="@+id/formula_editor_keyboard_compute"
@@ -43,7 +40,6 @@
 	    android:layout_marginRight="@dimen/key_margin"
 	    android:layout_marginTop="@dimen/key_margin"
 	    android:layout_weight="0.36"
-	    android:background="@drawable/bg_dialog"
 	    android:text="@string/formula_editor_compute"
 	    android:textColor="@color/white" />
 
@@ -54,7 +50,6 @@
     	android:text="@string/formula_editor_delete"
     	android:layout_weight="0.30"
  		android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginTop="@dimen/key_margin"
  		android:layout_marginRight="@dimen/key_margin"
  		android:layout_marginBottom="@dimen/key_margin" />
@@ -63,7 +58,7 @@
 
 	<LinearLayout
  	android:layout_width="fill_parent"
- 	android:layout_height="wrap_content">
+ 	android:layout_height="wrap_content" >
 
 	<Button
  		android:id="@+id/formula_editor_keyboard_7"
@@ -72,10 +67,9 @@
  		android:text="7" 
  		android:layout_weight="0.175"
  		android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginLeft="@dimen/key_margin"
  		android:layout_marginRight="@dimen/key_margin"
- 		android:layout_marginBottom="@dimen/key_margin"/>
+ 		android:layout_marginBottom="@dimen/key_margin" />
 
 	<Button
  		android:id="@+id/formula_editor_keyboard_8"
@@ -84,9 +78,8 @@
  		android:text="8"
  		android:layout_weight="0.175" 
  		android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginRight="@dimen/key_margin"
- 		android:layout_marginBottom="@dimen/key_margin"/>
+ 		android:layout_marginBottom="@dimen/key_margin" />
 
 	<Button
     	android:id="@+id/formula_editor_keyboard_9"
@@ -95,7 +88,6 @@
     	android:text="9"
     	android:layout_weight="0.175"
     	android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginRight="@dimen/key_margin"
  		android:layout_marginBottom="@dimen/key_margin" />
 
@@ -106,7 +98,6 @@
     	android:text="@string/formula_editor_operator_divide"
     	android:layout_weight="0.175"
  		android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginRight="@dimen/key_margin"
  		android:layout_marginBottom="@dimen/key_margin" />
 	
@@ -117,14 +108,13 @@
     	android:text="@string/formula_editor_object"
     	android:layout_weight="0.30"
  		android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginRight="@dimen/key_margin"
  		android:layout_marginBottom="@dimen/key_margin" />
 
 	</LinearLayout>
 	<LinearLayout
  	android:layout_width="fill_parent"
- 	android:layout_height="wrap_content">
+ 	android:layout_height="wrap_content" >
 
 	<Button
  		android:id="@+id/formula_editor_keyboard_4"
@@ -133,10 +123,9 @@
  		android:text="4" 
  		android:layout_weight="0.175"
  		android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginLeft="@dimen/key_margin"
  		android:layout_marginRight="@dimen/key_margin"
- 		android:layout_marginBottom="@dimen/key_margin"/>
+ 		android:layout_marginBottom="@dimen/key_margin" />
 
 	<Button
  		android:id="@+id/formula_editor_keyboard_5"
@@ -145,9 +134,8 @@
  		android:text="5"
  		android:layout_weight="0.175" 
  		android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginRight="@dimen/key_margin"
- 		android:layout_marginBottom="@dimen/key_margin"/>
+ 		android:layout_marginBottom="@dimen/key_margin" />
 
 	<Button
     	android:id="@+id/formula_editor_keyboard_6"
@@ -156,7 +144,6 @@
     	android:text="6"
     	android:layout_weight="0.175"
     	android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginRight="@dimen/key_margin"
  		android:layout_marginBottom="@dimen/key_margin" />
 
@@ -167,7 +154,6 @@
     	android:text="@string/formula_editor_operator_mult"
     	android:layout_weight="0.175"
  		android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginRight="@dimen/key_margin"
  		android:layout_marginBottom="@dimen/key_margin" />
 	
@@ -178,7 +164,6 @@
     	android:text="@string/formula_editor_math"
     	android:layout_weight="0.30"
  		android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginRight="@dimen/key_margin"
  		android:layout_marginBottom="@dimen/key_margin" />
 
@@ -186,7 +171,7 @@
 
 	<LinearLayout
  	android:layout_width="fill_parent"
- 	android:layout_height="wrap_content">
+ 	android:layout_height="wrap_content" >
 
 	<Button
  		android:id="@+id/formula_editor_keyboard_1"
@@ -195,10 +180,9 @@
  		android:text="1" 
  		android:layout_weight="0.175"
  		android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginLeft="@dimen/key_margin"
  		android:layout_marginRight="@dimen/key_margin"
- 		android:layout_marginBottom="@dimen/key_margin"/>
+ 		android:layout_marginBottom="@dimen/key_margin" />
 
 	<Button
  		android:id="@+id/formula_editor_keyboard_2"
@@ -207,9 +191,8 @@
  		android:text="2"
  		android:layout_weight="0.175" 
  		android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginRight="@dimen/key_margin"
- 		android:layout_marginBottom="@dimen/key_margin"/>
+ 		android:layout_marginBottom="@dimen/key_margin" />
 
 	<Button
     	android:id="@+id/formula_editor_keyboard_3"
@@ -218,7 +201,6 @@
     	android:text="3"
     	android:layout_weight="0.175"
     	android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginRight="@dimen/key_margin"
  		android:layout_marginBottom="@dimen/key_margin" />
 
@@ -229,7 +211,6 @@
     	android:text="@string/formula_editor_operator_minus"
     	android:layout_weight="0.175"
  		android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginRight="@dimen/key_margin"
  		android:layout_marginBottom="@dimen/key_margin" />
 	
@@ -240,7 +221,6 @@
     	android:text="@string/formula_editor_logic"
     	android:layout_weight="0.30"
  		android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginRight="@dimen/key_margin"
  		android:layout_marginBottom="@dimen/key_margin" />
 
@@ -248,7 +228,7 @@
 	
 	<LinearLayout
  	android:layout_width="fill_parent"
- 	android:layout_height="wrap_content">
+ 	android:layout_height="wrap_content" >
 
 	<Button
  		android:id="@+id/formula_editor_keyboard_decimal_mark"
@@ -257,7 +237,6 @@
  		android:text="@string/formula_editor_decimal_mark" 
  		android:layout_weight="0.175"
  		android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginLeft="@dimen/key_margin"
  		android:layout_marginRight="@dimen/key_margin"
  		android:layout_marginBottom="@dimen/key_margin"/>
@@ -269,9 +248,8 @@
  		android:text="0"
  		android:layout_weight="0.175" 
  		android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginRight="@dimen/key_margin"
- 		android:layout_marginBottom="@dimen/key_margin"/>
+ 		android:layout_marginBottom="@dimen/key_margin" />
 
 	<Button
     	android:id="@+id/formula_editor_keyboard_equal"
@@ -280,7 +258,6 @@
     	android:text="@string/formula_editor_logic_equal"
     	android:layout_weight="0.175"
     	android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginRight="@dimen/key_margin"
  		android:layout_marginBottom="@dimen/key_margin" />
 
@@ -291,7 +268,6 @@
     	android:text="@string/formula_editor_operator_plus"
     	android:layout_weight="0.175"
  		android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginRight="@dimen/key_margin"
  		android:layout_marginBottom="@dimen/key_margin" />
 	
@@ -302,7 +278,6 @@
     	android:text="@string/formula_editor_sensors"
     	android:layout_weight="0.30"
  		android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginRight="@dimen/key_margin"
  		android:layout_marginBottom="@dimen/key_margin" />
 
@@ -310,7 +285,7 @@
 	
 	<LinearLayout
  	android:layout_width="fill_parent"
- 	android:layout_height="wrap_content">
+ 	android:layout_height="wrap_content" >
 
 	<Button
  		android:id="@+id/formula_editor_keyboard_bracket_open"
@@ -319,10 +294,9 @@
  		android:text="@string/formula_editor_bracket_open" 
  		android:layout_weight="0.175"
  		android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginLeft="@dimen/key_margin"
  		android:layout_marginRight="@dimen/key_margin"
- 		android:layout_marginBottom="@dimen/key_margin"/>
+ 		android:layout_marginBottom="@dimen/key_margin" />
 	
 		<Button
  		android:id="@+id/formula_editor_keyboard_bracket_close"
@@ -331,9 +305,8 @@
  		android:text="@string/formula_editor_bracket_close" 
  		android:layout_weight="0.175"
  		android:textColor="@color/white"
- 		android:background="@drawable/bg_dialog"
  		android:layout_marginRight="@dimen/key_margin"
- 		android:layout_marginBottom="@dimen/key_margin"/>
+ 		android:layout_marginBottom="@dimen/key_margin" />
 
 	<Button
 	    android:id="@+id/formula_editor_keyboard_random"
@@ -342,7 +315,6 @@
 	    android:layout_marginBottom="@dimen/key_margin"
 	    android:layout_marginRight="@dimen/key_margin"
 	    android:layout_weight="0.355"
-	    android:background="@drawable/bg_dialog"
 	    android:text="@string/formula_editor_function_rand"
 	    android:textColor="@color/white" />
 	
@@ -353,7 +325,6 @@
 	    android:layout_marginBottom="@dimen/key_margin"
 	    android:layout_marginRight="@dimen/key_margin"
 	    android:layout_weight="0.295"
-	    android:background="@drawable/bg_dialog"
 	    android:text="@string/formula_editor_variables"
 	    android:textColor="@color/white" />
 

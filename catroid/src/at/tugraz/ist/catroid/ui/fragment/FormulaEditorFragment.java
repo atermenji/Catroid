@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils.TruncateAt;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -62,6 +63,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 	private static final int TIME_WINDOW = 2000;
 
 	public static final String FORMULA_EDITOR_FRAGMENT_TAG = "formula_editor_fragment";
+	private static final int MAX_BUTTON_LINES = 1;
 
 	private Context context;
 
@@ -112,7 +114,6 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 			formulaEditorDialog = new FormulaEditorFragment(brick, formula);
 			FragmentManager fragmentManager = activity.getSupportFragmentManager();
 			FragmentTransaction fragTransaction = fragmentManager.beginTransaction();
-			//			fragTransaction.remove(fragmentManager.findFragmentById(android.R.id.tabs));
 			fragTransaction.replace(android.R.id.tabhost, formulaEditorDialog, FORMULA_EDITOR_FRAGMENT_TAG);
 			fragTransaction.commit();
 
@@ -238,12 +239,13 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		};
 
 		for (int index = 0; index < formulaEditorKeyboard.getChildCount(); index++) {
-			//			Log.i("info", "index: " + index);
 			LinearLayout child = (LinearLayout) formulaEditorKeyboard.getChildAt(index);
 			for (int nestedIndex = 0; nestedIndex < child.getChildCount(); nestedIndex++) {
-				//				Log.i("info", "nestedIndex: " + nestedIndex);
 				Button key = (Button) child.getChildAt(nestedIndex);
 				key.setOnTouchListener(touchListener);
+				key.setBackgroundResource(R.drawable.bg_dialog);
+				key.setLines(MAX_BUTTON_LINES);
+				key.setEllipsize(TruncateAt.END);
 			}
 		}
 		super.onStart();
