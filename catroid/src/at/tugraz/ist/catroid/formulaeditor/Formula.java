@@ -27,6 +27,7 @@ import java.io.Serializable;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.text.Layout;
 import android.view.View;
 import android.widget.EditText;
 import at.tugraz.ist.catroid.R;
@@ -172,19 +173,30 @@ public class Formula implements Serializable {
 
 	}
 
-	public void refreshTextField(View view, String formulaString) {
+	public void refreshTextField(View view, String formulaString, int position) {
 		if (formulaTextFieldId != null && formulaTree != null && view != null) {
 			EditText formulaTextField = (EditText) view.findViewById(formulaTextFieldId);
 			if (formulaTextField == null) {
 				return;
 			}
 			formulaTextField.setText(formulaString);
-			//			if (formulaString.length() > 5) {
-			//				formulaTextField.setText(formulaString.substring(0, 5) + "...");
-			//			} else {
-			//				formulaTextField.setText(formulaString);
-			//			}
-
+			Layout formulaTextFieldLayout = formulaTextField.getLayout();
+			if (position < 0 || formulaTextFieldLayout == null)
+				return;
+			int char_count = formulaTextFieldLayout.getLineVisibleEnd(0);
+			if (formulaString.length() > char_count && char_count > 0) {
+				int start = position-(char_count/2);
+				int end = position+(char_count/2)+1;
+				if(end > formulaString.length()-1) {
+					end = formulaString.length()-1;
+					start = end - char_count;
+				}
+				if(start < 0) {
+					start = 0;
+					end = char_count;
+				}
+				formulaTextField.setText(formulaString.substring( start, end ));
+			}
 		}
 	}
 

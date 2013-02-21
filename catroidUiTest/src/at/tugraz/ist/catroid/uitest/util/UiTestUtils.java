@@ -910,4 +910,42 @@ public class UiTestUtils {
 		StorageHandler.saveBitmapToImageFile(imageFile, imageBitmap);
 	}
 
+	public static View getViewContainerByIds(Solo solo, int id, int container_id) {
+		View parent = solo.getView(container_id);
+		List<View> views = solo.getViews(parent);
+		for (View view : views) {
+			if (view.getId() == id) {
+				return view;
+			}
+		}
+		return null;
+	}
+
+	public static View getViewContainerByString(Solo solo, String text, int containerId) {
+		View parent = solo.getView(containerId);
+		List<TextView> views = solo.getCurrentTextViews(parent);
+		for (TextView view : views) {
+
+			if (view.getText().equals(text)) {
+				return view;
+			}
+
+		}
+		return null;
+	}
+
+	public static View getViewContainerByString(String text, List<TextView> views) {
+		for (TextView view : views) {
+			if (view.getText().equals(text)) {
+				return view;
+			}
+		}
+		return null;
+	}
+
+	public static List<TextView> getViewsByParentId(Solo solo, int parentId) {
+		View parent = solo.getView(parentId);
+		return solo.getCurrentTextViews(parent);
+	}
+
 }

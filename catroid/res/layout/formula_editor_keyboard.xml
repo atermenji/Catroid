@@ -313,14 +313,25 @@
  	android:layout_height="wrap_content">
 
 	<Button
- 		android:id="@+id/formula_editor_keyboard_decimal_brackets"
+ 		android:id="@+id/formula_editor_keyboard_bracket_open"
  		android:layout_width="0dp"
  		android:layout_height="@dimen/key_height"
- 		android:text="()" 
- 		android:layout_weight="0.35"
+ 		android:text="@string/formula_editor_bracket_open" 
+ 		android:layout_weight="0.175"
  		android:textColor="@color/white"
  		android:background="@drawable/bg_dialog"
  		android:layout_marginLeft="@dimen/key_margin"
+ 		android:layout_marginRight="@dimen/key_margin"
+ 		android:layout_marginBottom="@dimen/key_margin"/>
+	
+		<Button
+ 		android:id="@+id/formula_editor_keyboard_bracket_close"
+ 		android:layout_width="0dp"
+ 		android:layout_height="@dimen/key_height"
+ 		android:text="@string/formula_editor_bracket_close" 
+ 		android:layout_weight="0.175"
+ 		android:textColor="@color/white"
+ 		android:background="@drawable/bg_dialog"
  		android:layout_marginRight="@dimen/key_margin"
  		android:layout_marginBottom="@dimen/key_margin"/>
 

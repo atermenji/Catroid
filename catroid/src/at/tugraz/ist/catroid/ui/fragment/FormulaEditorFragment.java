@@ -170,7 +170,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 	@Override
 	public void onStart() {
 		formulaEditorKeyboard.setClickable(true);
-
+		getView().requestFocus();
 		View.OnTouchListener touchListener = new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View view, MotionEvent event) {
@@ -188,10 +188,12 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 
 					switch (view.getId()) {
 						case R.id.formula_editor_keyboard_compute:
-							//TODO implement functionality (interpret) and output dialog ( Issue 8.64c)
-							FormulaElement formulaElement = formulaEditorEditText.getFormulaParser().parseFormula();
+							InternFormulaParser internFormulaParser = formulaEditorEditText.getFormulaParser();
+							FormulaElement formulaElement = internFormulaParser.parseFormula();
 							if (formulaElement == null) {
-								//TODO Error handling
+								if (internFormulaParser.getErrorTokenIndex() >= 0) {
+									formulaEditorEditText.setParseErrorCursorAndSelection();
+								}
 								return false;
 							}
 							Formula formulaToCompute = new Formula(formulaElement);
@@ -281,7 +283,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 				currentFormula.removeTextFieldHighlighting(brickView, orientation);
 				formulaEditorEditText.enterNewFormula(currentFormula.getInternFormulaState());
 				currentFormula.highlightTextField(brickView, orientation);
-				refreshFormulaPreviewString(formulaEditorEditText.getText().toString());
+				refreshFormulaPreviewString();
 				break;
 			case SET_FORMULA_ON_SWITCH_EDIT_TEXT:
 
@@ -328,7 +330,7 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 			case PARSER_STACK_OVERFLOW:
 				return checkReturnWithoutSaving(PARSER_STACK_OVERFLOW);
 			default:
-				formulaEditorEditText.setParseErrorCursorAndSelection();//TODO change name and functionality to show error tokens
+				formulaEditorEditText.setParseErrorCursorAndSelection();
 				return checkReturnWithoutSaving(PARSER_INPUT_SYNTAX_ERROR);
 		}
 	}
@@ -394,8 +396,9 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		}
 	}
 
-	public void refreshFormulaPreviewString(String formulaString) {
-		currentFormula.refreshTextField(brickView, formulaEditorEditText.getText().toString());
+	public void refreshFormulaPreviewString() {
+		currentFormula.refreshTextField(brickView, formulaEditorEditText.getText().toString(),
+				formulaEditorEditText.getAbsoluteCursorPosition());
 
 	}
 
