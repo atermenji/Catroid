@@ -92,4 +92,5 @@ public class UserVariable implements Serializable {
 	public Double getValue() {
 		return value;
 	}
+
 }

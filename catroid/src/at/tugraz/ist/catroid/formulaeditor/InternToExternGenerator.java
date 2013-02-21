@@ -130,7 +130,7 @@ public class InternToExternGenerator {
 			case FUNCTION_PARAMETER_DELIMITER:
 				return ","; //TODO hardcoded delimiter value
 			case USER_VARIABLE:
-				return internToken.getTokenSringValue();
+				return "\"" + internToken.getTokenSringValue() + "\"";
 
 			default:
 				return InternToExternLanguageConverter.getExternStringForInternTokenValue(
