@@ -25,25 +25,31 @@ package at.tugraz.ist.catroid.ui.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.DialogInterface.OnShowListener;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
@@ -52,6 +58,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 import at.tugraz.ist.catroid.ProjectManager;
 import at.tugraz.ist.catroid.R;
 import at.tugraz.ist.catroid.content.Project;
@@ -80,6 +87,7 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 	private RadioButton leftDialogRadioButton;
 	private RadioButton rightDialogRadioButton;
 	private Dialog dialogNewVariable;
+	private boolean dialogNewVariableError;
 
 	public FormulaEditorVariableListFragment(FormulaEditorEditText formulaEditorEditText, String actionBarTitle,
 			String fragmentTag) {
@@ -91,6 +99,7 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 		mDeleteIndex = -1;
 		mInContextMode = false;
 		mItems = new ArrayList<String>();
+		dialogNewVariableError = false;
 	}
 
 	@Override
@@ -192,6 +201,8 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 
 			@Override
 			public void onClick(View v) {
+
+				dialogNewVariableError = false;
 				dialogNewVariable = new AlertDialog.Builder(getActivity())
 						.setView(
 								LayoutInflater.from(getActivity()).inflate(
@@ -199,7 +210,7 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 						.setTitle("Variable name ?").setNegativeButton(R.string.cancel_button, new OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
-								dialogNewVariable.cancel();
+								dialogNewVariableError = false;
 							}
 
 						}).setPositiveButton(R.string.ok, new OnClickListener() {
@@ -207,20 +218,101 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 							public void onClick(DialogInterface dialog, int which) {
 								EditText dialogEdittext = (EditText) dialogNewVariable
 										.findViewById(R.id.dialog_formula_editor_variable_name_edit_text);
+
 								String editTextString = dialogEdittext.getText().toString();
 								if (leftDialogRadioButton.isChecked()) {
-									ProjectManager.getInstance().getCurrentProject().getUserVariables()
-											.addProjectUserVariable(editTextString, 5.0);//TODO value
+									if (ProjectManager
+											.getInstance()
+											.getCurrentProject()
+											.getUserVariables()
+											.getUserVariable(editTextString,
+													ProjectManager.getInstance().getCurrentSprite().getName()) != null) {
+
+										Toast.makeText(getActivity(), R.string.formula_editor_existing_user_variable,
+												2000).show();
+
+									} else {
+										ProjectManager.getInstance().getCurrentProject().getUserVariables()
+												.addProjectUserVariable(editTextString, 5.0);//TODO value
+										mItems.add(editTextString);
+									}
 								} else if (rightDialogRadioButton.isChecked()) {
 									ProjectManager.getInstance().getCurrentProject().getUserVariables()
 											.addSpriteUserVariable(editTextString, 5.0);//TODO value
 								}
-								mItems.add(editTextString);
+
 								setListAdapter(new ArrayAdapter<String>(getActivity(),
 										android.R.layout.simple_list_item_1, mItems));
 
 							}
 						}).create();
+
+				dialogNewVariable.setOnShowListener(new OnShowListener() {
+					@Override
+					public void onShow(DialogInterface dialog) {
+						Button positiveButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+						positiveButton.setClickable(false);
+						positiveButton.setTextColor(getResources().getColorStateList(R.color.gray));
+
+						InputMethodManager imm = (InputMethodManager) getSherlockActivity().getSystemService(
+								Context.INPUT_METHOD_SERVICE);
+
+						EditText dialogEdittext = (EditText) dialogNewVariable
+								.findViewById(R.id.dialog_formula_editor_variable_name_edit_text);
+
+						imm.showSoftInput(dialogEdittext, InputMethodManager.SHOW_IMPLICIT);
+
+						dialogEdittext.addTextChangedListener(new TextWatcher() {
+
+							@Override
+							public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+							}
+
+							@Override
+							public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+							}
+
+							@SuppressLint("ShowToast")
+							@Override
+							public void afterTextChanged(Editable editable) {
+								EditText dialogEdittext = (EditText) dialogNewVariable
+										.findViewById(R.id.dialog_formula_editor_variable_name_edit_text);
+								String editTextString = editable.toString();
+
+								Button positiveButton = ((AlertDialog) dialogNewVariable)
+										.getButton(AlertDialog.BUTTON_POSITIVE);
+
+								if (ProjectManager
+										.getInstance()
+										.getCurrentProject()
+										.getUserVariables()
+										.getUserVariable(editTextString,
+												ProjectManager.getInstance().getCurrentSprite().getName()) != null) {
+
+									Toast toast = Toast.makeText(getActivity(),
+											R.string.formula_editor_existing_user_variable, Toast.LENGTH_SHORT);
+									toast.setGravity(Gravity.CENTER, 0, 0);
+									toast.show();
+
+									positiveButton.setClickable(false);
+									positiveButton.setTextColor(getResources().getColorStateList(R.color.gray));
+
+									dialogEdittext.setBackgroundColor(getResources().getColor(R.color.solid_red));
+
+								} else {
+
+									dialogEdittext.setBackgroundColor(getResources().getColor(R.color.transparent));
+									positiveButton.setClickable(true);
+									positiveButton.setTextColor(getResources().getColorStateList(R.color.solid_black));
+								}
+							}
+						});
+
+					}
+				});
+
 				dialogNewVariable.setCanceledOnTouchOutside(true);
 				dialogNewVariable.show();
 				leftDialogRadioButton = (RadioButton) dialogNewVariable

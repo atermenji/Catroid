@@ -73,12 +73,11 @@ public class InternToExternGenerator {
 			} else {
 				nextToken = internTokenList.get(1);
 			}
-			//			Log.i("info", "generateExternStringAndMapping: currentTokenText = " + currentToken.getTokenSringValue());
 			externTokenString = generateExternStringFromToken(currentToken);
 			generatedExternFormulaString += externTokenString;
-			externEndIndex = generatedExternFormulaString.length(); //TODO cursor position determination
+			externEndIndex = generatedExternFormulaString.length();
 
-			externEndIndex--; //TODO check Mapping
+			externEndIndex--;
 
 			if (externEndIndex < externStartIndex) {
 				return;
@@ -128,15 +127,14 @@ public class InternToExternGenerator {
 			case FUNCTION_PARAMETERS_BRACKET_CLOSE:
 				return ")";
 			case FUNCTION_PARAMETER_DELIMITER:
-				return ","; //TODO hardcoded delimiter value
+				return ",";
 			case USER_VARIABLE:
-				return internToken.getTokenSringValue();
+				return "\"" + internToken.getTokenSringValue() + "\"";
 
 			default:
 				return InternToExternLanguageConverter.getExternStringForInternTokenValue(
 						internToken.getTokenSringValue(), context);
 
-				//TODO handle all cases
 		}
 	}
 
