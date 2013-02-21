@@ -36,17 +36,20 @@ import at.tugraz.ist.catroid.content.Sprite;
 import at.tugraz.ist.catroid.content.StartScript;
 import at.tugraz.ist.catroid.content.bricks.Brick;
 import at.tugraz.ist.catroid.content.bricks.ChangeSizeByNBrick;
-import at.tugraz.ist.catroid.ui.ScriptTabActivity;
+import at.tugraz.ist.catroid.content.bricks.GlideToBrick;
+import at.tugraz.ist.catroid.ui.MainMenuActivity;
 import at.tugraz.ist.catroid.uitest.util.UiTestUtils;
 
 import com.jayway.android.robotium.solo.Solo;
 
-public class FormulaEditorKeyboardTest extends android.test.ActivityInstrumentationTestCase2<ScriptTabActivity> {
+public class FormulaEditorKeyboardTest extends android.test.ActivityInstrumentationTestCase2<MainMenuActivity> {
 
 	private Project project;
 	private Solo solo;
 	private Sprite firstSprite;
+	private Sprite secondSprite;
 	private Brick changeBrick;
+	private Brick glideToBrick;
 
 	private static final int X_POS_EDIT_TEXT_ID = 0;
 	private static final int Y_POS_EDIT_TEXT_ID = 1;
@@ -54,14 +57,16 @@ public class FormulaEditorKeyboardTest extends android.test.ActivityInstrumentat
 	private static final int SCROLL_DOWN_INDEX = 2;
 
 	public FormulaEditorKeyboardTest() {
-		super(ScriptTabActivity.class);
+		super(MainMenuActivity.class);
 	}
 
 	@Override
 	public void setUp() throws Exception {
 
-		createProject("testProjectCatKeyboard");
+		createProject("testProjectFomulaEditorKeyboard");
 		this.solo = new Solo(getInstrumentation(), getActivity());
+		solo.clickOnButton("Current Project");// TODO insert R.id from mastebranch
+		solo.clickOnText("Background");
 	}
 
 	@Override
@@ -554,9 +559,6 @@ public class FormulaEditorKeyboardTest extends android.test.ActivityInstrumentat
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
 
-		ArrayList<EditText> textList = solo.getCurrentEditTexts();
-		EditText text = textList.get(textList.size() - 1);
-
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_variables));
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_variable_list_bottom_bar));
@@ -601,61 +603,81 @@ public class FormulaEditorKeyboardTest extends android.test.ActivityInstrumentat
 		solo.goBack();
 	}
 
-	//TODO: deleteUserVariableMultipleChoice(), testScopeOfUserVariable(), testInterpretationOfUservariable()
-	// 
+	public void testScopeOfUserVariable() {
 
-	//	public void testOrientationChanges() {
-	//
-	//		solo.clickOnEditText(0);
-	//		solo.clickOnEditText(1);
-	//		solo.setActivityOrientation(Solo.LANDSCAPE);
-	//		solo.sleep(2500); //orientation change takes forever...		
-	//		catKeyboardClicker.clickOnKey("del");
-	//		catKeyboardClicker.clickOnKey("del");
-	//		catKeyboardClicker.clickOnKey("del");
-	//		catKeyboardClicker.clickOnKey("del");
-	//
-	//		//		catKeyboardClicker.clickOnKey("costume");
-	//		//		solo.setActivityOrientation(Solo.LANDSCAPE);
-	//		//		solo.sleep(2500); //orientation change takes forever...		
-	//		//		solo.clickOnText("COSTUME_X_");
-	//		//		solo.sleep(100);// without sleep it crashes x.x
-	//		//
-	//		//		EditText text = solo.getEditText(0);
-	//		//		assertEquals("Wrong button clicked", "COSTUME_X_", text.getText().toString()
-	//		//				.substring(0, "COSTUME_X_".length()));
-	//		//		catKeyboardClicker.clickOnKey("del");
-	//		//		solo.sleep(100);
-	//		//
-	//		//		catKeyboardClicker.clickOnKey("costume");
-	//		//		solo.setActivityOrientation(Solo.PORTRAIT);
-	//		//		solo.sleep(2500);
-	//		//		solo.clickOnText("COSTUME_LAYER_");
-	//		//		solo.sleep(100);
-	//		//		text = solo.getEditText(0);
-	//		//		assertEquals("Wrong button clicked", "COSTUME_LAYER_",
-	//		//				text.getText().toString().substring(0, "COSTUME_LAYER_".length()));
-	//		//		catKeyboardClicker.clickOnKey("del");
-	//		//		solo.sleep(100);
-	//
-	//		solo.goBack();
-	//		solo.goBack();
-	//
-	//	}
+		String itemString = "";
+		String itemString2nd = "";
+		String itemString3rd = "";
 
-	private void createProject(String projectName) throws InterruptedException {
+		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
 
-		this.project = new Project(null, projectName);
-		firstSprite = new Sprite("nom nom nom");
-		Script startScript1 = new StartScript(firstSprite);
-		changeBrick = new ChangeSizeByNBrick(firstSprite, 0);
-		firstSprite.addScript(startScript1);
-		startScript1.addBrick(changeBrick);
-		project.addSprite(firstSprite);
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
 
-		ProjectManager.getInstance().setProject(project);
-		ProjectManager.getInstance().setCurrentSprite(firstSprite);
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_variables));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_variable_list_bottom_bar));
+		solo.clickOnText(solo.getString(R.string.formula_editor_variable_dialog_for_this_sprite_only));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_variable_dialog_hint));
+		solo.sendKey(KeyEvent.KEYCODE_L);
+		solo.sendKey(KeyEvent.KEYCODE_O);
+		solo.sendKey(KeyEvent.KEYCODE_C);
+		solo.sendKey(KeyEvent.KEYCODE_A);
+		solo.sendKey(KeyEvent.KEYCODE_L);
+		itemString = "local";
+		solo.sendKey(KeyEvent.KEYCODE_BACK);
+		solo.clickOnButton(solo.getString(R.string.ok));
+		assertTrue(solo.searchText(itemString, true));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_variable_list_bottom_bar));
+		solo.clickOnText(solo.getString(R.string.formula_editor_variable_dialog_for_all_sprites));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_variable_dialog_hint));
+		solo.sendKey(KeyEvent.KEYCODE_G);
+		solo.sendKey(KeyEvent.KEYCODE_L);
+		solo.sendKey(KeyEvent.KEYCODE_O);
+		solo.sendKey(KeyEvent.KEYCODE_B);
+		solo.sendKey(KeyEvent.KEYCODE_A);
+		solo.sendKey(KeyEvent.KEYCODE_L);
+		itemString2nd = "global";
+		solo.sendKey(KeyEvent.KEYCODE_BACK);
+		solo.clickOnButton(solo.getString(R.string.ok));
+		assertTrue(solo.searchText(itemString2nd, true));
+
+		solo.goBack();
+		solo.goBack();
+		solo.goBack();
+		solo.goBack();
+
+		solo.clickOnText("secondSprite");
+		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_variables));
+		assertFalse(solo.searchText(itemString, true));
+		assertTrue(solo.searchText(itemString2nd, true));
 
 	}
 
+	private void createProject(String projectName) throws InterruptedException {
+
+		project = new Project(null, projectName);
+
+		firstSprite = new Sprite("firstSprite");
+		secondSprite = new Sprite("secondSprite");
+		Script startScript1 = new StartScript(firstSprite);
+		Script startScript2 = new StartScript(secondSprite);
+		changeBrick = new ChangeSizeByNBrick(firstSprite, 0);
+		glideToBrick = new GlideToBrick(secondSprite, 0, 0, 0);
+
+		firstSprite.addScript(startScript1);
+		secondSprite.addScript(startScript2);
+		startScript1.addBrick(changeBrick);
+		startScript2.addBrick(glideToBrick);
+		project.addSprite(firstSprite);
+		project.addSprite(secondSprite);
+
+		ProjectManager.getInstance().setProject(project);
+		ProjectManager.getInstance().setCurrentSprite(firstSprite);
+	}
 }
