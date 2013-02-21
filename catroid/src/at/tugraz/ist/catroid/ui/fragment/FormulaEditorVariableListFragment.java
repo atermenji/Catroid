@@ -364,10 +364,21 @@ public class FormulaEditorVariableListFragment extends SherlockListFragment impl
 			for (int index = 0; index < mItems.size(); index++) {
 				if (checkedItemPositions.get(index) == true) {
 					ProjectManager.getInstance().getCurrentProject().getUserVariables()
-							.deleteUserVariableByName(mItems.remove(index--));
+							.deleteUserVariableByName(mItems.get(index));
 				}
 			}
+
+			mItems.clear();
+			Sprite curSpr = ProjectManager.getInstance().getCurrentSprite();
+			String cur = curSpr.getName();
+			Project currentProject = ProjectManager.getInstance().getCurrentProject();
+			UserVariablesContainer uvc = currentProject.getUserVariables();
+			List<UserVariable> userVariables = uvc.getUserVariables(cur);
+			for (UserVariable userVariable : userVariables) {
+				mItems.add(userVariable.toString());
+			}
 			setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mItems));
+
 		}
 
 	};

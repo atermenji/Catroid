@@ -528,7 +528,6 @@ public class FormulaEditorKeyboardTest extends android.test.ActivityInstrumentat
 
 		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_variables));
 		solo.clickLongOnText(itemString);
-		//		solo.clickOnMenuItem(solo.getString(R.id.menu_delete), true);
 		solo.clickOnText(solo.getString(R.string.delete));
 		assertFalse(solo.searchText(itemString, true));
 
@@ -537,7 +536,67 @@ public class FormulaEditorKeyboardTest extends android.test.ActivityInstrumentat
 		solo.goBack();
 	}
 
-	//TODO: deleteUserVariableLongPress(), deleteUserVariableMultipleChoice(), testScopeOfUserVariable(), testInterpretationOfUservariable()
+	public void testDeleteUserVariableWithMultipleChoice() {
+
+		String itemString = "";
+		String itemString2nd = "";
+		String itemString3rd = "";
+
+		solo.clickOnEditText(X_POS_EDIT_TEXT_ID);
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_delete));
+
+		ArrayList<EditText> textList = solo.getCurrentEditTexts();
+		EditText text = textList.get(textList.size() - 1);
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_keyboard_variables));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_variable_list_bottom_bar));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_variable_dialog_hint));
+		solo.sendKey(KeyEvent.KEYCODE_D);
+		solo.sendKey(KeyEvent.KEYCODE_E);
+		solo.sendKey(KeyEvent.KEYCODE_L);
+		itemString = "del";
+		solo.sendKey(KeyEvent.KEYCODE_BACK);
+		solo.clickOnButton(solo.getString(R.string.ok));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_variable_list_bottom_bar));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_variable_dialog_hint));
+		solo.sendKey(KeyEvent.KEYCODE_V);
+		solo.sendKey(KeyEvent.KEYCODE_A);
+		solo.sendKey(KeyEvent.KEYCODE_R);
+		itemString2nd = "var";
+		solo.sendKey(KeyEvent.KEYCODE_BACK);
+		solo.clickOnButton(solo.getString(R.string.ok));
+
+		solo.clickOnView(solo.getView(R.id.formula_editor_variable_list_bottom_bar));
+		solo.clickOnText(getActivity().getString(R.string.formula_editor_variable_dialog_hint));
+		solo.sendKey(KeyEvent.KEYCODE_D);
+		solo.sendKey(KeyEvent.KEYCODE_E);
+		solo.sendKey(KeyEvent.KEYCODE_L);
+		solo.sendKey(KeyEvent.KEYCODE_2);
+		itemString3rd = "del2";
+		solo.sendKey(KeyEvent.KEYCODE_BACK);
+		solo.clickOnButton(solo.getString(R.string.ok));
+
+		solo.clickOnMenuItem(solo.getString(R.string.delete), true);
+		solo.clickOnText(itemString);
+		solo.clickOnText(itemString3rd);
+		solo.clickOnImage(0);
+
+		assertFalse(solo.searchButton(itemString, true));
+		assertTrue(solo.searchButton(itemString2nd, true));
+		assertFalse(solo.searchButton(itemString, true));
+
+		solo.goBack();
+		solo.goBack();
+		solo.goBack();
+	}
+
+	//TODO: deleteUserVariableMultipleChoice(), testScopeOfUserVariable(), testInterpretationOfUservariable()
 	// 
 
 	//	public void testOrientationChanges() {
